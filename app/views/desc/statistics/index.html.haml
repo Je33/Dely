@@ -1,0 +1,200 @@
+- content_for :head do
+  = javascript_include_tag "http://code.highcharts.com/highcharts.js"
+  = javascript_include_tag "http://code.highcharts.com/modules/exporting.js"
+  = javascript_include_tag "statistics"
+- if @orders.any? && @places.any?
+  %hr
+    .row-fluid
+      %table.pull-left.top-table
+        %tbody
+          %tr
+            %td
+              Рестораны
+            %td
+              %select#place-select
+                %option{:value => 0} Все рестораны
+                - @places.each do |p|
+                  %option{:value => p.id}= p.name
+      %table.pull-right.top-table
+        %tbody
+          %tr
+            %td
+              Период
+            %td
+              %input#date-from.margin-left{:width=>'50px'}
+            %td
+            %td
+              %input#date-to.margin-left{:width=>'50px'}
+            %td
+              .btn-group.btn-width#date-btns{:data => {:toggle => "buttons-radio"}}
+                %button.btn{:data => {:start => Time.now.beginning_of_day.to_i - 1.day, :end => Time.now.end_of_day.to_i - 1.day}} вчера
+                %button.btn{:data => {:start => Time.now.beginning_of_day.to_i, :end => Time.now.end_of_day.to_i}} сегодня
+                %button.btn{:data => {:start => Time.now.beginning_of_week.to_i, :end => Time.now.end_of_week.to_i}} неделя
+                %button.btn{:data => {:start => Time.now.beginning_of_month.to_i, :end => Time.now.end_of_month.to_i}} месяц
+                %button.btn{:data => {:start => Time.now.beginning_of_quarter.to_i, :end => Time.now.end_of_quarter.to_i}} квартал
+                %button.btn.active{:data => {:start => Time.now.beginning_of_year.to_i, :end => Time.now.end_of_year.to_i}} год
+    %hr
+
+    .row-fluid
+      .span6.margin-bottom
+
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/orders_count', :title=>''} Заказы
+
+        .clear
+
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Итого
+              %th Вчера
+              %th Сегодня
+              %th Завтра
+          %tbody
+            %tr
+              %td= @orders.count
+              %td= tmr = @orders.where("created_at >= ? AND created_at <= ?", Time.now.beginning_of_day - 1.day, Time.now.end_of_day - 1.day).count
+              %td= ytd = @orders.where("created_at >= ? AND created_at <= ?", Time.now.beginning_of_day, Time.now.end_of_day).count
+              %td= ((tmr + ytd) / 2).round
+
+        .clear
+
+        .orders-graph#stat-orders-graph{:style => "width: 448px; height: 300px"}
+
+      .span6.margin-bottom
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/orders_summ', :title=>''} Сумма заказов (руб.)
+
+        .clear
+
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Итого
+              %th Средний чек
+              %th Вчера
+              %th Сегодня
+              %th Завтра
+          %tbody
+            %tr
+              %td= @orders.sum(:price).round
+              %td= ((@orders.max.price + @orders.min.price)/2).round
+              %td= ptmr = @orders.where("created_at >= ? AND created_at <= ?", Time.now.beginning_of_day - 1.day, Time.now.end_of_day - 1.day).sum(:price).round
+              %td= pytd = @orders.where("created_at >= ? AND created_at <= ?", Time.now.beginning_of_day, Time.now.end_of_day).sum(:price).round
+              %td= ((ptmr + pytd) / 2).round
+
+        .clear
+
+        .orders-graph#stat-orders-cost{:style => "width: 448px; height: 300px"}
+
+
+    .row-fluid
+      .span6.margin-bottom
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/populars', :title=>''} Популярные блюда
+        .clear
+        %table.table.table-striped#stat-pop-items
+          %thead
+            %tr
+              %th Название
+              %th Заказы
+              %th Сумма
+          %tbody
+
+
+      .span6.margin-bottom
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/rating', :title=>''} Рейтинг
+
+        .clear
+
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Всего оценок
+              %th Рейтинг
+              %th Плюсы
+              %th Минусы
+          %tbody
+            %tr
+              - cn = 0
+              - cp = 0
+              - cm = 0
+              - @orders.find_each do |o|
+                - cn += o.rating.to_i.abs
+                - if o.rating.to_i > 0
+                  - cp += 1
+                - if o.rating.to_i < 0
+                  - cm += 1
+              %td= cn
+              %td= cp * cm / 2.to_f
+              %td= cp
+              %td= cm
+
+        .clear
+
+        .orders-graph#stat-orders-rating{:style => "width: 448px; height: 300px"}
+
+    .row-fluid
+      .span6.margin-bottom
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/loyality', :title=>''} Лояльность
+
+        .clear
+
+        .orders-graph#stat-ord-rate{:style => "width: 448px; height: 250px"}
+
+      .span6.margin-bottom
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/statuses', :title=>''} Статусы
+        .clear
+        %table.table.table-striped#stat-orders-statuses
+          %thead
+            %tr
+              %th Статус
+              %th Кол-во
+              %th %
+          %tbody
+
+    .row-fluid
+      .span6.margin-bottom
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/day_stat', :title=>''} Активность по часам
+
+        .clear
+
+        .orders-graph#stat-orders-hours{:style => "width: 448px; height: 250px"}
+
+      -#.span6.margin-bottom
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/show', :title=>''} Средний чек
+
+        .clear
+
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Сумма заказов
+              %th Средний чек
+              %th Вчера
+              %th Сегодня
+              %th Завтра
+          %tbody
+            %tr
+              %td= @orders.sum(:price).to_i
+              %td= ((@orders.max.price + @orders.min.price)/2).round
+              %td= otmr = @orders.where("created_at >= ? AND created_at <= ?", Time.now.beginning_of_day - 1.day, Time.now.end_of_day - 1.day).sum(:price).round
+              %td= oytd = @orders.where("created_at >= ? AND created_at <= ?", Time.now.beginning_of_day, Time.now.end_of_day).sum(:price).round
+              %td= ((otmr + oytd) / 2).round
+
+        .clear
+
+        .orders-graph#stat-orders-check{:style => "width: 448px; height: 200px"}
+
+      .span6.margin-bottom
+        %h3.pull-left
+          %a{:href=>'/desc/statistics/regions', :title=>''} Регионы доставки
+
+        .clear
+
+        .orders-graph#stat-regions{:style => "width: 448px; height: 250px"}

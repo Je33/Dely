@@ -1,0 +1,25 @@
+<h2>Сменить пароль</h2>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div><%#= f.label :email %><br />
+  <%#= f.email_field :email %></div>
+
+  <div><%= f.label 'новый пароль' %> </i><br />
+  <%= f.password_field :password, :autocomplete => "off" %></div>
+
+  <div><%= f.label 'подтверждение нового пароля' %><br />
+  <%= f.password_field :password_confirmation %></div>
+
+  <div><%= f.label 'текущий пароль' %> <br />
+  <%= f.password_field :current_password %></div>
+
+  <div><%= f.submit "Сменить" %></div>
+<% end %>
+
+<h3>Удалить себя</h3>
+
+<p>Unhappy? <%= link_to "Удалиться :-(", registration_path(resource_name), :confirm => "ну нет?", :method => :delete %>.</p>
+
+<%= link_to "назад", :back %>

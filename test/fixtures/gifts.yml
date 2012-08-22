@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  active: 1
+  name: MyString
+  description: MyText
+  cost: 1
+  gift_section: 
+
+two:
+  active: 1
+  name: MyString
+  description: MyText
+  cost: 1
+  gift_section: 

@@ -1,0 +1,9 @@
+-if l.order
+  %td= l.status.name
+  %td= l.user.first_name + ' ' + l.user.last_name
+  %td
+    =(l.created_at).localtime().strftime("%I")
+    \: #{l.created_at.strftime("%M")}
+  %td= l.order.place.name
+  %td= l.order.price
+  %td= l.id

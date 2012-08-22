@@ -1,0 +1,43 @@
+-if @special.errors.any?
+  #error_explanation
+    %h2= "#{pluralize(@special.errors.count, "error")} prohibited this desc_place from being saved:"
+    %ul
+      - @special.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for @special, :url => @special.id!=nil ? desc_special_path(@special.id) : desc_specials_path, :html => {:class => "form-horizontal"} do |f|
+  %fieldset
+    .control-group
+      %label.control-label ID
+      .controls
+        %p= @special.id!=nil ? @special.id : "new"
+    .control-group
+      %label.control-label Активность
+      .controls= f.check_box :active, :checked => @special.id==nil ? true : @special.active ? true : false
+    .control-group
+      %label.control-label Фото
+      .controls
+        .pull-left
+          = f.file_field :picture, :class=>"span5 margin-right"
+        .pull-left.margin-right{:style=>'padding-left: 10px'}
+          = image_tag @special.picture.url(:small)
+    .control-group
+      %label.control-label Название
+      .controls= f.text_field :name, :class=>"span5"
+    .control-group
+      %label.control-label Описание
+      .controls= f.text_area :description, :size => "200x8", :class=>"span5"
+    .control-group
+      %label.control-label Заведение
+      .controls= f.select(:place_id, Place.all.map{|p| [p.name,p.id]})
+    .control-group
+      %label.control-label Товар
+      .controls= f.select(:item_id, Item.all.map{|i| [i.section.place.name.to_s + " - " + i.name.to_s + " (" + i.price.to_s + ")", i.id]})
+    .control-group
+      %label.control-label Старая цена
+      .controls= f.text_field :old_price, :class=>"span5"
+
+  .form-actions
+
+    = link_to 'Отмена', desc_specials_path, :class => "btn btn-large"
+    = f.submit 'Сохранить', :class => "btn btn-success btn-large"

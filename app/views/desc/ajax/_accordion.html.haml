@@ -1,0 +1,74 @@
+#accordion_log
+  .accordion-group
+    .accordion-heading
+      %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion1", :href=>"#collapseOne"}
+        Статусы заказов
+    .accordion-body.collapse#collapseOne
+      .accordion-inner
+        %form.createarea
+          %label.checkbox.new-order
+            %input{:type=>"checkbox", :id=>"10"} Новый
+          %label.checkbox.confirmed-order
+            %input{:type=>"checkbox", :id=>"55"} Подтвержден
+          %label.checkbox.perform-order
+            %input{:type=>"checkbox", :id=>"100"} Доставлен
+          %label.checkbox.canseled-order
+            %input{:type=>"checkbox", :id=>"20:50:90"} Отменен
+          %label.checkbox.no-perform-order
+            %input{:type=>"checkbox", :id=>"1"} Неизвестно
+  .accordion-group#operatos_logs
+    .accordion-heading
+      %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion2", :href=>"#collapstwo"}
+        Операторы
+    .accordion-body.collapse#collapstwo
+      .accordion-inner
+        %form.operators
+          %label.checkbox
+            %input{:user_id => '0',:type=>"checkbox"} &mdash;
+          - @operators.each do |o|
+            %label.checkbox
+              - if User.exists?(o)
+                %input{:user_id => o,:type=>"checkbox"} #{User.find(o).first_name}
+  .accordion-group
+    .accordion-heading
+      %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion3", :href=>"#collapsethree"}
+        Пользователь
+    .accordion-body.collapse#collapsethree
+      .accordion-inner
+        %form.createarea
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"10"} Новый
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"20"} Отменен
+  .accordion-group
+    .accordion-heading
+      %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion4", :href=>"#collapsefour"}
+        Состояние заказа
+    .accordion-body.collapse#collapsefour
+      .accordion-inner
+        %form.createarea
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"55"} Подтвержден
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"60:61:62"} Отправлен в ресторан
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"61"} По телефону
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"62"} По е-мэйл
+  .accordion-group
+    .accordion-heading
+      %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion5", :href=>"#collapsefive"}
+        Ресторан
+    .accordion-body.collapse#collapsefive
+      .accordion-inner
+        %form.createarea
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"80"} Принят
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"70"} Не Принят
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"90"} Отменен
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"100"} Доставлен
+          %label.checkbox
+            %input{:type=>"checkbox", :id=>"1"} Неизвестно

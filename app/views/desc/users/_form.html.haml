@@ -1,0 +1,106 @@
+= form_for @user, :url => @user.id!=nil ? desc_user_path(@user) : desc_users_path do |f|
+  -if @user.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+      %ul
+        - @user.errors.full_messages.each do |msg|
+          %li= msg
+  .form-horizontal
+    %fieldset
+      - if @user.id != nil
+        .control-group
+          %label.control-label ID
+          .controls
+            %input.disabled{:disabled => true, :value => @user.id}
+        .control-group
+          %label.control-label Баллы
+          .controls
+            %input.disabled{:disabled => true, :value => @user.balance}
+        .control-group
+          %label.control-label#user-access Доступ
+          .controls
+            -#%input.disabled{:disabled => true, :value => @user.get_access_name}
+            %select#user-access-select{:name => "user[access]"}
+              %option{:value => 0, :selected => @user.access == 0 ? true : false} Пользователь
+              %option{:value => 1, :selected => @user.access == 1 ? true : false} Оператор партнера
+              %option{:value => 2, :selected => @user.access == 2 ? true : false} Администратор партнера
+              %option{:value => 3, :selected => @user.access == 3 ? true : false} Оператор системы
+              %option{:value => 4, :selected => @user.access == 4 ? true : false} Администратор системы
+        - if @user.access == 1 || @user.access == 2
+          .control-group#user-partners-select
+            .controls
+              %select{:name => "user_partner"}
+                - Partner.find_each do |p|
+                  %option{:value => p.id, :selected => @user.place_accesses.exists? ? @user.place_accesses.first.place.partner.id == p.id ? true : false : false}= p.name
+          .control-group#user-places-select
+            .controls
+              %select.multi{:multiple => true, :name => "user_partner_places[]"}
+                - if @user.place_accesses.exists?
+                  - ids = @user.place_accesses.pluck(:place_id)
+                  - @user.place_accesses.first.place.partner.places.find_each do |pl|
+                    %option{:value => pl.id, :selected => ids.include?(pl.id) ? true : false}= pl.name
+        - else
+          .control-group.hide#user-partners-select
+            .controls
+              %select{:name => "user_partner"}
+          .control-group.hide#user-places-select
+            .controls
+              %select.multi{:multiple => true, :name => "user_partner_places[]"}
+        .control-group
+          %label.control-label Дата регистрации
+          .controls
+            %input.disabled{:disabled => true, :value => @user.created_at.strftime("%D %H:%M:%S")}
+        %hr
+      .control-group
+        %label.control-label Активность
+        .controls
+          = f.check_box(:active, :checked => @user.id==nil ? true : @user.active ? true : false, :class=>'span5')
+      .control-group
+        %label.control-label Имя
+        .controls
+          = f.text_field :first_name, :class=>'span5'
+      .control-group
+        %label.control-label Фамилия
+        .controls
+          = f.text_field :last_name, :class=>'span5'
+      .control-group
+        %label.control-label Телефон
+        .controls
+          .input-prepend.form-inline
+            %span.add-on +7
+            %input#forget-form-phone.telephone-code{:type => "text", :name => "user[phone]", :class=>'width-phone', :value => @user.phone.gsub("+7 ", "")}
+      .control-group
+        %label.control-label E-mail
+        .controls
+          = f.email_field :email, :class=>'span5'
+      .control-group
+        %label.control-label Пароль
+        .controls
+          - if @user.id != nil
+            %button.btn.btn-large.btn-warning{:id => "reset-password-button", :type => "button", :data => {:id => @user.id}} Сбросить
+            %span#reset-info* Пользователю придет sms уведомление с новым паролем
+          - else
+            = f.text_field :password, :class=>'span5'
+      - if @user.id != nil
+        - #
+      - else
+        .control-group#user-access
+          %label.control-label Уровень доступа
+          .controls
+            %select.span5#user-access-select{:name => "user[access]"}
+              %option{:value => 0} Пользователь
+              %option{:value => 1} Оператор партнера
+              %option{:value => 2} Администратор партнера
+              %option{:value => 3} Оператор системы
+              %option{:value => 4} Администратор системы
+        .control-group.hide#user-partners-select
+          .controls
+            %select{:name => "user_partner"}
+        .control-group.hide#user-places-select
+          .controls
+            %select.multi{:multiple => true, :name => "user_partner_places[]"}
+
+    .form-actions
+
+      = link_to 'Отмена', desc_users_path, :class => "btn btn-large"
+      = f.submit 'Сохранить', :class => "btn btn-success btn-large"

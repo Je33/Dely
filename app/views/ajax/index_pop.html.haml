@@ -1,0 +1,11 @@
+- if @top.count > 0
+  .view
+    .anim
+      - k = 0
+      - @top.each do |pp|
+        - k += 1
+        .box
+          %a{:href => "/place/" + pp.section.place.id.to_s + "#s" + pp.section.id.to_s + "/p" + pp.id.to_s, :title => ""}
+            %img{:src => pp.photo(:top), :width => 180}
+        - if k == @top.count/2.round
+          = "</div><div class='anim'>".html_safe

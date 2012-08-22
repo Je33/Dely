@@ -1,0 +1,11 @@
+#gores.modal.hide.fade.in{:style => "display: block; "}
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Подтверждение передачи отчета
+  .modal-body
+    %p.rest-phone-text
+      Для передачи отчета, свяжитесь с рестораном по телефону:
+    %span.big-phone
+  .modal-footer
+    %a.btn.btn-large.btn-success#transfered-report{:href => "javascript:;", :title => ""} Заказ передан
+    %a.btn.btn-large.btn-danger#no-transfer-report{:href => "javascript:;", :title => ""} Телефон не отвечает?

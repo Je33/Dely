@@ -1,0 +1,100 @@
+.container.cont.gift-view-page
+  .row-fluid
+    .span3
+      .well
+        %h4
+          Мой счёт:
+          %a.ajax#gift-coin{:href=>'javascript:;', :title=>''} #{current_user.balance.to_i} баллов
+        %hr
+        %ul.nav.nav-pills.nav-stacked
+          %li
+            %a{:href => "/profile/orders"} Мои заказы #{current_user.orders.activated.count.to_i > 0 ? "(" + current_user.orders.activated.count.to_s + ")" : ""}
+          %li
+            %a{:href => "/profile/info"} Настройки моего профиля
+          %li.active
+            %a{:href => "/profile/gifts"} Призы
+          -#%li
+            %a{:href => "/profile/messages"} Оповещения
+
+    .span9
+      - if flash[:notice]
+        .alert.alert-success
+          %a.close{:data => {:dismiss => "alert"}} ×
+          = flash[:notice]
+
+      - if flash[:error]
+        .alert.alert-error
+          %a.close{:data => {:dismiss => "alert"}} ×
+          = flash[:error]
+
+      .tabbable
+        %ul.nav.nav-tabs
+          %li.active
+            %a{:href=>"javascript:;", :title=>''} Призы
+          %li
+            %a{:href=>"javascript:;", :title=>''} История заказов
+          -#%li.not-tab
+            .list
+              .content-menu
+                %ul.nav.nav-pills.not-right
+                  %li.text.not-tab
+                    %p Сортировать по
+                  %li.active.not-tab
+                    %a{'data-sort'=>"rating", :href=>"javascript:;"} популлярности
+                  %li.not-tab
+                    %a{'data-sort'=>"rating", :href=>"javascript:;"} баллам
+
+        .tab-content
+          .tab-pane.active
+            .slider-box.row-fluid
+              - if @gifts != nil && @gifts.count > 0
+                %ul.thumbnails
+                  - @gifts.each do |gift|
+                    %li.span3.thumbnail
+                      .product-button{:href => "javascript:;", :rel => "popover"}
+                        %img{:alt => "", :src => gift.photo.url(:normal), :width => "220"}
+                          .caption.ball
+                            %h5= gift.name
+                            / %p.text= i.description
+                            %p.pull-left.cena
+                              #{gift.cost} баллов.
+                              - diff = current_user.balance.to_i - gift.cost.to_i
+                              - if diff < 0
+                                %br
+                                %span
+                                  Не хватает ещё
+                                  %br
+                                  #{diff.abs} баллов.
+                            - if diff > 0
+                              %a.btn.btn-success.pull-right.order-gift-button{"data-id" => gift.id, :href => "javascript:;"}
+                                %i.icon-shopping-cart.icon-white
+                                Заказать
+                            - else
+                              %a.btn.pull-right.disabled{"data-id" => gift.id, :href => "javascript:;"}
+                                %i.icon-shopping-cart.icon-white
+                                Заказать
+                          .clear
+          .tab-pane
+            %table.table.table-striped.gift-table
+              %thead
+                %tr
+                  %th Дата заказа
+                  %th Приз
+                  %th Баллы
+                  %th Статус
+                  %th
+              %tbody
+                - @gorders.each do |go|
+                  - if go.gift
+                    %tr
+                      %td= go.created_at.localtime().strftime('%D %H:%M:%S')
+                      %td
+                        %a.ajax{:href=>'javascript:;', :title=>''}
+                          #{go.gift.name}
+                      %td #{go.gift.cost}
+                      %td #{go.gift_status ? go.gift_status.name : "--"}
+                      %td
+                        %a.ajax.delete-gift{:href=>'javascript:;', :title=>'', :data => {:id => go.id}}
+                          Отменить
+
+          .tab-pane

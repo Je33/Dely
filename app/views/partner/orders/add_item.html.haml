@@ -1,0 +1,16 @@
+%tr#items_tr{:item_id => @item.id}
+  %td
+    %a{:href => "javascript:void(0);", :title => ""}
+      = @item.name
+  %td
+    = Section.find(@item.section_id).name
+  %td.cena #{@item.price.ceil} руб.
+  /%td.plus-minus #{@item_count}
+  %td.plus-minus
+    .btn-group.btn-style
+      %button.btn.min -
+      %input.btn.coll-el{:maxlength => "2", :title => "", :type => "text", :value => @item_count,:id=>"add_item_count"}
+        %button.btn.plus +
+  %td.tottal #{@item_cnt_price} руб.
+  %td.delete-button
+    %a.btn.btn-danger#delete-pos{:href => "javascript: ;", :title=>''} Удалить

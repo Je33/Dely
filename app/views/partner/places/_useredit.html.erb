@@ -1,0 +1,54 @@
+<%= form_tag '/partner/options/ajaxUserSave/',:class => 'form-horizontal',:id => 'user-form' do%>
+    <%= hidden_field_tag :user_id,@u.id.to_s %>
+    <%= hidden_field_tag :place_id,@place_id.to_s %>
+    <%= hidden_field_tag :reset_password_token %>
+    <fieldset>
+      <div class="control-group">
+        <label class="control-label" for="input01">Имя:</label>
+        <div class="controls docs-input-sizes">
+          <%= text_field :user, :first_name,:value=>@u.first_name, :class=>'span5' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="input01">Фамилия:</label>
+        <div class="controls docs-input-sizes">
+          <%= text_field :user, :last_name,:value=>@u.last_name, :class=>'span5' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="input01">Должность:</label>
+        <div class="controls docs-input-sizes">
+          <% if @u.id!=current_user.id %>
+              <%= select( "add_user_select", "role",{"Администратор"=>"2","Оператор"=>"1"}, {:class=>'span5'}) %>
+          <% end %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="input01">Телефон:</label>
+        <div class="controls docs-input-sizes">
+          <div class="input-prepend form-inline">
+            <span class="add-on">+7</span>
+            <%= text_field :user, :phone,:value=>@u.phone.to_s[3..16], :class=>'width-phone' %>
+          </div>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="input01">Пароль:</label>
+        <div class="controls docs-input-sizes">
+          <%= password_field :user, :password, :class=>'span5' %>
+        </div>
+      </div>
+      <div class="form-actions">
+        <%= form_tag partner_options_delete_user_path do%>
+        <%= hidden_field_tag :user_id,@u.id.to_s %>
+        <%= hidden_field_tag :place_id,@place_id.to_s %>
+        <a class="btn btn-large" href='/partner/options' title=''>Назад</a>
+        <%= submit_tag  'Удалить пользователя',:class=>'btn btn-danger btn-large' %>
+        <% end %>
+        <%=submit_tag "Сохранить",:class=>'btn btn-large btn-success', :id=>'save_user' %>
+      </div>
+    </fieldset>
+<% end %>
+
+<%#= button_to "Удалить",partner_options_delete_user_path,:user_id => @u.id,:place_id=>@place_id,:confirm => "Точно удалить?" %>
+

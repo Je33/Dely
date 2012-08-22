@@ -1,0 +1,51 @@
+.controls
+  .l.address
+    Имя:
+    = (text_field_tag :order_name,@order.name.to_s,:style=>'width: 160px !important;')
+  .input-prepend.form-inline
+    %span.add-on +7
+    %input#order_phone.telephone-code{:type => "text", :name => "order_phone", :class=>'width-phone', :value =>@order.phone.to_s.gsub("+7 ", ""),:style=>"width:130px;"}
+- if @order.person.to_i != 0
+  Кол-во персон:
+  = (text_field_tag :order_person, @order.person.to_s,:style=>'width: 20px !important;')
+- if @regions != []
+  .l.address
+    Регион:
+    = select( "order", "region_id", @regions, {},{ :style=>'width: 161px !important;'})
+- if @metros != []
+  .l.address
+    Регион:
+    = select( "order", "metro_id", @metros, {},{ :style=>'width: 161px !important;'})
+.l.address
+  Улица:
+  = text_field_tag :order_street,@order.street.to_s
+.l.address
+  Дом:
+  = text_field_tag :order_house,@order.house.to_s
+.l.address
+  Здание:
+  =text_field_tag :order_building, @order.building.to_s
+.l.address
+  Квартира:
+  = (text_field_tag :order_room, @order.room.to_s)
+.l.address
+  Подъезд:
+  = (text_field_tag :order_porch,@order.porch.to_s)
+.l.address
+  Этаж:
+  = (text_field_tag :order_floor,@order.floor.to_s)
+.l.address
+  Домофон:
+  = (text_field_tag :order_intercom,@order.intercom.to_s)
+.l.address
+  Сдача с
+  = (text_field_tag :order_change,@order.change.to_s)
+.l.address
+  Комментарии
+  = (text_field_tag :order_description,@order.description.to_s)
+:javascript
+  $(document).ready(function(){
+   $('.telephone-code').mask("(999) 999-9999", {
+          showError: false
+      });
+  });

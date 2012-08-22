@@ -1,0 +1,58 @@
+- if params[:id]
+  #detail.modal.hide.fade.in.fly
+    .modal-header
+      %a.close{"data-dismiss" => "modal"} ×
+      %h3.f-l
+        = @item.name
+      - if @item.vegetarian.to_i == 1
+        .inf-panel.fitns.f-l
+      - if @item.hot.to_i == 1
+        .inf-panel.hot.f-l
+      
+      %span.prod-extras
+        - if @item.weight.to_i > 0
+          %span.grey Вес: #{@item.weight.to_i} г
+        - if @item.weight.to_i > 0 && @item.calories.to_i > 0
+          %span.grey &#183
+        - if @item.calories.to_i > 0
+          %span.grey Калории: #{@item.calories.to_i}
+        
+    .modal-body
+      .big-img
+        .carousel-inner
+
+          .active.item{'data-name' => @item.name}
+            %table.img-vert
+              %tr
+                %td
+                  %img.fly-el{:src => @item.photo(:large), :alt=> ''}
+
+        - if @item_prev
+          %a.left{:href => "#s" + @item_prev.section_id.to_s + "/p" + @item_prev.id.to_s, :rel => "popover", 'data-original-title'=>'', :data => {:content => @item_prev.name, :id => @item_prev.id}} ‹
+        - if @item_next
+          %a.right{:href => "#s" + @item_next.section_id.to_s + "/p" + @item_next.id.to_s, :rel => "popover", 'data-original-title'=>'', :data => {:content => @item_next.name, :id => @item_next.id}} ›
+        .opt-order
+          .cell_left
+            %p
+              -#%p= @item.description.slice!(0..120) + '...'
+              = @item.description[0..120]#.slice!(0..120)
+              - if @item.description.length > 120
+                %a.prod-more{:href => "javascript:;", :title => @item.description, :rel => "popover", :data => {:content => @item.description, :id => @item.id}} ...
+              
+          .cell_right
+            %p.cost.pull-left
+              Цена:
+              %span
+                #{@item.price.round} руб.
+            - if @allow_order
+              %p.cost.btn-t.pull-left Кол-во:
+              .btn-group.btn-grp-big.pull-left
+                %button.btn.min -
+                %input.btn.coll-el{:maxlength => "2", :title => "", :type => "text", :value => "1"}
+                %button.btn.plus +
+
+      .info-detail
+    .modal-footer
+      - if @allow_order
+        %a.btn.btn-success.btn-large.pull-right#add-order{:href => "javascript:;", :data => {:id => @item.id}} Добавить в корзину
+      %a.btn.btn-large.closeallmodal{:href=> 'javascript:;', :title => ''} Закрыть

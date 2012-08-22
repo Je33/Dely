@@ -1,0 +1,221 @@
+<div id="current_url" cur="/partner/orders/<%= @order.id%>/"> </div>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span7 order-detail_le">
+      <div class="well ">
+        <h3 class="pull-left">
+          Заказ <span class="id">#</span><%= @order.name %> > <span class="new-order"> <%= @status.name %> </span>
+        </h3>
+        <p class="pull-left operator-name"><%= @user ? @user.first_name+' '+@user.last_name[0] : '-' %></p>
+        <ul class="pager pull-right">
+          <% if @prev!=0 %>
+              <li class="previous"><%=link_to '← предыдущий',operator_order_path(@prev)%></li>
+          <% end %>
+          <% if @next!=0 %>
+              <li class="next"><%=link_to 'следующий →',operator_order_path(@next)%></li>
+          <% end %>
+        </ul>
+        <div class="clear"></div>
+
+
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Наименование</th>
+            <th>Категория</th>
+            <th>Цена</th>
+            <th>Кол-во</th>
+            <th>Сумма</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @items.each do |i| %>
+              <tr id="items_tr" item_id="<%= i.id %>">
+                <td><a href="javascript:void(0);" title="" ><%= i.name  %></a> </td>
+                <td><%= Section.find(i.section_id).name %></td>
+                <td  class="cena"><%= i.price.ceil %> руб.</td>
+                <td> <%= Basket.where(:order_id=>@order.id, :item_id=>i.id).first.cnt %></td>
+                <td  class="tottal">
+                  <% if Basket.where(:order_id=>@order.id, :item_id=>i.id).first.cnt!=nil %>
+                      <%= (i.price * Basket.where(:order_id=>@order.id, :item_id=>i.id).first.cnt).ceil %> руб.
+                  <% end %>
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+        <dl class="dl-horizontal">
+          <dt>Ресторан:</dt>
+          <dd><%=  Place.find(@order.place_id).name %></dd>
+          <dt>Сумма заказа:</dt>
+          <dd><%=  @order.price.ceil %> руб.</dd>
+          <dt>Доставка:</dt>
+          <dd><%= @delivery.price.ceil %></dd>
+        </dl>
+        <div class="clear-line"></div>
+        <dl class="dl-horizontal big-dl">
+          <dt>Итого:</dt>
+          <dd><%= @delivery.price+@order.price.ceil %> руб.</dd>
+
+          <dt>Приз:</dt>
+          <dd><%= ((@delivery.price+@order.price)/10).ceil %> баллов</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="span3 order-detail-ri">
+      <div class=" well">
+        <% if @user %>
+            <p class="name">
+              <%= @user.last_name %>  <%= @user.first_name %>
+            </p>
+            <p class="phone">
+
+              <%= @user.phone %>
+            </p>
+        <% else %>
+            <p class="name">
+              Гость
+            </p>
+        <% end %>
+        <% if @address %>
+            <p class="address">
+              <%= @address.street %> <%= @address.house %>, <br>Подьезд <%= @address.porch %>,<%= @address.floor %> этаж.
+              <!--  Карла Маркса 16, квартира 47.
+         Подьезд 6, 18 этаж.  -->
+              <%=City.exists?(@user.city_id) ? City.find(@user.city_id).name : 'Город не указан'%>
+            </p>
+        <% end %>
+        <dl>
+          <dt>Комментарий:</dt>
+          <dd><%= @order.description %></dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <dt>Ресторан:</dt>
+          <dd> <%= Place.find(@order.place_id).name %> </dd>
+          <dt>Сумма заказа:</dt>
+          <dd><%=  @order.price.ceil %> руб.</dd>
+          <dt>Доставка:</dt>
+          <dd><%= @delivery.price %></dd>
+        </dl>
+        <div class="clear-line"></div>
+        <dl class="dl-horizontal big-dl">
+          <dt>Итого:</dt>
+          <dd><%= @delivery.price+@order.price.ceil %> руб.</dd>
+
+        </dl>
+      </div>
+    </div>
+    <div class="span2 order-detail-ri">
+      <div class=" well">
+        <div class="btn-box">
+          <div class="alert alert-success">
+            <center>Заказ передан ресторану</center>
+          </div>
+          <%=  link_to 'Отменить заказ',operator_order_cancel_order_path(@order.id), :class=>"btn btn-danger" %>
+          <div class="clear-line"></div>
+          <p>
+            Заказ поступил в 15:56, сегодня.<br />
+            Ресторан "Суши в Груши".
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!--/.fluid-container-->
+<div id="add-line" style="display:none; ">
+
+  <table>
+    <tbody>
+    <tr class="add-line">
+      <td>
+        <div class="btn-group">
+          <%= select( "add_item", "id",@new_items) %>
+
+        </div>
+      </td>
+      <td></td>  <td></td>
+      <td class="plus-minus">
+        <div class="btn-group btn-style" style="margin: 9px 0;">
+          <button class="btn min">-</button>
+          <input  id="add_item_count" type="text" title="" class="btn coll-el" maxlength="4" value="1" />
+          <button class="btn plus">+</button>
+        </div>
+      </td>
+      <td></td>
+      <td>
+        <button class="btn btn-large" id="add-pos">Добавить</button>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="delete-order" class="modal hide fade in">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Подтверждение удаления</h3>
+  </div>
+  <div class="modal-body">
+    <p class="rest-phone-text">
+      Вы дествительно хотите удалить заказ?
+    </p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Отмена</a>
+    <%=  link_to 'Удалить заказ',partner_order_path(@order.id), :class=>"btn btn-primary", :method=>:delete %>
+
+  </div>
+</div>
+
+<div id="test-line" style="display:none;">
+  <table>
+    <tbody>
+    <tr>
+      <td><a href="javascript:void(0);" title="">Торт Фисташковый тестовый</a> </td>
+      <td>Десерт</td>
+      <td>96 руб.</td>
+      <td>1</td>
+      <td>96 руб.</td>
+      <td class="delete-button"><a class="btn btn-danger" href="#delete-pos" data-toggle="modal">Удалить</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="delete-pos" class="modal hide fade in">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Подтверждение удаления</h3>
+  </div>
+  <div class="modal-body">
+    <p class="rest-phone-text">
+      Вы дествительно хотите удалить позицию?
+    </p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Отмена</a>
+    <a href="#" class="btn btn-primary" id="delete-line">Удалить позицию</a>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

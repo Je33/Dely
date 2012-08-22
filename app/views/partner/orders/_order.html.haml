@@ -1,0 +1,14 @@
+- if o.status_id==10
+  - o.manager=nil
+  - o.save
+%td= Status.exists?(:id=>o.status_id) ? o.status_id.to_i == 95 ? 'доставлен' : o.status.name : 'Неизвестный'
+/%td= Log.exists?(:order_id=>o.id,:status_id=>o.status_id) ? User.find(Log.where(:order_id=>o.id,:status_id=>o.status_id).last.user_id).last_name : '-'
+%td= User.exists?(o.manager) ? User.find(o.manager).first_name.to_s + ' ' + User.find(o.manager).last_name[0].to_s  : '--'
+%td
+  - if (o.created_at).localtime().strftime("%D")==Time.now.localtime().strftime("%D")
+    =(o.created_at).localtime().strftime("Сегодня %H:%M:%S")
+  -else
+    =(o.created_at).localtime().strftime("%D %H:%M:%S")
+%td.nm= Place.exists?(:id=>o.place_id) ? o.place.name : 'Неизвестен'
+%td= o.price.to_i.ceil.to_s+' руб.'
+%td= o.id

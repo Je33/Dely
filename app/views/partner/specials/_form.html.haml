@@ -1,0 +1,56 @@
+= form_for @special, :url => @special.id!=nil ? partner_place_special_path(params[:place_id], @special.id) : partner_place_specials_path(params[:place_id]),:multipart=>true do |f|
+  -if @special.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@special.errors.count, "error")} prohibited this partner_place from being saved:"
+      %ul
+        - @special.errors.full_messages.each do |msg|
+          %li= msg
+  .form-horizontal
+    %fieldset
+      .control-group
+        %label.control-label Товар:
+        .controls
+          .pull-left.margin-right
+            = f.select  :item_id,@items
+          .pull-left#itempic
+            =@special.item ? (image_tag @special.item.photo(:small)) : (image_tag Item.find(@items.first[1]).photo(:small))
+      -#.control-group
+        %label.control-label ID
+        .controls
+          = @special.id!=nil ? @special.id : "new"
+      .control-group
+        %label.control-label Активность:
+        .controls
+          = f.check_box :active, :checked => @special.id==nil ? true : @special.active ? true : false
+      .control-group
+        %label.control-label Фото:
+        .controls
+          .pull-left
+            = f.file_field :picture, :class=>"span5 margin-right"
+          .pull-left.margin-right{:style=>'padding-left: 10px'}
+            -if @special.id
+              %td#itempic2
+                =image_tag @special.picture(:normal)
+            -else
+              %td#itempic2
+                =@special.item ? (image_tag @special.item.photo(:small)) : (image_tag Item.find(@items.first[1]).photo(:small))
+      .control-group
+        %label.control-label Название: <span style="color:red">*</span>
+        .controls
+          = f.text_field :name, :class=>"span5"
+      .control-group
+        %label.control-label Описание: <span style="color:red">*</span>
+        .controls
+          = f.text_area :description, :size => "8", :class=>"span5"
+      .control-group
+        %label.control-label Новая Цена: <span style="color:red">*</span>
+        .controls
+          = text_field_tag  :price,{}, :value=>"", :class=>"span5"
+      .control-group
+        %label.control-label Старая Цена:
+        .controls
+          = f.text_field :old_price, :value=>Item.find(@items.first[1]).price.ceil.to_s , :class=>"span5"
+      <div class="alert alert-info"><strong>Внимание!</strong> После сохранения все изменения отобразятся на сайте мгновенно. Тщательно проверьте указанные данные. Спасибо!</div>
+      .form-actions
+        = link_to 'Отмена', partner_place_specials_path(params[:place_id]), :class => "btn btn-large"
+        = f.submit 'Сохранить', :class => "btn btn-success btn-large"

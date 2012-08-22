@@ -1,0 +1,83 @@
+%ul.breadcrumb
+  %li.active
+    Заказы
+.row-fluid
+  .span3#left-menu
+    .well.info-left
+      %ul.nav.nav-pills.nav-stacked
+        %li.nav-header Заявки:
+        %li.active
+          %a{:href=>"javascript:;"} Все
+        %li
+          %a{:href=>"javascript:;"} Новые (86)
+      %hr
+      %ul.nav.nav-list
+        %li.nav-header Отменены:
+        %li
+          %span
+            Отменены клиентами (3)
+        %li
+          %span
+            Отменены в ЛК (1)
+      %hr
+      %ul.nav.nav-list
+        %li.nav-header Оператор:
+        %li
+          %span
+            Подтверждены (3)
+        %li
+          Не подтверждены
+      %hr
+      %ul.nav.nav-list
+        %li.nav-header Ресторан:
+        %li
+          %span
+            Отправлены в ЛК (3)
+        %li
+          %span
+            Приняты в ЛК (12)
+        %li
+          Приняты по телефону
+      %hr
+        %ul.nav.nav-list
+          %li.nav-header Доставлены:
+          %li
+            %span
+              Доставлены в ЛК (3)
+          %li
+            Доставлены
+      %hr
+      %ul.nav.nav-list
+        %li.nav-header Операторы:
+        %li
+          %a{:href=>"javascript: ;", :title=>""}
+            %label.checkbox#delivery
+              %input{:type=>"checkbox"} Все
+        %li
+          %a{:href=>"javascript: ;", :title=>""}
+            %label.checkbox#delivery
+              %input{:type=>"checkbox"} Наталья Н.
+  .span9
+    %form.well.form-search.form-inline
+      %select
+        %option Все регионы
+      %select
+        %option Все рестораны
+      %button.pull-right{:type=>"submit", :class=>"btn", :style=>'height: 35px !important; margin-left: 10px !important'} Найти
+      %input.input-medium.search-query.pull-right{:type=>"text"}
+
+    %table.table.table-bordered.table-striped
+      %thead
+        %tr
+          %th Статус
+          %th Время и дата
+          %th Ресторан
+          %th Сумма
+          %th Имя
+          %th Регион
+          %th №
+
+      %body
+        - @orders.each do |o|
+          %tr{:class => o.status.findClass,:onclick => "location.href='#{partner_order_path(o.id)}'"}
+            = render 'order',:o=>o

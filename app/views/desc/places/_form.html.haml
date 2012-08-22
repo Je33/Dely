@@ -1,0 +1,138 @@
+= form_for @place, :url => @place.id!=nil ? desc_partner_place_path(params[:partner_id], @place.id) : desc_partner_places_path(params[:partner_id]) do |f|
+  -if @place.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@place.errors.count, "error")} prohibited this desc_place from being saved:"
+      %ul
+        - @place.errors.full_messages.each do |msg|
+          %li= msg
+  .form-horizontal
+    %fieldset
+      .control-group
+        %label.control-label
+          Официальное название:
+        .controls
+          = f.text_field :name, :class=>'span5'
+      .control-group
+        %label.control-label
+          ID:
+        .controls
+          %input{:type=>'text', :class=>'span1', :value=> @place.id!=nil ? @place.id : "new"}
+      .control-group
+        %label.control-label
+          Активность:
+        .controls
+          = f.check_box :active, :checked => @place.id==nil ? true : @place.active ? true : false
+      .control-group
+        %label.control-label
+          Лого:
+        .controls
+          .pull-left
+            = f.file_field :picture, :class=>"span5 margin-right"
+          .pull-left.margin-right{:style=>'padding-left: 10px'}
+            = @place.picture? ? image_tag(@place.picture.url(:small)) : ""
+
+      .control-group
+        %label.control-label
+          Описание:
+        .controls
+          = f.text_area :description, :size => "200x8", :class=>'span5'
+      .control-group
+        %label.control-label
+          Кухни:
+        .controls
+          = f.select(:kitchen_ids, options_from_collection_for_select(Kitchen.all, :id, :name, @place.kitchens.map{|k| k.id}), {}, {:multiple=>"multiple", :class=>'multi span5', :size=>'20' })
+          <span class="help-inline" style="width: 410px; text-align: left;">Для выбора нескольких позиций зажмите клавишу <strong>ctrl</strong> и нажмите мышкой на нужные позиции.</span>
+
+
+      .control-group
+        %label.control-label
+          Рейтинг кол-во "-"
+        .controls
+          = f.text_field :rating_minus, :class => 'span1'
+      .control-group
+        %label.control-label
+          Рейтинг кол-во "+"
+        .controls
+          = f.text_field :rating_plus, :class => 'span1'
+
+
+      .control-group
+        %label.control-label
+          Минимальный заказ
+        .controls
+          = f.text_field :min_order, :class => 'span1'
+          руб.
+      .control-group
+        %label.control-label
+          Время доставки
+        .controls
+          = f.text_field :delivery_time, :class => 'span1'
+          минут
+      .control-group
+        %label.control-label
+          Город:
+        .controls
+          = f.select(:city_id, City.all.map{|i| [i.name,i.id]})
+      .control-group
+        %label.control-label
+          Стоимость доставки:
+        .controls
+          = f.text_field :delivery_price, :class => 'span1'
+          руб.
+      .control-group
+        %label.control-label
+          Доставка в регионы:
+        .controls
+          .box
+            %input.radio{:type=>'radio', :value=>'free', :name=>'delivery', :checked => true}
+            %span Нет
+          -#.box
+            %input.radio{:type=>'radio', :value=>'', :name=>'delivery'}
+            %span Платно
+          -#.box
+            %input.radio{:type => 'radio', :value => 'static', :name => 'delivery'}
+            %span Статичная цена:
+            %input.span1{:type => 'text', :value => '', :name => 'static_delivery_price'}
+          -#.box
+            %input.radio{:type => 'radio', :value => 'variable', :name => 'delivery'}
+            %span Переменная цена, от суммы заказа:
+          -#.box.ml
+            %span если цена меньше
+            %input.span1{:type => 'text', :value => '', :name => 'min_order_price'}
+            %span , то доставка
+            %input.span1{:type => 'text', :value => '', :name => 'variable_delivery_price'}
+          -#.box.ml
+            %span если цена больше
+            %input.span1{:type => 'text', :value => ''}
+            %span, то доставка
+            %input.span1{:type=>'text', :value=>''}
+          .box
+            %input.radio{:type => 'radio', :value => 'region', :name => 'delivery', :checked => @place.delivery_prices.to_regions.exists? ? true : false}
+            %span В зависимости от региона:
+          -#.box.ml
+            %span Для всех регионов доставка
+            %input.span1{:type => 'text', :value => ''}
+          -#.box.ml
+            %span кроме:
+          .box.ml
+            - cnt = 1
+            - if @place.delivery_prices.to_regions.exists?
+              - @place.delivery_prices.to_regions.each do |dp|
+                - cnt += dp.id
+                .label-box.edit-box-delivery-region
+                  %select.span2.select-delivery-region-edit{:name => "delivery_region_new[#{dp.id}][region]"}
+                    - dp.region.city.regions.each do |reg|
+                      %option{:value => reg.id, :selected => reg.id == dp.region_id ? true : false}= reg.name
+                  %input.span1{:type => 'text', :value => dp.price, :name => "delivery_region_new[#{dp.id}][price]"}
+                  #button-del.btn.button-delivery-region-del
+                    %i.icon-remove
+                .clear
+            .label-box.new-box-delivery-region.hide
+              %select.span2.select-delivery-region{:name => "delivery_region_new[#{cnt}][region]"}
+              %input.span1{:type => 'text', :value => '', :name => "delivery_region_new[#{cnt}][price]"}
+              руб.
+            .clear
+            %input.btn#add-select-input{:type => 'button', :value => "Добавить район"}
+      .form-actions
+        = link_to 'Отмена', desc_partner_places_path(params[:partner_id]), :class => "btn btn-large"
+        = f.submit 'Сохранить', :class => "btn btn-success btn-large"

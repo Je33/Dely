@@ -1,0 +1,151 @@
+.span9.order-detail_le#statusupd
+  #current_url{:cur => "/partner/orders/#{@order.id}/",:old_status_id => "#{@order.status_id}" }
+  %input#tt-cena{:type=>'hidden', :value=> @order.price+@order.place.delivery_price }
+  %h3.pull-left#color
+    Заказ # #{@order.id}
+    %span{:class => @status.findClass} #{@status.name}
+
+  %p.pull-left#operator-name
+    = @order.manager==0 ? (current_user.last_name+current_user.first_name) : (User.find(@order.manager).last_name+User.find(@order.manager).first_name)
+  %ul.pager.pull-right
+    - if @prev!=0
+      %li.previous= link_to '←',partner_order_path(@prev)
+    - if @next!=0
+      %li.next= link_to '→',partner_order_path(@next)
+  .clear
+  %table.table
+    %thead
+      %tr
+        %th Наименование
+        %th Категория
+        %th Цена
+        %th Кол-во
+        %th Сумма
+    %tbody
+      - @items.each do |i|
+        %tr#items_tr{:item_id => i.id}
+          %td
+            %a{:href => "javascript:void(0);", :title => ""}
+              = i.name
+          %td
+            = Section.find(i.section_id).name
+          %td.cena
+            #{i.price.ceil} руб.
+
+          %td.plus-minus #{Basket.where(:order_id=>@order.id, :item_id=>i.id).first.cnt}
+          %td.tottal #{Basket.exists?(:order_id=>@order.id, :item_id=>i.id) ? Basket.where(:order_id=>@order.id, :item_id=>i.id).first.itemCntPrice : 0} руб.
+  %dl.dl-horizontal.dop-info
+    %dt Ресторан:
+    %dd
+      = @order.place.name
+    %dt Сумма заказа:
+    %dd.tottal-cena-bez-dst{:data => {:num => @order.price_base.to_i}} #{@order.price_base.to_i} руб.
+    %dt Доставка:
+    %dd.delivery-price{:data => {:num => @order.price_delivery.to_i}} #{@order.price_delivery==0 ? 'Бесплатно' : @order.price_delivery.to_i.to_s + " руб."}
+  .clear-line
+  %dl.dl-horizontal.big-dl.dop-info
+    %dt Итого:
+    %dd.tottal-cena#tottal-m
+      #{@order.price.to_i} руб.
+
+
+//sidebar
+.span3.order-detail-ri
+  .order_sidebar
+    .btn-box
+      .alert.alert-success.hide Заказ передан ресторану
+      - case @order.status_id
+        - when 60,61,62,70
+          -# отправлен в ЛК
+          %a.btn.btn-success#adopted_btn{:href=> "#"} Заказ принят
+          /%a.btn.btn-success#delivered_btn{:href=> "#"} Заказ доставлен
+          /%a#step-back{:href => "javascript: ;", :title=>''} Шаг назад
+          %a#cancel-order{:href => "javascript: ;", :title=>''} Отменить заказ
+        -when 80
+          %a.btn.btn-success#delivered_btn{:href=> "#"} Заказ доставлен
+          %a#step-back{:href => "javascript: ;", :title=>''} Шаг назад
+          %a#cancel-order{:href => "javascript: ;", :title=>''} Отменить заказ
+        -when 90
+          - # отменен рестораном
+          %a.btn#recover-order{:href => "javascript: ;", :title=>''} Восстановить
+          %a#step-back{:href => "javascript: ;", :title=>''} Шаг назад
+        - when 95
+          - # Доставлен 0%
+          #alert.alert-success Заказ доставлен
+        - when 100
+          - # Доставлен 100%
+          #alert.alert-success.ord Заказ доставлен
+          
+          
+    //order info
+    %h2.name
+      = @order.user ? @order.user.first_name.to_s + ' ' + @order.user.last_name.to_s : @order.name
+    %h3.phone #{@order.phone}
+    - if @order.person.to_i != 0
+      %h4.person Кол-во персон: #{@order.person.to_s}
+    %h4
+      = @order.region_id.to_i > 0 ? 'Район: '+Region.find(@order.region_id).name + '.' : ''
+      %br
+    %h4
+      = @order.street!='' ? (@order.street.to_s) + ' ' : ''
+      = @order.house.to_s!='' ? (@order.house.to_s) : ''
+      = @order.building.to_s!='' ? (', стр. ' + @order.building.to_s + ' ') : ''
+    %h4
+      = @order.room.to_s!='' ? ('квартира ' + @order.room.to_s + ' ') :''
+    %br
+    %p
+      = @order.porch.to_s!='' ? ('Подъезд ' + @order.porch.to_s + ', ') :''
+      = @order.floor.to_s!='' ? (@order.floor.to_s + ' этаж.') :''
+      %br
+      = @order.intercom.to_s!='' ? 'Код домофона: '+@order.intercom.to_s : ""
+    
+    - if @order.change.to_i!=0
+      .order_change_sum= 'Сдача с ' + @order.change.ceil.to_s + ' руб.'
+    
+    
+    - if @order.description.to_s != ""
+      .order_comment= @order.description.to_s
+      
+    %dl.dl-horizontal.dop-info
+      %dt Ресторан:
+      %dd #{@order.place.name}
+      %dt Сумма заказа:
+      %dd.tottal-cena-bez-dst #{@order.price_base.to_i} руб.
+      %dt Доставка:
+      %dd #{@order.price_delivery==0 ? 'Бесплатно' : @order.price_delivery.to_i.to_s + " руб."}
+    .clear-line
+    %dl.dl-horizontal.big-dl.dop-info
+      %dt Итого:
+      %dd.tottal-cena#tottal-m #{@order.price.to_i} руб.
+
+//.span2.order-detail-ri
+//  .well
+    
+#add-line.hide
+  %table
+    %tbody
+      %tr.add-line
+        %td
+          = select( "add_item", "id", @new_items, :class => 'dropdown-menu')
+        %td —
+        %td —
+        %td.plus-minus
+          .btn-group.btn-style
+            %button.btn.min -
+            %input.btn.coll-el{:maxlength => "2", :title => "", :type => "text", :value => "1",:id=>"add_item_count"}
+              %button.btn.plus +
+        %td —
+        %td
+          %button#add-pos.btn Добавить
+#test-line{:style => "display:none;"}
+  %table
+    %tbody
+      %tr
+        %td
+          %a{:href => "javascript:void(0);", :title => ""} Торт Фисташковый тестовый
+        %td Десерт
+        %td 96 руб.
+        %td 1
+        %td 96 руб.
+        %td
+          %a.btn.btn-danger#delete-pos{:href => "javascript: ;", :title=>''} Удалить

@@ -1,0 +1,45 @@
+#view-detail{:class => params[:view] == "1" ? "" : "box-view"}
+  - @places.each_with_index do |place, index|
+    %a.well.well-link{:href => "/place/" + place.id.to_s}
+      .row-fluid
+        .span2.pull-left
+          %ul.thumbnails
+            %li
+              %span.thumbnail
+                %table
+                  %tbody
+                    %tr
+                      %td{:valign => 'middle', :align => 'center'}
+                        %img{:src => place.picture(:small), :alt => ''}
+        .span10.pull-right
+          %h3.pull-left.h3block
+            %span.name= place.name
+            /%span.red-text Сейчас закрыт. Откроется через 17 часов 47 минут
+          .clear
+          - kit = place.kitchens.map{|k| [k.name]}
+          - if kit.count > 0
+            %p.part-tags= kit.join ", "
+          .row-fluid.info-block
+            .span3
+              .text-bottom
+                %p.text минимальная сумма заказа
+              %p.info= "#{place.min_order} руб."
+            .span3
+              .text-bottom
+                %p.text стоимость доставки
+              %p.info= place.delivery_price==0 ? "Бесплатно" : place.delivery_price.to_s + " руб."
+            .span3
+              .text-bottom
+                %p.text среднее время доставки
+              %p.info= "#{place.delivery_time} мин."
+            .span3
+              .text-bottom
+                %p.text рейтинг
+              %p.info
+                %span.good= "+ #{place.rating_plus.to_i.abs}"
+                %span.bad= "- #{place.rating_minus.to_i.abs}"
+          - if place.description!=""
+            .well.well-text
+              %p= place.description
+    - if (index+1) % 3 == 0
+      .clear

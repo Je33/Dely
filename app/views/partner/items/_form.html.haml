@@ -1,0 +1,77 @@
+-if @item.errors.any?
+  #error_explanation
+    %h2= "#{pluralize(@item.errors.count, "error")} prohibited this desc_place from being saved:"
+    %ul
+      - @item.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for @item, :url => @item.id!=nil ? partner_place_section_item_path(params[:place_id], params[:section_id], @item.id) : partner_place_section_items_path(params[:place_id], params[:section_id]), :html => {:class => "form-horizontal"} do |f|
+  %fieldset
+    .control-group
+      %label.control-label
+        ID
+      .controls
+        %p= @item.id!=nil ? @item.id : "new"
+    .control-group
+      %label.control-label
+        Активность
+      .controls
+        = f.check_box :active, :checked => @item.id==nil ? true : @item.active ? true : false
+    .control-group
+      %label.control-label
+        Фото
+      .controls
+        .pull-left
+          = f.file_field :photo, :class=>"span5 margin-right"
+        .pull-left.margin-right{:style=>'padding-left: 10px'}
+          = image_tag @item.photo.url(:small)
+
+    .control-group
+      %label.control-label
+        Название
+      .controls
+        = f.text_field :name, :class=>"span5"
+    .control-group
+      %label.control-label
+        Описание
+      .controls
+        = f.text_area :description, :size => "200x8", :class=>"span5"
+    .control-group
+      %label.control-label
+        Индекс сортировки
+      .controls
+        = f.text_field :sort, :class=>"span5"
+    .control-group
+      %label.control-label
+        Цена
+      .controls
+        = f.text_field :price, :class=>"span5"
+    .control-group
+      %label.control-label
+        Острое
+      .controls
+        = f.check_box :hot
+    .control-group
+      %label.control-label
+        Вегетарианское
+      .controls
+        = f.check_box :vegetarian
+    .control-group
+      %label.control-label
+        Вес
+      .controls
+        = f.text_field :weight, :class=>"span5"
+    .control-group
+      %label.control-label
+        Каллории
+      .controls
+        = f.text_field :calories, :class=>"span5"
+    .control-group
+      %label.control-label
+        Популярное
+      .controls
+        = f.check_box :popular
+
+    .form-actions
+      = link_to 'Отмена', partner_place_section_items_path(params[:place_id], params[:section_id]), :class => "btn btn-large"
+      = f.submit 'Сохранить', :class => "btn btn-success btn-large"

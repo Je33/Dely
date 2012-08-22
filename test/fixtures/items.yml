@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  active: 1
+  sort: 1
+  name: MyString
+  description: MyText
+  section: 
+  special: 
+
+two:
+  active: 1
+  sort: 1
+  name: MyString
+  description: MyText
+  section: 
+  special: 

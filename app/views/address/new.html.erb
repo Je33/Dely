@@ -1,0 +1,30 @@
+<div id="errors">
+</div>
+Редактировать адрес: <br>
+<%= form_tag '/address/save' do  %>
+Ближайшее метро: <%= select( "metro", "id",@metros) %>  <br>
+
+<!-- Если такой адрес есть --> 
+<% if @address %>
+    Улица: <%= text_field_tag 'street',@address.street %>    <br>
+    Дом:  <%= text_field_tag 'house',@address.house  %>    <br>
+    Корпус, строение:  <%= text_field_tag 'building',@address.building  %>    <br>
+    № Квартиры, офиса:  <%= text_field_tag 'room',@address.room  %>    <br>
+    № Подъезда:  <%= text_field_tag 'porch',@address.porch  %>    <br>
+    Этаж:  <%= text_field_tag 'floor',@address.floor  %>    <br>
+    Код домофон:  <%= text_field_tag 'intercom',@address.intercom  %>    <br>
+    Комментарии к заказу:  <%= text_area_tag 'description',@address.description, :size => "25x10"  %>   <br>
+<%else%>
+        Улица: <%= text_field_tag 'street','' %>    <br>
+        Дом:  <%= text_field_tag 'house','' %>    <br>
+        Корпус, строение:  <%= text_field_tag 'building'''  %>    <br>
+        № Квартиры, офиса:  <%= text_field_tag 'room','' %>    <br>
+        № Подъезда:  <%= text_field_tag 'porch','' %>    <br>
+        Этаж:  <%= text_field_tag 'floor',''  %>    <br>
+        Код домофон:  <%= text_field_tag 'intercom',''  %>    <br>
+        Комментарии к заказу:  <%= text_area_tag 'description','', :size => "25x10"  %>   <br>
+
+
+<% end  %>
+<%= submit_tag 'Сохранить',:id=>'submit_id' %>
+<% end  %>

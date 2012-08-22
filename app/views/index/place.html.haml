@@ -1,0 +1,176 @@
+.container.cont
+  .row-fluid
+    .span3#left-menu.left-menu-fixed
+      .well.well-top
+        %p
+          %span
+            Svek.la {Свекла}
+          — это единая служба доставки любимой еды и цветов в Челябинске. Заказывай у нас и получай подарки!
+        -#%a#what.top-link{:href=>'javascript:;', :title=>''}
+        -#  %span
+        -#    Как это работает?
+
+      .well.fix-ed
+        %strong <a href="../" class="back_2_all">← Все рестораны</a>
+        - if @top.count > 0
+          %ul.nav.nav-list
+            %li.nav-header Самое популярное:
+          - @top.each do |t|
+            .row-fluid.order-pos.fly
+              .span3
+                %a.product-button{:href => "#s" + t.section_id.to_s + "/p" + t.id.to_s, :data => {:id => t.id}}
+                  %img.fly-el{:data => {:original => t.photo(:small)}, :src => '/img/grey.gif', :alt => "", :width => 45}
+              .span9
+                %a.detail-popup.product-button{:href => "#s" + t.section_id.to_s + "/p" + t.id.to_s, :data => {:id => t.id}}
+                  %span.ajax= t.name
+                .clear.m-bottom
+                %p= t.price.round.to_s + " р."
+                - if @allow_order
+                  .btn-group.btn-style.btn-medium.pull-right
+                    %button.btn.min -
+                    %input.btn.coll-el{:maxlength => "2", :title => "", :type => "text", :value => "1"}
+                    %button.btn.plus +
+                    %a.btn.btn-success.by#add-order{:href => "javascript:;", :data => {:id => t.id}}
+                      %i.icon-shopping-cart.icon-white
+
+        .row-fluid#all-menu
+          %ul.nav.nav-list
+            %li.nav-header Всё меню:
+            - cnt = 0
+            - @sections.each do |sc|
+              - cnt += 1
+              %li{:class => cnt==1 ? "active" : ""}
+                %a{:href => "#s" + sc.id.to_s}= sc.name
+
+    .span9
+      - if flash[:notice]
+        .alert.alert-success
+          %a.close{"data-dismiss" => "alert"} ×
+          = flash[:notice]
+      .well.detail-res{:href => "javascript:;"}
+        .row-fluid
+          .span2
+            %ul.thumbnails
+              %li
+                %span.thumbnail
+                  %img{:data => {:original => @place.picture(:small)}, :src => '/img/grey.gif', :alt => ''}
+          .span10.ri-block
+            %h3.pull-left
+              %span.name= @place.name
+              -#%span.red-text Сейчас закрыт. Откроется через 17 часов 47 минут
+            .clear
+            - kit = @place.kitchens.map{|k| [k.name]}
+            - if kit.count > 0
+              %p.part-tags= kit.join ", "
+            .row-fluid.info-block
+              .span3
+                .text-bottom
+                  %p.text минимальная сумма заказа
+                %p.info= "#{@place.min_order} руб."
+              .span3
+                .text-bottom
+                  %p.text стоимость доставки
+                %p.info= @place.delivery_price==0 ? "Бесплатно" : @place.delivery_price.to_s + " руб."
+              .span3
+                .text-bottom
+                  %p.text среднее время доставки
+                %p.info= "#{@place.delivery_time} мин."
+              .span3
+                .text-bottom
+                  %p.text рейтинг
+                %p.info
+                  %span.good= "+ #{@place.rating_plus.to_i.abs}"
+                  %span.bad= "- #{@place.rating_minus.to_i.abs}"
+            - if @place.description != ""
+              .well.well-text
+                %p= @place.description
+
+      .slider-box.one
+        - if @specials != nil && @specials.count > 0
+          .top
+            %h3 Акции
+          .clear
+          .slider
+            %a.left{:href=>'javascript: ;', :title=>''} ‹
+            .view
+              .anim
+                - @specials.each do |sp|
+                  - if sp.item
+                    .box.special
+                      %a.special-button{:href => "javascript:;", :title => sp.name, :data => {:id => sp.id}}
+                        %img{:data => {:original => sp.picture? ? sp.picture(:normal) : sp.item.photo(:normal)}, :src => '/img/grey.gif', :width => 190}
+                      .text-block
+                        %a.name{:href=>'javascript:;', :title=>''}= sp.name
+                        .clear
+                        %p.cena
+                          %span.old #{sp.old_price.round} руб.
+                          %span.alert.alert-success= sp.item.price.round.to_s + ' руб.'
+                        %p.teg
+                          %a{:href=>'/place/' + sp.place.id.to_s, :title=>''}= sp.place.name
+            %a.right{:href=>'javascript: ;', :title=>''} ›
+
+      - @sections.each do |s|
+        - if s.view == "l"
+          .slider-box.aqua-list{:id => "s" + s.id.to_s}
+            .top.row-fluid
+              %h3= s.name
+              %hr/
+            .clear
+            %table.table.table-striped.margintop{:style=>'width:100%'}
+              %tbody
+                - s.items.each do |i|
+                  - if i.active == 1
+                    %tr.fly
+                      %td.name
+                        .fix-width-aqua
+                          %a.ajax.product-button.fly-el{:href=>'javascript:;', :title=>'', :rel=>"tooltip", 'data-content'=>i.description}= i.name
+                      -#%td.info
+                        -#%a.product-button.btn.btn-info{:title => "", :href => "#s" + i.section_id.to_s + "/p" + i.id.to_s, :data => {:id => i.id}}
+                          -#%i.icon-info-sign.icon-white
+                          -#Описание
+                      %td.cena
+                        %span.pull-right= i.price.round.to_s + " руб."
+                      - if @allow_order
+                        %td.coll
+                          .btn-group.btn-grp-big.pull-right
+                            %button.btn.min -
+                            %input.btn.coll-el{:maxlength => "2", :title => "", :type => "text", :value => "1"}
+                            %button.btn.plus +
+                        %td.order
+                          %a.btn.btn-success.pull-right#add-order{:href => "javascript:;", :data => {:id => i.id}}
+                            %i.icon-shopping-cart.icon-white
+                            Добавить в корзину
+        - else
+          .slider-box.row-fluid{:id => "s" + s.id.to_s}
+            .top.row-fluid
+              %h3= s.name
+              %hr/
+            %ul.thumbnails.height_fix_thumb
+              - s.items.each do |i|
+                - if i.active == 1
+                  %li.span3#detail-popup.thumbnail.fly
+                    .product-button{:rel => "popover", :href => "#s" + i.section_id.to_s + "/p" + i.id.to_s, :data => {:content => i.description + '<div class="clear"></div><span class="in-netto">' + (i.weight.to_s != "" ? i.weight.to_s + ' г' : '') + '</span><span class="in-call">' + (i.calories.to_s != "" ? i.calories.to_s + ' ккал' : '') + '</span><div class="clear"></div>', :id => i.id} }
+                      %img.fly-el{:data => {:original => i.photo(:normal)}, :src => '/img/grey.gif',:alt => "", :width => 220}/
+                      .caption
+                        %h5= i.name
+                        /%p.text= i.description
+                        %p.pull-left.cena= i.price.round.to_s + " руб."
+                        - if @allow_order
+                          %a.btn.btn-success.pull-right#add-order{:href => "javascript:;", :data => {:id => i.id}}
+                            %i.icon-shopping-cart.icon-white
+                            В корзину
+                      .info-box
+                        - if i.vegetarian.to_i == 1
+                          .inf-panel.fitns
+                        - if i.hot.to_i == 1
+                          .inf-panel.hot
+                        -# if i.weight.to_i > 0
+                          .inf-panel.netto
+                            %span
+                              #{i.weight} г
+                        -# if i.calories.to_i > 0
+                          .inf-panel.clr
+                            %span
+                              #{i.calories} калл
+
+                      .clear

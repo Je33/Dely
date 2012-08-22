@@ -1,0 +1,34 @@
+#enter.popup.modal.hide.fade.in
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3
+      Отмена заказа
+      //%a.ajax#zakaz{:href=> 'javascript:;', :title => ''}= params[:id]
+  .modal-body.lb
+    #cancel-notice.alert.alert-success.hide
+    - if @order.status_id.to_i == 10
+      %form#order-cancel-form.form-horizontal
+        %fieldset
+          %label.radio
+            %input{:type=>"radio", :name=>"optionsRadios", :id=>"optionsRadios1", :value=>"option1", :checked=>"checked"}
+              Я просто развлекался
+          %label.radio
+            %input{:type=>"radio", :name=>"optionsRadios", :id=>"optionsRadios1", :value=>"option1"}
+              Я больше не голодный
+          %label.radio
+            %input{:type=>"radio", :name=>"optionsRadios", :id=>"optionsRadios1", :value=>"option1"}
+              Просто передумал
+          %label.radio
+            %input{:type=>"radio", :name=>"optionsRadios", :id=>"optionsRadios1", :value=>"option1"}
+              Я лучше приготовлю сам (сама)
+          %label.radio
+            %input{:type=>"radio", :name=>"optionsRadios", :id=>"optionsRadios1", :value=>"option1"}
+              Другое
+    - else
+      %p Заказ уже принят, дождитесь взонка оператора.
+
+    .clear
+  .modal-footer
+    - if @order.status_id.to_i == 10
+      = button_tag 'Отменить заказ', :disable_with => "Вход...", :class => 'enter btn btn-success', :id => 'order-cancel-button', :data => {:id => @order.id}
+    %a.btn.closeallmodal{:href=> 'javascript:;', :title => ''} Закрыть

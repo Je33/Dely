@@ -1,0 +1,49 @@
+%style
+  body{
+  font-family: Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  background-image: url('/img/splash_food_texture.jpeg');
+  background-size: cover;
+  }
+%style
+  .container
+  {
+  background: transparent;
+  }
+
+.container.cont
+  .row-fluid
+    .span12
+      .cntcnt
+        .wrap
+          .block
+            .inside-wel
+              %img.logo{:alt => "Svek.la", :height => "90", :src => "/img/logo/svekla_logo_m_alpha.png", :width => "180"}/
+              <div id="sticker">А скоро<br/>и цветы</div>
+              %h1
+                Самая вкусная еда 
+                %br/
+                в Челябинске здесь!
+              .steps
+                .step
+                  %img{:alt => "", :src => "/img/ico_0001.png"}/
+                  Выбери службу доставки
+                  %span По категориям, рейтингу или времени доставки
+                .step2
+                  →
+                .step
+                  %img{:alt => "", :src => "/img/ico_0002.png"}/
+                  Оформи заказ
+                  %span Добавь всё, что понравилось в корзину и заполни адрес
+                .step2
+                  →
+                .step
+                  %img{:alt => "", :src => "/img/ico_0003.png"}/
+                  Кушать подано!
+                  %span Курьер доставит заказ,<br/> а с нас — <a href='/gifts'>подарок</a> :)
+                  / <span>Заказывай, копи баллы и получай подарки</span>
+                .clear
+              %a.btn{:href => "/"} Поехали!
+              %small Svek.la {Свекла} — это единая служба доставки любимой еды и цветов в Челябинске.

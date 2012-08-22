@@ -1,0 +1,44 @@
+.span3
+  .well
+    %ul.nav.nav-pills.nav-stacked
+      %li.nav-header Настройки
+      %li.active
+        %a{:href => "/partners/index/users"} Пользователи
+      %li
+        %a{:href => "/partners/index/message"} Уведомления
+      %li
+        %a{:href => "/partners/index/historys"} Вся история
+.span9
+  %h3
+    %span
+      Пользователи
+  %p
+    Управление пользователями для приема заказов и доступа в кабинет.
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Имя
+        %th Тип
+        %th  
+    %tbody
+      %tr
+        %td Ivan Ivanov Ivan Ivanov
+        %td Администратор
+        %td
+          .pull-right
+            %a.btn.btn-gr{:href=> '/partners/index/edit'} Редактировать
+            %a.btn.btn-gr{:href=> '/partners/index/history'} История
+      %tr
+        %td Ivan Ivanov
+        %td Администратор
+        %td
+          .pull-right
+            %a.btn.btn-gr{:href=> '/partners/index/edit'} Редактировать
+            %a.btn.btn-gr{:href=> '/partners/index/history'} История
+      %tr
+        %td Ivan Ivanov
+        %td Оператор
+        %td
+          .pull-right
+            %a.btn.btn-gr{:href=> '/partners/index/edit'} Редактировать
+            %a.btn.btn-gr{:href=> '/partners/index/history'} История

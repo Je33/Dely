@@ -1,0 +1,160 @@
+= render "users_tabs"
+.btn-toolbar.margin-bottom#model-bar{:data => {:code => "User"}}
+  .btn-group
+    = link_to '<i class="icon-plus icon-white"></i> Новый пользователь' .html_safe, new_desc_user_path, :class => "btn btn-success"
+  .btn-group
+    %button.btn.disabled Выделенные:
+    %button.btn#activate-selected
+      %i.icon-ok
+      Активировать
+    %button.btn#deactivate-selected
+      %i.icon-remove
+      Деактивировать
+    %button.btn.btn-danger#remove-selected
+      %i.icon-minus.icon-white
+      Удалить
+.clear
+%br
+
+%table.table.table-bordered.table-striped.name-width
+  %thead
+    %tr
+      %th
+        .btn-group
+          .btn.btn-small#button-select-all
+            %i.icon-check
+          .btn.btn-small.dropdown-toggle{:data => {:toggle => "dropdown"}}
+            /%input{:type => "checkbox"}
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              %a#select-all{:href => "javascript:;"} Выделить все
+            %li
+              %a#select-none{:href => "javascript:;"} Снять выделения
+            %li
+              %a#select-rnd{:href => "javascript:;"} Выделить случайно
+            %li
+              %a#select-inv{:href => "javascript:;"} Инвертировать выделение
+      %th
+        .btn.btn-small.disabled Меню
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "id", :d => "asc"})) : to_path(params.merge({:f => "id", :d => "desc"}))}
+          ID
+          - if params[:f] == "id" || !params[:f]
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "active", :d => "asc"})) : to_path(params.merge({:f => "active", :d => "desc"}))}
+          Активность
+          - if params[:f] == "active"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "first_name", :d => "asc"})) : to_path(params.merge({:f => "first_name", :d => "desc"}))}
+          Имя
+          - if params[:f] == "first_name"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "last_name", :d => "asc"})) : to_path(params.merge({:f => "last_name", :d => "desc"}))}
+          Фамилия
+          - if params[:f] == "last_name"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "phone", :d => "asc"})) : to_path(params.merge({:f => "phone", :d => "desc"}))}
+          Телефон
+          - if params[:f] == "phone"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "email", :d => "asc"})) : to_path(params.merge({:f => "email", :d => "desc"}))}
+          E-mail
+          - if params[:f] == "email"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      -#%th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? "?f=city_id&d=asc" : "?f=city_id&d=desc"}
+          Город
+          - if params[:f] == "city_id"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      -#%th
+        %a.btn{:href => params[:d] == "desc" ? "?f=created_at&d=asc" : "?f=created_at&d=desc"}
+          Создан
+          - if params[:f] == "created_at"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      -#%th
+        %a.btn{:href => params[:d] == "desc" ? "?f=updated_at&d=asc" : "?f=updated_at&d=desc"}
+          Изменен
+          - if params[:f] == "updated_at"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      - if (params[:u] == "0" || params[:u] == nil) && params[:place].to_i == 0
+        %th
+          .btn.btn-small.disabled Заказы
+        %th
+          .btn.btn-small.disabled Баллы
+      - if params[:u] == "2"
+        %th
+          .btn.btn-small.disabled Заведение
+      - if params[:place].to_i > 0
+        %th
+          .btn.btn-small.disabled Доступ
+  %tbody
+  - @users.each do |user|
+    %tr
+      %td.small
+        %input.select-box{:type => "checkbox", :data => {:id => user.id}}
+      %td.small
+        .btn-group
+          %button.btn.btn-small.dropdown-toggle{:data => {:toggle => "dropdown"}}
+            %i.icon-list
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to '<i class="icon-pencil"></i> Редактировать'.html_safe, edit_desc_user_path(user)
+            %li= link_to '<i class="icon-remove"></i> Удалить'.html_safe, desc_user_path(user), :confirm => 'Вы уверены?', :method => :delete
+      %td= user.id
+      %td= user.active==1 ? '<span style="color:green;">Да</span>'.html_safe : '<span style="color:red;">Нет</span>'.html_safe
+      %td= user.first_name
+      %td= user.last_name
+      %td= user.phone
+      %td= user.email
+      -#%td= user.city ? user.city.name : ""
+      -#%td= partner.created_at.localtime().strftime('%D %H:%M:%S')
+      -#%td= partner.updated_at.localtime().strftime('%D %H:%M:%S')
+      - if (params[:u] == "0" || params[:u] == nil) && params[:place].to_i == 0
+        %td #{user.orders.count.to_i} (#{user.orders.sum(:price).round} р.)
+        %td= user.balance
+      - if params[:u] == "2"
+        %td
+          - if user.place_accesses.exists?
+            - user.place_accesses.each do |pl|
+              = pl.place.name.to_s
+              %br/
+          - elsif user.partner
+            - if user.partner.places.exists?
+              - user.partner.places.each do |p|
+                = p.name
+                %br/
+      - if params[:place].to_i > 0
+        %td= user.get_access_name

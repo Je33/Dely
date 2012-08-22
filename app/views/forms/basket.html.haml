@@ -1,0 +1,249 @@
+.modal.hidden#gobascket
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3.breadcolor
+      %span.active
+        %a{:href=>'javascript: ;', :title=>''} Ваш заказ
+      %span.razd &rarr;
+      %span
+        %a{:href=>'javascript: ;', :title=>''} Адрес
+      %span.d
+        %a#basket-form-order-del.ajax.delete-list{:href=>'Javascript: ;', :title=>'', :data => {:id => @order.id}} Очистить корзину
+      - if !user_signed_in?
+        %span
+          %a#basket-not-auth.ajax.delete-list{:href=>'javascript:;', :title=>""} Войти в личный кабинет
+  .modal-body
+    .row-fluid
+      .span8.slider-view
+        %ul.parent
+          %li.children.fix-height
+            %table.table.table-striped#order-table
+              %thead
+                %tr
+                  %th Наименование
+                  %th Цена
+                  %th Кол-во
+                  %th Сумма
+              %tbody
+                - @order.baskets.each do |b|
+                  - item = b.item
+                  %tr
+                    %td
+                      = item.name
+                    %td.cena= item.price.round.to_s + " руб."
+                    %td.plus-minus
+                      .btn-group.btn-grp-big
+                        %button.btn.min.basket-edit{:data => {:id => b.id}} -
+                        %input.btn.coll-el{:maxlength => "2", :title => "", :type => "text", :value => b.cnt, :data => {:id => b.id}}
+                        %button.btn.plus.basket-edit{:data => {:id => b.id}} +
+                    %td.tottal= (item.price.round * b.cnt).to_s + " руб."
+                    %td.delete-button
+                      %a.btn.basket-del.pull-right{"data-toggle" => "modal", :href => "#delete-pos", :data => {:id => b.id}}
+                        %i.icon-search.icon-remove
+
+          %li.children.adr
+            .address#address
+              %form#basket-order-form.form-horizontal.docs-input-sizes
+
+                %input#basket-order-id{:type => "hidden", :name => "id", :value => @order.id}
+
+                %input#basket-user-id{:type => "hidden", :name => "order[user_id]", :value => user_signed_in? ? current_user.id : 0}
+
+                %input{:type => "hidden", :name => "order[place_id]", :value => @order.place.id}
+
+                .control-group
+                  %label.control-label{:for => "basket-user-name"}
+                    Ваше имя
+                    %span{:style=>'color: red;'}
+                      *
+                  .controls
+                    %input#basket-user-name.name-bb.not-valid.span5.cookie{:type => "text", :name => "order[name]", :value => user_signed_in? ? current_user.first_name : ""}
+
+                .control-group
+                  %label.control-label{:for => "appendedPrependedInput"}
+                    Мобильный телефон
+                    %span{:style=>'color: red;'}
+                      *
+                  .controls
+                    .input-prepend.form-inline
+                      %span.add-on +7
+                      %input#prependedInput.telephone-code.not-valid.co.bkuk.cookie{:type => "text", :placeholder => 'Ваш номер', :name => "order[phone]", :value => user_signed_in? ? current_user.phone.gsub(/\+7\s/i, '') : ""}
+                      %span
+                        Необходимо вводить ваш мобильный номер телефона!
+                - if user_signed_in?
+                  - if current_user.addresses.exists?
+                    - addr = current_user.addresses.first
+                    .control-group
+                      %label.control-label{:for => "basket-address-select"} Выберите адрес
+                      .controls
+                        %select.span4#basket-address-select
+                          - current_user.addresses.each do |adr|
+                            %option{:value => adr.id}= adr.name
+
+                - if @city
+                  - if @order.place.delivery_prices.exists?
+                    .control-group
+                      %label.control-label{:for => "basket-region-select"}
+                        Район
+                        %span{:style=>'color: red;'}
+                          *
+                      .controls
+                        %select.span4#basket-region-select{:name => "order[region_id]"}
+                          %option{:value => "0"} Выберите район
+                          - ids = @order.place.delivery_prices.collect {|r| r.region_id}
+                          - @city.regions.where(:id => ids).each do |r|
+                            %option{:value => r.id, :selected => @order.region_id.to_i > 0 && @order.region_id.to_i == r.id ? true : addr && addr.region_id == r.id ? true : false }= r.name
+                          -#%option{:value => "0"} Другое
+
+                  - if @city.metros.exists?
+                    .control-group
+                      %label.control-label{:for => "basket-metro-select"} Ближайшее метро
+                      .controls
+                        %select.span4#basket-metro-select{:name => "order[metro_id]"}
+                          -#%option{:value => ""} Выберите метро
+                          - @city.metros.each do |m|
+                            %option{:value => m.id, :selected => addr && addr.metro_id == m.id ? true : false}= m.name
+                          %option{:value => ""} Другое
+
+                .control-group
+                  %label.control-label{:for => "basket-address-street"}
+                    Улица
+                    %span{:style=>'color: red;'}
+                      *
+                  .controls
+                    %input#basket-address-street.name-bb.not-valid.span5.street{:type => "text", :name => "order[street]", :value => addr ? addr.street : ""}
+
+                .control-group.medium-form
+                  %label.control-label{:for => "basket-address-house"} Дом
+                  .controls
+                    %input#basket-address-house.span1{:type => "text", :name => "order[house]", :value => addr ? addr.house : ""}
+
+                .control-group.medium-form.right-line
+                  %label.control-label{:for => "basket-address-building"} Корпус, строение
+                  .controls
+                    %input#basket-address-building.span1{:type => "text", :name => "order[building]", :value => addr ? addr.building : ""}
+
+                .control-group.medium-form
+                  %label.control-label{:for => "basket-address-room"} Квартира, офис
+                  .controls
+                    %input#basket-address-room.span1{:type => "text", :name => "order[room]", :value => addr ? addr.room : ""}
+
+                .control-group.medium-form.right-line
+                  %label.control-label{:for => "basket-address-porch"} Подъезд
+                  .controls
+                    %input#basket-address-porch.span1{:type => "text", :name => "order[porch]", :value => addr ? addr.porch : ""}
+
+                .control-group.medium-form.inp-fluid
+                  %label.control-label{:for => "basket-address-floor"} Этаж
+                  .controls
+                    %input#basket-address-floor.span1{:type => "text", :name => "order[floor]", :value => addr ? addr.floor : ""}
+
+                .control-group.medium-form.right-line.inp-fluid
+                  %label.control-label{:for => "basket-address-intercom"} Код домофона
+                  .controls
+                    %input#basket-address-intercom.span1{:type => "text", :name => "order[intercom]", :value => addr ? addr.intercom : ""}
+
+                .clear
+
+                .control-group.medium-form.mini-line-long.inp-fluid
+                  %label.control-label{:for => "basket-order-change"} Требуется сдача с
+                  .controls
+                    %input#basket-order-change.span1{:type => "text", :name => "order[change]"}
+                    %span.help-inline руб.
+
+                .control-group.medium-form.right-line.mini-line.inp-fluid
+                  %label.control-label{:for => "basket-order-person"} Кол-во персон
+                  .controls
+                    %input#basket-order-person.span1{:type => "text", :name => "order[person]"}
+                      %span.help-inline
+
+                .control-group
+                  %label.control-label{:for => "basket-order-description"} Комментарии к заказу
+                  .controls
+                    %input#basket-order-description.span5{:type=>'text', :rows => "2", :name => "order[description]"}
+              %p
+                Поля помеченные
+                %span{:style=>'color: red;'}
+                  *
+                обязательны для заполнения
+          - if !user_signed_in?
+            %li#basket-auth-forms.children.row-fluid
+              .span6
+                .form-horizontal.success-login
+                  %fieldset
+                    .legend Авторизация
+                    .clear
+                    #login-errors.alert.alert-error.hide
+                    %form.no-margin#bask-login-form
+                      .control-group
+                        .controls
+                          .input-prepend.form-inline
+                            %span.add-on +7
+                            %input#login-user-phone.telephone-code.co.not-valid.cookie{:type => "text", :placeholder => 'Номер телефона', :name => "user[phone]"}
+                      .control-group
+                        .controls
+                          = password_field_tag 'user[password]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Пароль', :id => 'login-user-password'
+                    .form-actions
+                      = button_tag 'Войти', :disable_with => "Вход...", :class => 'enter btn btn-large btn-success', :id => 'basket-log-button'
+              .span6
+                #bask-registr-form.no-margin
+                  .form-horizontal.success-registr
+                    %fieldset
+                      .legend Регистрация
+                      .clear
+                      #reg-errors.alert.alert-error.hide
+                      %form
+                        .control-group
+                          .controls
+                            = text_field_tag 'user[first_name]', nil, :class => 'input-xlarge not-valid cookie', :placeholder => 'Как вас зовут?', :id => 'reg-user-name'
+                        .control-group
+                          .controls
+                            .input-prepend.form-inline
+                              %span.add-on +7
+                              %input#reg-user-phone.telephone-code.co.not-valid.cookie{:type => "text", :placeholder => 'Номер телефона', :name => "user[phone]"}
+                        .control-group
+                          .controls
+                            = email_field_tag 'user[email]', nil, :class => 'input-xlarge', :placeholder => 'Ваш адресс электронной почты', :id => 'reg-user-email'
+                        .control-group
+                          .controls
+                            = password_field_tag 'user[password]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Придумайте пароль', :id => 'reg-user-pass'
+                        .control-group
+                          .controls
+                            = password_field_tag 'user[password_confirmation]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Попробуйте повторить ваш пароль ;)', :id => 'reg-user-repass'
+                      .form-actions
+                        %button{:disable_with => "Регистрация...", :class => 'enter-reg btn btn-large btn-success', :id => 'basket-reg-button'} Зарегистрироваться
+      .span4.left-dl
+        %dl.dl-horizontal{:style=>'margin-top: 0px;'}
+          - place = @order.place
+          %dt Ресторан:
+          %dd
+            %a{:href => "/place/" + place.id.to_s}= place.name
+          %dt Сумма заказа:
+          %dd.tottal-cena-base= @order.price_base.to_i.to_s + " руб."
+          %dt Доставка:
+          %dd.tottal-cena-delivery= @order.price_delivery.to_i==0 ? "Бесплатно" : @order.price_delivery.to_i.to_s + " руб."
+        .clear-line
+        %dl.dl-horizontal.big-dl
+          %dt Итого:
+          %dd.tottal-cena= (@order.price.to_i).to_s + " руб."
+        %dl.dl-horizontal.bonus-line
+          %i.icon-gift
+          Вы получите
+          %span#basket-points #{(@order.price.to_i)/10.ceil}
+          баллов
+        .alert.alert-block
+          %strong Внимание!
+          Сумма доставка может отличаться, если район указан неверно!
+  .modal-footer.new-btn
+    %a.btn.btn-success.btn-large.disabled#Checkout{:href => "javascript:;"}
+      -#%i.icon-search.icon-ok.icon-white
+      - if @order.price_base < @order.place.min_order
+        %span Не хватает #{@order.place.min_order.to_i - @order.price_base.to_i} руб. до минимальной суммы заказа
+      - else
+        %span Оформить заказ
+    %a.btn.btn-success.btn-large#order-address.hide.invalid{:href => "javascript:;"}
+      %i.icon-search.icon-ok.icon-white
+      %span Заказать
+
+    %a.btn.btn-large#popupback.hide{:href => "javascript:;"} Назад
+    -#%a.btn.btn-large.closeallmodal{:href => "javascript:;"} Закрыть

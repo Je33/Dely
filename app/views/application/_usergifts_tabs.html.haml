@@ -1,0 +1,5 @@
+%ul.nav.nav-tabs
+  %li{:class => params[:controller] == "desc/gift_sections" || params[:controller] == "desc/gifts" ? "active" : ""}
+    %a{:href => "/desc/gift_sections"} Подарки
+  %li{:class => params[:controller] == "desc/usergifts" ? "active" : ""}
+    %a{:href => "/desc/usergifts"} Заявки на подарки

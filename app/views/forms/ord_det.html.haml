@@ -1,0 +1,24 @@
+#ord-list.modal.hide.fade.in
+  .modal-header
+    %h3 Список заказа
+    %a#modal-hide.close{"data-dismiss" => "modal", :href => "javascript:;"} ×
+  .modal-body
+    %ul.thumbnails
+      - @order.baskets.find_each do |b|
+        - item = b.item
+        %li.span3.thumbnail
+          .product-button{:data => {:content => item.description + '<div class="clear"></div><span class="in-netto">' + (item.weight.to_s != "" ? item.weight.to_s + ' г' : '') + '</span><span class="in-call">' + (item.calories.to_s != "" ? item.calories.to_s + ' ккал' : '') + '</span><div class="clear"></div>', :id => item.id}, :rel => "popover", 'data-original-title' => ""}
+            %img{:alt => "", :src => item.photo.url(:normal), :width => "220"}
+            .caption
+              %h5= item.name
+              %h5 Цена за шт. - #{item.price.to_i} руб.
+              %h5 Колл. - #{b.cnt} штуки
+            .info-box
+              - if item.vegetarian.to_i == 1
+                .inf-panel.fitns
+              - if item.hot.to_i == 1
+                .inf-panel.hot
+            .clear
+  .modal-footer
+    /%a.btn.btn-success.btn-large{:href => "javascript:;"} Повторить заказ
+    %a.btn.closeallmodal.btn-large{:href => "javascript:;"} Закрыть

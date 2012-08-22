@@ -1,0 +1,19 @@
+section_name:<%= @section.name %> <br>
+items:<br>
+<% if @items!=[] %>
+    <% @items.each do |i| %>
+       <%=link_to i.name, partner_place_section_item_path(params[:place_id],params[:id],i.id) %>
+        &nbsp; <%= i.price %>&nbsp;
+        <%= link_to 'Удалить',partner_place_section_item_path(params[:place_id],params[:id],i.id),:method=>:delete %> <br>
+    <% end  %>
+<% else %>
+    пусто
+    
+    
+    
+<% end %>
+<br>
+
+<%= link_to 'Добавить', new_partner_place_section_item_path(params[:place_id],params[:id]) %>
+<br>
+<%= link_to 'Назад', partner_place_path(params[:place_id]) %>

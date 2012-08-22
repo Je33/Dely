@@ -1,0 +1,107 @@
+- content_for :head do
+  = javascript_include_tag "http://code.highcharts.com/highcharts.js"
+  = javascript_include_tag "http://code.highcharts.com/modules/exporting.js"
+  = javascript_include_tag "statistics"
+.container.cont.desc
+  -#.row-fluid
+    %ul.breadcrumb.pull-left.span9
+      %li.active
+        Общая статистика
+    %button.btn.btn-large.pull-right Сохранить отчет
+  %hr
+  .row-fluid
+    %table.pull-left.top-table
+      %tbody
+        %tr
+          %td
+            Рестораны
+          %td
+            %select#place-select
+              %option{:value => 0} Все рестораны
+              - @places.each do |p|
+                %option{:value => p.id}= p.name
+    %table.pull-right.top-table
+      %tbody
+        %tr
+          %td
+            Период
+          %td
+            %input#date-from.margin-left{:width=>'50px'}
+          %td
+          %td
+            %input#date-to.margin-left{:width=>'50px'}
+          %td
+            .btn-group.btn-width#date-btns{:data => {:toggle => "buttons-radio"}}
+              %button.btn{:data => {:start => Time.now.beginning_of_day.to_i - 1.day, :end => Time.now.end_of_day.to_i - 1.day}} вчера
+              %button.btn{:data => {:start => Time.now.beginning_of_day.to_i, :end => Time.now.end_of_day.to_i}} сегодня
+              %button.btn{:data => {:start => Time.now.beginning_of_week.to_i, :end => Time.now.end_of_week.to_i}} неделя
+              %button.btn{:data => {:start => Time.now.beginning_of_month.to_i, :end => Time.now.end_of_month.to_i}} месяц
+              %button.btn{:data => {:start => Time.now.beginning_of_quarter.to_i, :end => Time.now.end_of_quarter.to_i}} квартал
+              %button.btn.active{:data => {:start => Time.now.beginning_of_year.to_i, :end => Time.now.end_of_year.to_i}} год
+  %hr
+
+  .row-fluid
+    .tabbable.span12
+      %ul.nav.nav-tabs
+        %li
+          %a{:href=>"/desc/statistics/orders_count"} Количество
+        %li{:class => "active"}
+          %a{:href=>"/desc/statistics/orders_summ"} Сумма
+        %li
+          %a{:href=>"/desc/statistics/populars"} Популярные
+        %li
+          %a{:href=>"/desc/statistics/rating"} Рейтинг
+        %li
+          %a{:href=>"/desc/statistics/loyality"} Лояльность
+        %li
+          %a{:href=>"/desc/statistics/statuses"} Статусы
+        %li
+          %a{:href=>"/desc/statistics/day_stat"} Время суток
+        %li
+          %a{:href=>"/desc/statistics/checks"} Средний чек
+        %li
+          %a{:href=>"/desc/statistics/regions"} Регионы доставки
+      .tab-content
+        .tab-pane#orders-summ{:class => "active"}
+          .row-fluid
+            .orders-graph#stat-orders-cost{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Итого
+                    %th Средний чек
+                    %th Вчера
+                    %th Сегодня
+                    %th Завтра
+                %tbody
+                  -#%tr
+                    %td
+                      654 654
+                    %td
+                      456 456
+                    %td
+                      123
+                    %td
+                      133
+                    %td
+                      123 123
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th Дата
+                    %th Количество заказов
+                    %th Сумма
+                %tbody
+                  -#%tr
+                    %td
+                      22 Марта 2012
+                    %td
+                      123
+                    %td
+                      10 500

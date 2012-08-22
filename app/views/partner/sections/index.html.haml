@@ -1,0 +1,89 @@
+.btn-toolbar.margin-bottom#model-bar{:data => {:code => "Section"}}
+  .btn-group
+    = link_to '<i class="icon-plus icon-white"></i> Новая категория'.html_safe, new_partner_place_section_path(params[:place_id]), :class => "btn btn-success"
+  .btn-group
+    %button.btn.disabled Выделенные:
+    %button.btn#activate-selected
+      %i.icon-ok
+      Активировать
+    %button.btn#deactivate-selected
+      %i.icon-remove
+      Деактивировать
+    %button.btn.btn-danger#remove-selected
+      %i.icon-minus.icon-white
+      Удалить
+.clear
+%br
+
+%table.table.table-bordered.table-striped.name-width
+  %thead
+    %tr
+      %th{:style=>'width:30px'}
+        .btn-group
+          .btn.btn-small#button-select-all
+            %i.icon-check
+          .btn.btn-small.dropdown-toggle{:data => {:toggle => "dropdown"}}
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              %a#select-all{:href => "javascript:;"} Выделить все
+            %li
+              %a#select-none{:href => "javascript:;"} Снять выделения
+            %li
+              %a#select-rnd{:href => "javascript:;"} Выделить случайно
+            %li
+              %a#select-inv{:href => "javascript:;"} Инвертировать выделение
+      %th{:style=>'width:120px'}
+        .btn.btn-small.disabled Меню
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "id", :d => "asc"})) : to_path(params.merge({:f => "id", :d => "desc"}))}
+          ID
+          - if params[:f] == "id" || !params[:f]
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "name", :d => "asc"})) : to_path(params.merge({:f => "name", :d => "desc"}))}
+          Название
+          - if params[:f] == "name"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "active", :d => "asc"})) : to_path(params.merge({:f => "active", :d => "desc"}))}
+          Активность
+          - if params[:f] == "active"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? to_path(params.merge({:f => "sort", :d => "asc"})) : to_path(params.merge({:f => "sort", :d => "desc"}))}
+          Сорт.
+          - if params[:f] == "sort"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+  %tbody
+  - @sections.each do |section|
+    %tr
+      %td.small
+        %input.select-box{:type => "checkbox", :data => {:id => section.id}}
+      %td
+        .btn-group
+          %a.btn{:href => partner_place_section_items_path(params[:place_id], section.id)} Товары
+          %button.btn.btn-small.dropdown-toggle{:data => {:toggle => "dropdown"}}
+            %i.icon-list
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to '<i class="icon-signal"></i> Товары'.html_safe, partner_place_section_items_path(params[:place_id], section.id)
+            %li.divider
+            %li= link_to '<i class="icon-pencil"></i> Редактировать'.html_safe, edit_partner_place_section_path(params[:place_id], section.id)
+            %li= link_to '<i class="icon-remove"></i> Удалить'.html_safe, partner_place_section_path(params[:place_id], section.id), :confirm => 'Вы уверены?', :method => :delete
+      %td= section.id
+      %td= section.name
+      %td= section.active==1 ? '<span style="color:green;">Да</span>'.html_safe : '<span style="color:red;">Нет</span>'.html_safe
+      %td= section.sort

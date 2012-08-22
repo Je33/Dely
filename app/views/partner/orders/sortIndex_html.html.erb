@@ -1,0 +1,11 @@
+<% @orders.each do |o|  %>
+    <tr class="new-order" onclick="location.href='<%= partner_order_path(o.id) %>'">
+      <td><%=Status.exists?(:id=>o.status_id) ? Status.find(o.status_id).name : 'Неизвестный' %></td>
+      <td>&mdash; </td>
+      <td><%= o.created_at.hour %>:<%= o.created_at.min %> Сегодня</td>
+      <td><%=Place.exists?(:id=>o.place_id) ? Place.find(o.place_id).name : 'Неизвестен' %></td>
+      <td><%= o.price %></td>
+      <td><%= o.name %></td>
+      <td><%= o.id %></td>
+    </tr>
+<% end %>

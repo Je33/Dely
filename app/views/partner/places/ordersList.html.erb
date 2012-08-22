@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Доставка еды</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="/css/bootstrap.css" rel="stylesheet">
+  <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <ul class="breadcrumb pull-left">
+        <li><a href="#" class="brand">Доставка еды</a></li>
+        <li><span class="brand">&#8594;</span></li>
+        <li><a href="#" class="brand active">Заказов (3)</a></li>
+      </ul>
+      <ul class="nav pull-right">
+        <li>
+          <a href="javascript:void(0);">Меню и рестораны</a>
+        </li>
+        <li>
+          <a href="javascript:void(0);">Настройки</a>
+        </li>
+        <li class="divider-vertical"></li>
+        <li>
+          <a href="javascript:void(0);">Выход</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="well">
+        <ul class="nav nav-pills pull-right top-check">
+          <li>
+            <div class="filter-well">
+              <div class="checkbox-panel">
+                <a href="javascript:void(0);" title="">Новый</a>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="filter-well">
+              <div class="checkbox-panel">
+                <a href="javascript:void(0);" title="">Подтвержден</a>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="filter-well">
+              <div class="checkbox-panel">
+                <a href="javascript:void(0);" title="">Доставлен</a>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="filter-well">
+              <div class="checkbox-panel">
+                <a href="javascript:void(0);" title="">Отменен</a>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="filter-well">
+              <div class="checkbox-panel">
+                <a href="javascript:void(0);" title="">Неизвестно</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <table class="table table-bordered table-condensed order-list-null">
+          <thead>
+          <tr>
+            <th>Статус</th>
+            <th>Оператор</th>
+            <th>Время и дата</th>
+            <th>Ресторан</th>
+            <th>Сумма</th>
+            <th>Номер</th>
+            <th>№</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @orders.each do |o|  %>
+          <tr class="new-order" onclick="location.href=('orders/<%=o.id%>')">
+            <td><%=Status.exists?(:id=>o.status_id) ? Status.find(o.status_id).name : 'Неизвестный' %></td>
+            <td>&mdash; </td>
+            <td><%= o.created_at.hour %>:<%= o.created_at.min %> Сегодня</td>
+            <td><%=Place.exists?(:id=>o.place_id) ? Place.find(o.place_id).name : 'Неизвестен' %></td>
+            <td><%= o.price %></td>
+            <td><%= o.name %></td>
+            <td><%= o.id %></td>
+          </tr>
+          <% end %>
+
+          <tr class="new-order">
+            <td>Новый</td>
+            <td>&mdash; </td>
+            <td>16:45 Вчера</td>
+            <td>СушиШеф</td>
+            <td>1 560</td>
+            <td>435 367</td>
+            <td>54</td>
+          </tr>
+          <tr class="confirmed-order">
+            <td>Подтвержден</td>
+            <td>Наталья Н</td>
+            <td>16:45 14 марта 2011</td>
+            <td>СушиШеф</td>
+            <td>1 560</td>
+            <td>435 367</td>
+            <td>53</td>
+          </tr>
+          <tr class="confirmed-order">
+            <td>Подтвержден</td>
+            <td>Алена Н</td>
+            <td>16:45 14 марта 2011</td>
+            <td>СушиШеф</td>
+            <td>1 560</td>
+            <td>435 367</td>
+            <td>53</td>
+          </tr>
+          <tr class="perform-order">
+            <td>Отправлен по телеф.</td>
+            <td>Алена Н</td>
+            <td>16:45 14 марта 2011</td>
+            <td>СушиШеф</td>
+            <td>1 560</td>
+            <td>435 367</td>
+            <td>53</td>
+          </tr>
+          <tr class="perform-order">
+            <td>Отправлен по е-мэйл.</td>
+            <td>Алена Н</td>
+            <td>16:45 14 марта 2011</td>
+            <td>СушиШеф</td>
+            <td>1 560</td>
+            <td>435 367</td>
+            <td>53</td>
+          </tr>
+          <tr class="perform-order">
+            <td>Отправлен по телеф.</td>
+            <td>Алена Н</td>
+            <td>16:45 14 марта 2011</td>
+            <td>СушиШеф</td>
+            <td>1 560</td>
+            <td>435 367</td>
+            <td>53</td>
+          </tr>
+          <tr class="no-perform-order">
+            <td>Не подтвержден</td>
+            <td>Алена Н</td>
+            <td>16:45 14 марта 2011</td>
+            <td>СушиШеф</td>
+            <td>1 560</td>
+            <td>435 367</td>
+            <td>53</td>
+          </tr>
+          <tr class="canseled-order">
+            <td>Отменен</td>
+            <td>Алена Н</td>
+            <td>16:45 14 марта 2011</td>
+            <td>СушиШеф</td>
+            <td>1 560</td>
+            <td>435 367</td>
+            <td>53</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!--/.fluid-container-->
+
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/operator.js"></script>
+
+</body>
+</html>

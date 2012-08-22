@@ -1,0 +1,118 @@
+!!! 5
+%html
+  %head
+    %title Svek.la
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = javascript_include_tag "kendo/kendo.all.min"
+    = javascript_include_tag "desc"
+    = csrf_meta_tags
+    %meta{:charset => "utf-8"}
+    %meta{:content => "width=1000",  :name => "viewport"}
+    %meta{:content => "", :name => "description"}
+    %meta{:content => "", :name => "author"}
+
+    /[if IE]
+      %script{:src => "//html5shim.googlecode.com/svn/trunk/html5.js"}
+    /%link{:href => "images/favicon.ico", :rel => "shortcut icon"}
+    %link{:href => "images/apple-touch-icon.png", :rel => "apple-touch-icon"}
+    %link{:href => "images/apple-touch-icon-72x72.png", :rel => "apple-touch-icon", :sizes => "72x72"}
+    %link{:href => "images/apple-touch-icon-114x114.png", :rel => "apple-touch-icon", :sizes => "114x114"}
+    %link{:href => "/img/favicon.png", :rel => "icon", :type=>"image/png"}
+    %link{:href => "/img/favicon_xl.png", :rel => "apple-touch-icon", :type=>"image/png"}
+    =yield(:head)
+
+  %body
+    %noscript.old_browser.java_is_off
+      .wrap
+        %img.java_img{:alt => "", :src => "/img/java_alert.png"}
+          %h2 Пожалуйста, включите JavaScript.
+          %p.old_info Работоспособность некоторых функций нашего сайта зависит от того, включена ли поддержка JavaScript в Вашем браузере.
+          %p.java_help
+            %b полезная ссылка
+            %a{:href => "http://www.google.ru/support/bin/answer.py?answer=23852"} Как включить поддержку JavaScript в вашем браузере.
+            %span http://www.google.ru/support/bin/answer.py?answer=23852
+    .navbar
+      .navbar-inner.bg
+        .container.all-width
+          %ul.breadcrumb.pull-left
+            %li.relative
+              %a.brand.logo-img{:href => "/", :title=>""}
+          .nav-collapse
+            %ul.nav.pull-left
+              %li{:class => params[:controller] == "desc/orders" ? "active" : "" }
+                %a{:href => "/desc/orders"}
+                  Заказы
+                  - if Order.where(:status_id => 10).count > 0
+                    %sup.order_count= Order.where(:status_id => 10).count
+              - if current_user.access == 4
+                %li{:class => params[:controller] == "desc/partners" || params[:controller] == "desc/places" || params[:controller] == "desc/sections" || params[:controller] == "desc/items" ? "active" : "" }
+                  %a{:href => desc_partners_path} Партнёры
+                %li{:class => params[:controller] == "desc/finances" ? "active" : "" }
+                  %a{:href => "/desc/finances"} Финансы
+                %li{:class => params[:controller] == "desc/statistics" ? "active" : "" }
+                  %a{:href => "/desc/statistics"} Статистика
+                %li{:class => params[:controller] == "desc/users" ? "active" : "" }
+                  %a{:href => desc_users_path} Users
+                %li{:class => params[:controller] == "desc/gift_sections" || params[:controller] == "desc/gifts" || params[:controller] == "desc/usergifts" ? "active" : "" }
+                  %a{:href => "/desc/gift_sections"} Призы
+                %li{:class => params[:controller] == "desc/specials" || params[:controller] == "desc/populars" ? "active" : "" }
+                  %a{:href => "/desc/specials"} Настройки
+            %ul.nav.pull-right
+              - if @city != nil
+                #current-city{:data => {:id => @city.id}}
+              - #if @cities != nil
+              - #%li.nav-text
+              - #    %p Доставка еды в
+              - #%li.dropdown
+              - #    %a#current-city.dropdown-toggle{:href => "javascript:;", :data => {:toggle => "dropdown", :id => @city.id}}= @city[:name_dec]
+              - #    %ul#city.dropdown-menu
+              - #      - @cities.each do |c|
+              - #        %li
+              - #          %a{:href => "javascript:;", :data => {:id => c.id}}= c.name
+              %li.divider-vertical
+              - if user_signed_in?
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "javascript:;"}
+                    %span= current_user.first_name
+                  %ul.dropdown-menu
+                    %li= link_to "Мои заказы #{current_user.orders.activated.count.to_i > 0 ? "(" + current_user.orders.activated.count.to_s + ")" : ""}", "/profile/orders"
+                    %li= link_to 'Мой профиль', "/profile/info"
+                    %li
+                      %a{:href => "/profile/gifts", :title=>''} Призы
+                    %li.divider
+                    %li
+                      %a{:href => "/", :title=>''} Сайт
+                    %li.divider
+                    %li= link_to "Выход", destroy_user_session_path, :method => :delete
+              - else
+                .btn-group.pull-right.top-btn-group
+                  %a.btn.btn.top-btn#login-button{:href => "javascript:;"} Войти
+                  %a.btn.btn-warning.top-btn#registration-button{:href => "javascript:;"} Регистрация
+    .nav_btm
+    
+    .container.cont.desc
+      - if @bread
+        - l_br = @bread.slice!(-1)
+        %ul.breadcrumb
+          - @bread.each do |b|
+            %li
+              %a{:href => b[1]}= b[0]
+              %span.divider /
+          %li.active
+            = l_br[0]
+          %li.pull-right.ypr-link
+            -if @period
+              .current_period{:value => @period}
+                %a{:href=>desc_finances_path(:period=>(@period.to_date-1.month).strftime("%Y-%m-01")), :title=>'', :style=>'margin-right: 10px'} ← #{(I18n.t ((@period.to_date-1.month).strftime("%B")) ) +' '+ (@period.to_date-1.month).to_date.strftime("%Y")}
+                |
+                =(I18n.t ((@period.to_date).strftime("%B")))  +' '+ (@period.to_date).to_date.strftime("%Y")
+                -if (@period.to_date+1.month).strftime("%Y-%m-01")!=(Time.now+1.month).strftime("%Y-%m-01")
+                  |
+                  %a{:href=>desc_finances_path(:period=>(@period.to_date+1.month).strftime("%Y-%m-01")), :title=>''} #{(I18n.t ((@period.to_date+1.month).strftime("%B")) ) +' '+ (@period.to_date+1.month).to_date.strftime("%Y")} →
+
+      .row-fluid
+        = yield
+
+  %script{:src => "/js/script.js"}
+  %script{:src => "/js/phone.js"}

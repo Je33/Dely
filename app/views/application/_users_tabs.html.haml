@@ -1,0 +1,12 @@
+- if !params[:place]
+  %ul.nav.nav-tabs
+    %li{:class => params[:u] == "0" || params[:u] == nil ? "active" : ""}
+      %a{:href => "/desc/users?u=0"} Пользователи
+    %li{:class => params[:u] == "1" ? "active" : ""}
+      %a{:href => "/desc/users?u=1"} Операторы партнеров
+    %li{:class => params[:u] == "2" ? "active" : ""}
+      %a{:href => "/desc/users?u=2"} Администраторы партнеров
+    %li{:class => params[:u] == "3" ? "active" : ""}
+      %a{:href => "/desc/users?u=3"} Операторы системы
+    %li{:class => params[:u] == "4" ? "active" : ""}
+      %a{:href => "/desc/users?u=4"} Администраторы системы

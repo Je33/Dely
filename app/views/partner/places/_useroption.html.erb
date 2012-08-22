@@ -1,0 +1,87 @@
+<div class="well">
+  <h3>
+    Пользователи
+  </h3>
+  <div class='add_user_to_operator'>
+
+  </div>
+  <p>
+    Управление пользователями для приема заказов и доступа в кабинет.
+  </p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Имя</th>
+      <th>Тип</th>
+      <th>Заведение</th>
+      <th><%=  link_to "Добавить",partner_options_addUser_path, :class=>"pull-right btn" %></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <% if @place_acceses %>
+        <% @place_acceses.each do |p| %>
+            <tr>
+              <td><%= p.user.last_name+' '+p.user.first_name %></td>
+              <td>
+                <% if p.access==2
+                     @type="Администратор" %>
+                <% end %>
+                <% if p.access==1
+                     @type="Оператор" %>
+                <% end %>
+                <%= @type %>
+              </td>
+              <td>
+                <%= p.place.name %>
+              </td>
+              <td>
+                <div class="pull-right">
+                    <a class="btn btn-gr" id="edit_btn" user_id="<%= p.user_id %>" place_id="<%= p.place_id %>">Редактировать</a>
+                    <a class="btn btn-gr" id="history_btn" user_id="<%= p.user_id %>">История</a>
+                </div>
+              </td>
+            </tr>
+            <div id="user_edit_form" style="display: none;">
+              <%= form_tag '/places/options/ajaxUserSave/',:remote=>true do%>
+                  <%= hidden_field_tag :edit_user_id,p.user.id.to_s %>
+                  <%= hidden_field_tag :edit_place_id,p.place_id.to_s %>
+                  <%= hidden_field_tag :reset_password_token %>
+                  <fieldset>
+                    <div class="control-group">
+                      <label class="control-label" for="input01">Имя и Фамилия:</label>
+                      <div class="controls">
+                        <%= text_field :user, :first_name,:value=>p.user.first_name%>   <%= text_field :user, :last_name,:value=>p.user.last_name %>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="input01">Тип:</label>
+                      <div class="controls">
+                        <%= text_field :user, :description %>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="input01">Телефон:</label>
+                      <div class="controls">
+                        <%= text_field :user, :phone,:value=>p.user.phone %>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="input01">Пароль:</label>
+                      <div class="controls">
+                        <%= password_field :user, :password %>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <%=submit_tag "Обновить профиль" %>
+                    </div>
+                  </fieldset>
+              <% end %>
+            </div>
+
+
+        <% end %>
+    <% end  %>
+    </tbody>
+  </table>
+</div>

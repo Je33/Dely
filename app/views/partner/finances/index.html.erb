@@ -1,0 +1,36 @@
+<%#encoding: utf-8  %>
+<div class='span12'>
+    <div class="combo-select well">
+        <%= select_tag "finance_status_id_select", options_for_select(@finance_statuses), :style=>'pull-left' %>
+        <%#= select_tag "date_id_select", options_for_select(@dates), :style=>'pull-left' %>
+        <% if params[:place_id] %>
+           <%= select_tag "place_id_select", options_for_select(@places,params[:place_id]), :style=>'pull-left' %>
+        <% else %>
+           <%= select_tag "place_id_select", options_for_select(@places), :style=>'pull-left' %>
+        <% end %>
+
+    </div>
+    <div class="clear"></div>
+    <table class="table table-bordered sortable" id="finances_dataTable">
+    <!--<table class="sortable" id="finances_dataTable">   -->
+      <thead>
+      <tr>
+        <th>Статус</th>
+        <th>Период</th>
+        <th>Партнер</th>
+        <th>Ресторан</th>
+        <th>Сумма</th>
+        <th>Номер</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @finances.each do |f|  %>
+          <tr class="<%= f.findClass %>" onclick="location.href='<%= partner_finance_path(f.id) %>'">
+             <%= render 'finance',:f=>f %>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+</div>
+
+

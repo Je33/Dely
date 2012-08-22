@@ -1,0 +1,94 @@
+.row-fluid
+  .span8
+    .bold-box
+      %p
+        Отчет: №
+        %span#finance_id #{@finance.id.to_s}
+      %p Период: #{@finance.period.beginning_of_month.strftime("%d.%m.%Y") + ' - ' + @finance.period.end_of_month.strftime("%d.%m.%Y")}
+      %p.long-text
+        %span.first
+          Дата Создания отчета:
+        %span
+          = @finance.period.strftime("%d.%m.%Y")
+      %p.long-text
+        %span.first
+          Номер договора / id партнера:
+        %span
+          = @finance.partner.id.to_s
+      %p.long-text
+        %span.first
+          Наименование ресторана
+        %span
+          = @finance.place.name
+      %p.long-text
+        %span.first
+          Адрес
+        %span
+          = @finance.partner.address
+
+      .clear
+
+    .btn-group{:style=>'width: auto !important; margin-bottom: 20px'}
+      %button.btn.finance-edit-btn Редактировать отчет
+      %button.btn.finance-send-btn Отправить
+
+    .clear
+    %table.table.table-striped.table-bordered.table-condensed.mini-font.sortable
+      %thead
+        %tr
+          %th
+            #{"#"}
+          %th
+            Дата
+          %th
+            Время
+          %th
+            Ресторан
+          %th
+            Адрес доставки
+          %th
+            Сумма (руб.)
+          %th
+            Статус
+          %th
+            Оценка
+      %thead
+        = render 'orders_report'
+    .clear
+
+    .bold-box.cost
+      %p
+        Сумма заказов: #{@finance.price.to_i.ceil} руб.
+      %p.big
+        Итого к оплате: #{((@finance.price.to_f/100)*@finance.partner.pct.to_i).to_i.ceil} руб.
+
+
+  .span4
+    .border.ri-select
+      .bold-box.right-text
+        %p
+          Статус:
+          %span{:class => @finance.findRowClass}
+            = I18n.t @finance.finance_status.name
+        %p
+          Кому:
+          %span
+            = @finance.partner.report_contact
+        %p
+          Телефон:
+          %span
+            = @finance.partner.report_by_phone
+      = form_for @finance, :url => desc_finance_path(@finance.id) do |f|
+        -if @finance.errors.any?
+          #error_explanation
+            %h2= "#{pluralize(@finance.errors.count, "error")} prohibited this partner_finances from being saved:"
+            %ul
+              - @finance.errors.full_messages.each do |msg|
+                %li= msg
+        %table.table
+          = hidden_field_tag :key,'show'
+          %tr
+            %td= f.select(:finance_status_id, FinanceStatus.all.map{|i| [(I18n.t i.name),i.id]},{},{:class=>"pull-left",:id=>"change-status"})
+            %td
+              = f.button 'Применить', :class => "btn pull-left"
+      .clear

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  condition: MyString
+  price: 1
+  place: 
+  region: 
+
+two:
+  condition: MyString
+  price: 1
+  place: 
+  region: 

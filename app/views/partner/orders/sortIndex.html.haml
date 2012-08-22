@@ -1,0 +1,3 @@
+- @orders.each do |o|
+ %tr{:class => o.status.findClass + ' rest',:onclick => "location.href='#{partner_order_path(o.id)}'"}
+  = render 'order',:o=>o

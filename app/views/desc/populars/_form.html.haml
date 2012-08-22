@@ -1,0 +1,31 @@
+= form_for @popular, :url => @popular.id!=nil ? desc_popular_path(@popular.id) : desc_populars_path do |f|
+  -if @popular.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@popular.errors.count, "error")} prohibited this desc_place from being saved:"
+      %ul
+        - @popular.errors.full_messages.each do |msg|
+          %li= msg
+  .form-horizontal
+    .control-group
+      %label.control-label ID
+      .controls
+        %p= @popular.id!=nil ? @popular.id : "new"
+    .control-group
+      %label.control-label Активность
+      .controls
+        = f.check_box :active, :checked => @popular.id==nil ? true : @popular.active ? true : false
+    .control-group
+      %label.control-label Название
+      .controls
+        = f.text_field :name, :class=>'span5', :size=>''
+    .control-group
+      %label.control-label Размер шрифта
+      .controls
+        = f.text_field :size, :class=>'span5'
+    .control-group
+      %label.control-label Товар
+      .controls
+        = f.select(:item_id, Item.all.map{|i| [i.name,i.id]})
+    .form-actions
+      = link_to 'Отмена', desc_populars_path, :class => "btn btn-large"
+      = f.submit 'Сохранить', :class => "btn btn-success btn-large"

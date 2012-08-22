@@ -1,0 +1,15 @@
+#enter.modal.hide
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Заказ подарка
+  .modal-body.row-fluid
+    .span3
+      %img{:src=>'/img/call.png', :alt=>'', :width=>'140'}
+    .span8
+      %br
+      %br
+      .gift-pop
+        %p В ближайшее время наш оператор свяжется с вами по номеру #{current_user.phone} для уточнения заказа подарка.
+    .clear
+  .modal-footer
+    = button_tag 'Хорошо', :disable_with => "Хорошо", :class => 'enter btn btn-large btn-success closeallmodal', :id => 'log-button'

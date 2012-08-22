@@ -1,0 +1,52 @@
+= form_for @finance, :url => @finance.id!=nil ? partner_finance_path(@finance.id) : partner_finances_path do |f|
+  -if @finance.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@finance.errors.count, "error")} prohibited this partner_finances from being saved:"
+      %ul
+        - @finance.errors.full_messages.each do |msg|
+          %li= msg
+  .form-horizontal
+    %fieldset
+      .control-group
+        %label.control-label
+          Статус:
+        .controls
+          = f.select(:finance_status_id, FinanceStatus.all.map{|i| [(I18n.t i.name),i.id]})
+      .control-group
+        %label.control-label
+          Период:
+        .controls
+          %p= @finance.id!=nil ? (@finance.period.to_date) : f.date_select(:period,:discard_day=>true,:use_month_names=>months.map{|m| (I18n.t m)},:start_year=>2012,:end_year=>Time.now.year,:order => [:month,:year,:day])
+      .control-group
+        %label.control-label
+          Ресторан:
+        .controls
+          %p= @finance.id!=nil ? @finance.place.name : f.select(:place_id,@places)
+      .control-group
+        %label.control-label
+          Цена:
+        .controls
+          %p
+            -if @finance.id!=nil
+              =@finance.price
+            -else
+              =f.hidden_field :price,:value=>0
+              #finance_price_div
+      .control-group
+        %label.control-label
+          Количество заказов:
+        .controls
+          %p
+            -if @finance.id!=nil
+              = @finance.cnt.to_s
+            -else
+              = f.hidden_field :cnt,:value=>0
+              #finance_cnt_div
+      -#.control-group
+        %label.control-label
+          ID
+        .controls
+          = @finance.id!=nil ? @finance.id : "new"
+      .form-actions
+        = link_to 'Отмена',  partner_finances_path, :class => "btn btn-large"
+        = f.submit 'Сохранить', :class => "btn btn-success btn-large"

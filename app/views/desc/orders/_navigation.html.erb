@@ -1,0 +1,30 @@
+<div class="curr_page" current_page="<%= @cur_page %>"></div>
+<ul id="navigate_pages">
+    <% if @prev==0 %>
+      <li class='disabled'>
+    <% else %>
+      <li>
+    <% end %>
+        <%= link_to '«','javascript:;',:class=>"prev_page" %>
+    </li>
+    <% p=1 %>
+    <% if @pages<=1 %>
+      <%=  (link_to p.to_s,'javascript:;',:page_num=>p.to_s,:class=>'active')  %>
+     <% else %>
+      <% while p<=@pages %>
+          <li>
+            <%= ((params[:cur_page].to_i)==p) ? (link_to p.to_s,'javascript:;',:page_num=>p.to_s,:class=>'active') : (link_to p.to_s,'#',:page_num=>p.to_s) %>
+            <% p+=1 %>
+          </li>
+      <% end %>
+    <% end %>
+
+
+    <% if @next==0 %>
+      <li class="disabled">
+    <% else %>
+      <li>
+    <% end %>
+        <%= link_to '»','javascript:;',:class=>"next_page" %>
+    </li>
+</ul>

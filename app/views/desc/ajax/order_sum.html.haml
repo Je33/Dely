@@ -1,0 +1,12 @@
+%tr
+  %td Доставлено
+  %td= @ord_delivered.count
+  %td= @ord_delivered.sum(:price).round
+%tr
+  %td Отменено пользователями
+  %td= @ord_user_cancel.count
+  %td= @ord_user_cancel.sum(:price).round
+%tr
+  %td Отменено ресторанами
+  %td= @ord_rest_cancel.count
+  %td= @ord_rest_cancel.sum(:price).round

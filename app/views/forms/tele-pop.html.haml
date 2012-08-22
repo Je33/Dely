@@ -1,0 +1,14 @@
+#pop-tele.modal.hide
+  .modal-header
+    %a.close ×
+    %h3 Нужна помощь или другой вопрос? Звоните:
+  .modal-body
+    .inside
+      .x
+        %h1.huge<
+          //Звоните
+          %span.grey +7 (351)
+          220-1010
+    .clear
+  .modal-footer
+    = button_tag 'Закрыть', :disable_with => "Ага...", :class => 'enter btn btn-large closeallmodal'

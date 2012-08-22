@@ -1,0 +1,33 @@
+#enter.modal.hide
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Вход в личный кабинет
+  .modal-body
+    %form#login-form.form-horizontal{:method => 'post', :action => '/users/sign_in'}
+      %fieldset
+        - if params[:msg_text] != nil
+          #login-success.alert.alert-success= t(:sms_message_send)
+        - else
+          #login-success.alert.alert-success.hide
+        #login-errors.alert.alert-error.hide
+        .control-group
+          %label.control-label Ваш номер телефона
+          .controls
+            .input-prepend.form-inline
+              %span.add-on +7
+              %input#login-user-phone.telephone-code.co.not-valid.cookie{:type => "text", :placeholder => 'Введите номер мобильного', :name => "user[phone]", :value => params[:phone]}
+        .control-group
+          %label.control-label Пароль
+          .controls
+            = password_field_tag 'user[password]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Введите ваш пароль', :id => 'login-user-password'
+        =# link_to 'Войти через ВКонтакте', user_omniauth_authorize_path(:vkontakte), :class => 'vk btn btn-primary'
+        .clear
+        =# link_to 'Войти через Facebook', user_omniauth_authorize_path(:facebook), :class => 'facebook btn btn-primary'
+
+    .clear
+    %a#forget-button.lin.pull-left{:href => "javascript:;"} Забыли пароль?
+    %a#registration-button.lin.pull-right{:href => "javascript:;"} Зарегистрироваться
+    .clear
+  .modal-footer
+    = button_tag 'Войти в кабинет', :disable_with => "Вход...", :class => 'enter btn btn-large btn-success invalid', :id => 'log-button'
+    %a.btn.btn-large.closeallmodal{:href=> 'javascript:;', :title => ''} Закрыть

@@ -1,0 +1,330 @@
+.span3
+  .well
+    %ul.nav.nav-pills.nav-stacked
+      %li.nav-header Настройки
+      %li
+        %a{:href => "/partners/index/users"} Пользователи
+      %li
+        %a{:href => "/partners/index/message"} Уведомления
+      %li.active
+        %a{:href => "/partners/index/historys"} Вся история
+    .accordion#accordion
+      .accordion-group
+        .accordion-heading
+          %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion1", :href=>"#collapseOne"}
+            Статусы заказов
+        .accordion-body.collapse#collapseOne
+          .accordion-inner
+            %form.creteria
+              %label.checkbox.new-order
+                %input{:type=>"checkbox"} Новый
+              %label.checkbox.confirmed-order
+                %input{:type=>"checkbox"} Подтвержден
+              %label.checkbox.perform-order
+                %input{:type=>"checkbox"} Доставлен
+              %label.checkbox.canseled-order
+                %input{:type=>"checkbox"} Отменен
+              %label.checkbox.no-perform-order
+                %input{:type=>"checkbox"} Неизвестно
+      .accordion-group
+        .accordion-heading
+          %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion2", :href=>"#collapstwo"}
+            Операторы
+        .accordion-body.collapse#collapstwo
+          .accordion-inner
+            %form.creteria
+              %label.checkbox
+                %input{:type=>"checkbox"} &mdash;
+              %label.checkbox
+                %input{:type=>"checkbox"} Наталья О.С
+              %label.checkbox
+                %input{:type=>"checkbox"} Алена О.С
+              %label.checkbox
+                %input{:type=>"checkbox"} Оксана О.С
+              %label.checkbox
+                %input{:type=>"checkbox"} Алена О.С
+      .accordion-group
+        .accordion-heading
+          %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion3", :href=>"#collapsethree"}
+            Пользователь
+        .accordion-body.collapse#collapsethree
+          .accordion-inner
+            %form.creteria
+              %label.checkbox
+                %input{:type=>"checkbox"} Новый
+              %label.checkbox
+                %input{:type=>"checkbox"} Отменен
+      .accordion-group
+        .accordion-heading
+          %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion4", :href=>"#collapsefour"}
+            Состояние заказа
+        .accordion-body.collapse#collapsefour
+          .accordion-inner
+            %form.creteria
+              %label.checkbox
+                %input{:type=>"checkbox"} Подтвержден
+              %label.checkbox
+                %input{:type=>"checkbox"} Не подтвержден
+              %label.checkbox
+                %input{:type=>"checkbox"} Отправлен в ресторан
+              %label.checkbox
+                %input{:type=>"checkbox"} По телефону
+              %label.checkbox
+                %input{:type=>"checkbox"} По е-мэйл
+      .accordion-group
+        .accordion-heading
+          %a.accordion-toggle{'data-toggle'=> "collapse", 'data-parent'=> "#accordion5", :href=>"#collapsefive"}
+            Ресторан
+        .accordion-body.collapse#collapsefive
+          .accordion-inner
+            %form.creteria
+              %label.checkbox
+                %input{:type=>"checkbox"} Принят
+              %label.checkbox
+                %input{:type=>"checkbox"} Не Принят
+              %label.checkbox
+                %input{:type=>"checkbox"} Отменен
+              %label.checkbox
+                %input{:type=>"checkbox"} Доставлен
+              %label.checkbox
+                %input{:type=>"checkbox"} Неизвестно
+.span9
+  %h3
+    %a{:href=>'/partners/index/users', :title=>''}
+      Пользователи
+    %span
+      &#187;
+    %span
+      Вся история
+  .clear-line
+  %table.table.table-bordered.order-list-null
+    %thead
+      %tr
+        %th Статус
+        %th Оператор
+        %th Время и дата
+        %th Ресторан
+        %th Сумма
+        %th Номер
+        %th №
+    %tbody
+      %tr.new-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Новый
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 Сегодня
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            56
+      %tr.new-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Новый
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 Сегодня
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            56
+      %tr.new-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Новый
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 Вчера
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            54
+      %tr.confirmed-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Подтвержден
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 14 марта 2011
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            53
+      %tr.confirmed-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Подтвержден
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 14 марта 2011
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            53
+      %tr.perform-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Отправлен по телеф.
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 14 марта 2011
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            53
+      %tr.perform-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Отправлен по е-мэйл.
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 14 марта 2011
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            53
+      %tr.perform-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Отправлен по телеф.
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 14 марта 2011
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            53
+      %tr.no-perform-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Не подтвержден
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Алена Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 14 марта 2011
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            53
+      %tr.canseled-order#435367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Отменен
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            Наталья Н
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            16:45 14 марта 2011
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            СушиШеф
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            1 560
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            435 367
+        %td
+          %a{:href=>'/partners/index/orders', :title=>''}
+            53

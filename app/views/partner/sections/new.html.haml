@@ -1,0 +1,18 @@
+= form_tag partner_place_sections_path(params[:place_id]),:multipart=>true do
+  .form-horizontal
+    %fieldset
+      .control-group
+        %label.control-label Название:
+        .controls
+          = text_field :section, :name, :class=>'span5'
+      .control-group
+        %label.control-label Описание:
+        .controls
+          = text_area :section, :description, :class=>'span5', :size=>'200x8'
+      .control-group
+        %label.control-label Вид:
+        .controls
+          = select( :section, :view, { "Галерея" => "g", "Список" => "l"}, :class=>'span5')
+      .form-actions
+        = link_to 'Отмена', '/partner/places/1/sections', :class => "btn btn-large"
+        = submit_tag 'сохранить', :class => "btn btn-success btn-large"

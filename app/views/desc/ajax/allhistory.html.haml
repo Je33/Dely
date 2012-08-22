@@ -1,0 +1,31 @@
+%ul.breadcrumb
+  %li.active
+    История
+.row-fluid
+  .span3#left-menu
+    .well
+      %ul.nav.nav-pills.nav-stacked
+      %hr
+        %ul.nav.nav-pills.nav-stacked
+          %li.nav-header История:
+          %li
+            /%a{:href=>"javascript:;"} Вся история
+      = render 'accordion'
+  .span9
+    #well-cont
+      %span
+        История
+      %table.table.table-bordered.hovered
+        %thead
+          %tr
+            %th Статус
+            %th Оператор
+            %th Время и дата
+            %th Ресторан
+            %th Сумма
+            %th Номер
+            /%th №
+        %tbody
+          - @logs.each do |l|
+            %tr{:class => l.status.findClass,:onclick => "location.href='#{partner_order_path(l.order_id)}'"}
+              = render 'log',:l=>l

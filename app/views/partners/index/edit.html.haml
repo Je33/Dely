@@ -1,0 +1,109 @@
+.span3
+  .well
+    %ul.nav.nav-pills.nav-stacked
+      %li.nav-header Настройки
+      %li.active
+        %a{:href => "/partners/index/users"} Пользователи
+      %li
+        %a{:href => "/partners/index/message"} Уведомления
+      %li
+        %a{:href => "/partners/index/historys"} Вся история
+.span9
+  - if flash[:notice]
+    .alert.alert-success
+      %a.close{:data => {:dismiss => "alert"}} ×
+      = flash[:notice]
+
+  - if flash[:error]
+    .alert.alert-error
+      %a.close{:data => {:dismiss => "alert"}} ×
+      = flash[:error]
+
+  = form_tag "/profile/info", :class => 'form-horizontal reg', :id => 'user-form' do
+    %fieldset
+      %h3
+        %a{:href=>'/partners/index/users', :title=>''}
+          Пользователи
+        %span
+          &#187;
+        %span
+          Ja Javovich
+      .clear-line
+      .control-group
+        %label.control-label{:for => "input01"} Имя
+        .controls
+          %input#input01.span3.disabled.user-name.not-valid{:name => "user[first_name]", :type => "text", :disabled => '', :value => current_user.first_name}
+
+      .control-group
+        %label.control-label{:for => "input02"} Фамилия
+        .controls
+          %input#input02.span3.disabled.user-name.not-valid{:name => "user[first_name]", :type => "text", :disabled => '', :value => current_user.first_name}
+
+      .control-group
+        %label.control-label{:for => "input03"} Отчество
+        .controls
+          %input#input03.span3.disabled.user-name.not-valid{:name => "user[first_name]", :type => "text", :disabled => '', :value => current_user.first_name}
+      .control-group
+        %label.control-label{:for => "input03"} Должность
+        .controls
+          %select.span3#select01{:disabled => ''}
+            %option{:value=>'super-admin'} Супер-администратор
+            %option{:value=>'admin'} Администратор
+            %option{:value=>'oper'} оператор
+
+      .control-group
+        %label.control-label Номер телефона
+        .controls
+          %input#input01.span3.disabled.user-phone.not-valid{:name => "user[phone]", :type => "text", :disabled => '', :value => current_user.phone}
+
+      .control-group
+        %label.control-label Е-мэйл
+        .controls
+          %input#input01.span3.disabled{:name => "user[email]", :type => "text", :disabled => '', :value => current_user.email}
+
+      .control-group
+        %label.control-label
+        .controls
+          %input.btn#change-profile{:type => 'button', :value => 'Редактировать профиль'}
+
+      .control-group
+        %label.control-label{:for => "optionsCheckbox"}
+        .controls
+          %input.btn#change-password{:type => 'button', :value => 'Изменить пароль'}
+
+      .form-actions#btn-control
+        %button.btn.btn-primary.enter{:type => "submit"} Сохранить изменения
+        %button.btn#cansel Отменить
+
+  = form_tag "/profile/info", :class => 'form-horizontal pass', :id => 'pass-form' do
+    %fieldset
+      %h3
+        %a{:href=>'/partners/index/users', :title=>''}
+          Пользователи
+        %span
+          &#187;
+        %a{:href=>'/partners/index/edit', :title=>''}
+          Ja Javovich
+        %span
+          &#187;
+        %span
+          Новый пароль
+      .clear-line
+      .control-group
+        %label.control-label{:for => "input01"} Текущий пароль
+        .controls
+          %input#input01.span3{:name => "pass[old]", :type => "text", :value => ''}
+
+      .control-group
+        %label.control-label Новый пароль
+        .controls
+          %input#input01.span3.user-repass.not-valid{:name => "pass[new]", :type => "text", :value => ''}
+
+      .control-group
+        %label.control-label Повтор нового пароля
+        .controls
+          %input#input01.span3.user-repass.not-valid{:name => "pass[renew]", :type => "text", :value => ''}
+
+      .form-actions
+        %button.btn.btn-primary.enter-pass{:type => "submit"} Сохранить изменения
+        %button.btn#cansel-pass  Отменить

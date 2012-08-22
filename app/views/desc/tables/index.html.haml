@@ -1,0 +1,357 @@
+.container.cont.desc
+  .row-fluid
+    %ul.breadcrumb.pull-left.span9
+      %li.active
+        Общая статистика
+    %button.btn.btn-large.pull-right Сохранить отчет
+  %hr
+  .row-fluid
+    %table.pull-left.top-table
+      %tbody
+        %tr
+          %td
+            Рестораны
+          %td
+            %select
+              %option Суши в Уши
+    %table.pull-right.top-table
+      %tbody
+        %tr
+          %td
+            Период
+          %td
+            %input#datePicker.margin-left
+          %td
+            .btn-group.btn-width{'data-toggle'=>"buttons-radio"}
+              %button.btn{'data-period'=>"yesterday"} вчера
+              %button.btn{'data-period'=>"day"} сегодня
+              %button.btn.active{'data-period'=>"week"} неделя
+              %button.btn{'data-period'=>"month"} месяц
+              %button.btn{'data-period'=>"quarter"}квартал
+              %button.btn{'data-period'=>"year"} год
+  %hr
+
+  .row-fluid
+    .span6.margin-bottom
+
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Заказы
+
+      .clear
+
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+
+      .clear
+
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Итого
+            %th Вчера
+            %th Сегодня
+            %th Завтра
+        %tbody
+          %tr
+            %td
+              27
+            %td
+              0
+            %td
+              0
+            %td
+              0
+
+      .clear
+
+      .orders-graph#orders-graph{:style => "width: 448px; height: 200px"}
+
+    .span6.margin-bottom
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Сумма заказов (руб.)
+
+      .clear
+
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+
+      .clear
+
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Итого
+            %th Вчера
+            %th Сегодня
+            %th Завтра
+        %tbody
+          %tr
+            %td
+              27
+            %td
+              0
+            %td
+              0
+            %td
+              0
+
+      .clear
+
+      .orders-graph#orders-cost{:style => "width: 448px; height: 200px"}
+
+
+  .row-fluid
+    .span6.margin-bottom
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Популярные блюда
+      .clear
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+      .clear
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Название
+            %th Заказы
+            %th Сумма
+        %tbody
+          %tr
+            %td
+              Суши обжирайка
+            %td
+              198
+            %td
+              1 000 руб.
+          %tr
+            %td
+              Суши обжирайка
+            %td
+              198
+            %td
+              1 000 руб.
+            %tr
+              %td
+                Суши обжирайка
+              %td
+                198
+              %td
+                1 000 руб.
+            %tr
+              %td
+                Суши обжирайка
+              %td
+                198
+              %td
+                1 000 руб.
+            %tr
+              %td
+                Суши обжирайка
+              %td
+                198
+              %td
+                1 000 руб.
+            %tr
+              %td
+                Суши обжирайка
+              %td
+                198
+              %td
+                1 000 руб.
+    .span6.margin-bottom
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Рейтинг
+
+      .clear
+
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+
+      .clear
+
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Всего оценок
+            %th Рейтинг
+            %th Плюсы
+            %th Минусы
+        %tbody
+          %tr
+            %td
+              27
+            %td
+              4,45
+            %td
+              67
+            %td
+              15
+
+      .clear
+
+      .orders-graph#rating{:style => "width: 448px; height: 200px"}
+
+  .row-fluid
+    .span6.margin-bottom
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Рейтинг
+
+      .clear
+
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+
+      .clear
+
+      .orders-graph#pie{:style => "width: 448px; height: 250px"}
+
+    .span6.margin-bottom
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Статусы
+      .clear
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+      .clear
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Статус
+            %th Кол-во
+            %th %
+        %tbody
+          %tr
+            %td
+              Доставлен
+            %td
+              1 087
+            %td
+              98%
+          %tr
+            %td
+              Отменен
+            %td
+              3
+            %td
+              1%
+            %tr
+              %td
+                Клиент отказался
+              %td
+                1
+              %td
+                0,5%
+            %tr
+              %td
+                Неизвестно
+              %td
+                1
+              %td
+                0,5%
+
+  .row-fluid
+    .span6.margin-bottom
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Активность по часам
+
+      .clear
+
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+
+      .clear
+
+      .orders-graph#time{:style => "width: 448px; height: 250px"}
+
+    .span6.margin-bottom
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Средний чек
+
+      .clear
+
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+
+      .clear
+
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Сумма заказов
+            %th Средний чек
+            %th Вчера
+            %th Сегодня
+            %th Завтра
+        %tbody
+          %tr
+            %td
+              789 789
+            %td
+              15 000
+            %td
+              12 000
+            %td
+              13 000
+            %td
+              15 000
+
+      .clear
+
+      .orders-graph#bill{:style => "width: 448px; height: 200px"}
+
+  .row-fluid
+    .span6.margin-bottom
+      %h3.pull-left
+        %a{:href=>'/desc/tables/inner', :title=>''} Регионы доставки
+
+      .clear
+
+      .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+        %button.btn{:data => {:period => "yesterday"}} вчера
+        %button.btn.active{:data => {:period => "day"}} сегодня
+        %button.btn{:data => {:period => "week"}} неделя
+        %button.btn{:data => {:period => "month"}} месяц
+        %button.btn{:data => {:period => "quarter"}} квартал
+        %button.btn{:data => {:period => "year"}} год
+
+      .clear
+
+      .orders-graph#pie-region{:style => "width: 448px; height: 250px"}

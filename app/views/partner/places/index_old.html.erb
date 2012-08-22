@@ -1,0 +1,24 @@
+<h2>Рестораны</h2>
+<table>
+  <thead>
+      <tr>
+        <th>Название</th>
+        <th>Категория</th>
+        <th>заказы</th>
+        <th>Сумма(руб.)</th>
+      </tr>
+  </thead>
+   <tbody>
+   <% @places.each do |p| %>
+   <tr onclick="location.href='<%= partner_place_sections_path(p.id) %>'">
+     <td><%= p.name %></td>
+     <td><%= p.name %></td>
+     <td><%= p.orders.count %></td>
+     <td><%= p.orders.sum(:price).ceil  %></td>
+   </tr>
+   <% end %>
+   </tbody>
+</table>
+
+
+    <%#=link_to p.name, partner_place_path(p.id)  %>

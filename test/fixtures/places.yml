@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  active: 1
+  name: MyString
+  description: MyText
+  mon_order: 1
+  delivery_price: 1
+  delivery_time: MyString
+  rating_plus: 1
+  rating_minus: 1
+
+two:
+  active: 1
+  name: MyString
+  description: MyText
+  mon_order: 1
+  delivery_price: 1
+  delivery_time: MyString
+  rating_plus: 1
+  rating_minus: 1

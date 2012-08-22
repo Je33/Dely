@@ -1,0 +1,9 @@
+SHow <%= @place.name %>   <br>
+Категории: <br>
+<% @sections.each do |s| %>
+<%= link_to s.name + ' (' + s.cnt.to_s + ')', partner_place_section_path(params[:id],s.id) %>  <br>
+<% end %>
+<br>
+<%= link_to 'Создать',   new_partner_place_section_path(params[:id]) %>
+<br>
+<%= link_to 'Назад', '/partner' %>

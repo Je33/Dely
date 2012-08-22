@@ -1,0 +1,32 @@
+#detail.modal.hide.fade.in
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Акция
+  .modal-body
+    .big-img
+      .carousel-inner
+        .active.item{'data-name' => ''}
+          %img{:src => @special.picture? ? @special.picture(:large) : @special.item.photo(:large), :alt=> '', :width => '', :height => '300'}
+      /%a.left{:href => 'javascript:;'} ‹
+      /%a.right{:href => 'javascript:;'} ›
+      .opt-order
+        %p.text.pull-left= @special.name
+        .cost.pull-left
+          %p.new-cost.alert.alert-success
+            Новая цена:
+            %span
+              #{@special.item.price.round} руб.
+          %p.old-cost
+            Старая цена:
+            %span
+              #{@special.old_price.round} руб.
+        - if @allow_order
+          %p.cost.btn-t.pull-left Кол-во:
+          .btn-group.btn-grp-big.pull-left
+            %button.btn.min -
+            %input.btn.coll-el{:maxlength => "2", :title => "", :type => "text", :value => "1"}
+            %button.btn.plus +
+  .modal-footer
+    - if @allow_order
+      %a.btn.btn-success.btn-large.pull-right#add-order{:href => "javascript:;", :data => {:id => @special.item.id}} Добавить в корзину
+    %a.btn.btn-large.closeallmodal{:href=> 'javascript:;', :title => ''} Закрыть

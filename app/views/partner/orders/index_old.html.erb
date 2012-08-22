@@ -1,0 +1,74 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+          <div class="well">
+            <ul class="nav nav-pills pull-right top-check">
+              <li>
+                <div class="filter-well">
+                  <div class="checkbox-panel">
+                    <a href="javascript:void(0);" title="">Новый</a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="filter-well">
+                  <div class="checkbox-panel">
+                    <a href="javascript:void(0);" title="">Подтвержден</a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="filter-well">
+                  <div class="checkbox-panel">
+                    <a href="javascript:void(0);" title="">Доставлен</a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="filter-well">
+                  <div class="checkbox-panel">
+                    <a href="javascript:void(0);" title="">Отменен</a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="filter-well">
+                  <div class="checkbox-panel">
+                    <a href="javascript:void(0);" title="">Неизвестно</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <table class="table table-bordered table-condensed order-list-null">
+              <thead>
+              <tr>
+                <th>Статус</th>
+                <th>Оператор</th>
+                <th>Время и дата</th>
+                <th>Ресторан</th>
+                <th>Сумма</th>
+                <th>Номер</th>
+                <th>№</th>
+              </tr>
+              </thead>
+              <tbody>
+                  <% @orders.each do |o|  %>
+                        <tr class="new-order" onclick="location.href='<%= partner_order_path(o.id) %>'">
+                        <td><%=Status.exists?(:id=>o.status_id) ? Status.find(o.status_id).name : 'Неизвестный' %></td>
+                        <td>&mdash; </td>
+                        <td><%= o.created_at.hour %>:<%= o.created_at.min %> Сегодня</td>
+                        <td><%=Place.exists?(:id=>o.place_id) ? Place.find(o.place_id).name : 'Неизвестен' %></td>
+                        <td><%= o.price %></td>
+                        <td><%= o.name %></td>
+                        <td><%= o.id %></td>
+                      </tr>
+                  <% end %>
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </div>
+</div>
+
+
+

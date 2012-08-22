@@ -1,0 +1,5 @@
+<% @finances.each do |f|  %>
+    <tr class="<%= f.findClass %>" onclick="location.href='<%= desc_finance_path(f.id) %>'">
+      <%= render 'finance',:f=>f %>
+    </tr>
+<% end %>

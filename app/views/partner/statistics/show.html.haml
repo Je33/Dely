@@ -1,0 +1,576 @@
+- content_for :head do
+  = javascript_include_tag "statistics"
+.container.cont.desc
+  -#.row-fluid
+    %ul.breadcrumb.pull-left.span9
+      %li.active
+        Общая статистика
+    %button.btn.btn-large.pull-right Сохранить отчет
+  %hr
+  .row-fluid
+    %table.pull-left.top-table
+      %tbody
+        %tr
+          %td
+            Рестораны
+          %td
+            %select#place-select
+              %option{:value => 0} Все рестораны
+              - @places.each do |p|
+                %option{:value => p.id}= p.name
+    %table.pull-right.top-table
+      %tbody
+        %tr
+          %td
+            Период
+          %td
+            %input#date-from.margin-left{:width=>'50px'}
+          %td
+          %td
+            %input#date-to.margin-left{:width=>'50px'}
+          %td
+            .btn-group.btn-width#date-btns{:data => {:toggle => "buttons-radio"}}
+              %button.btn{:data => {:start => Time.now.beginning_of_day.to_i - 1.day, :end => Time.now.end_of_day.to_i - 1.day}} вчера
+              %button.btn{:data => {:start => Time.now.beginning_of_day.to_i, :end => Time.now.end_of_day.to_i}} сегодня
+              %button.btn.active{:data => {:start => Time.now.beginning_of_week.to_i, :end => Time.now.end_of_week.to_i}} неделя
+              %button.btn{:data => {:start => Time.now.beginning_of_month.to_i, :end => Time.now.end_of_month.to_i}} месяц
+              %button.btn{:data => {:start => Time.now.beginning_of_quarter.to_i, :end => Time.now.end_of_quarter.to_i}} квартал
+              %button.btn{:data => {:start => Time.now.beginning_of_year.to_i, :end => Time.now.end_of_year.to_i}} год
+  %hr
+
+  .row-fluid
+    .tabbable.span12
+      %ul.nav.nav-tabs
+        %li.active
+          %a{:href=>"javascript:;"} Количество
+        %li
+          %a{:href=>"javascript:;"} Сумма
+        %li
+          %a{:href=>"javascript:;"} Популярные
+        %li
+          %a{:href=>"javascript:;"} Рейтинг
+        %li
+          %a{:href=>"javascript:;"} Лояльность
+        %li
+          %a{:href=>"javascript:;"} Статусы
+        %li
+          %a{:href=>"javascript:;"} Время суток
+        %li
+          %a{:href=>"javascript:;"} Средний чек
+        %li
+          %a{:href=>"javascript:;"} Регионы доставки
+      .tab-content
+        .tab-pane.active
+          .row-fluid
+            .orders-graph#stat-orders-graph{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Итого
+                    %th Вчера
+                    %th Сегодня
+                    %th Завтра
+                %tbody
+                  %tr
+                    %td
+                      27
+                    %td
+                      0
+                    %td
+                      0
+                    %td
+                      0
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th №
+                    %th Заказ
+                    %th Время и дата
+                    %th Ресторан
+                    %th Сумма
+                    %th Статус
+                    %th Оценка
+                %tbody
+                  %tr
+                    %td
+                      56
+                    %td
+                      %a{:href=>'javascript:;', :title=>''}
+                        123 132
+                    %td
+                      16:45 Сегодня
+                    %td
+                      Маки-Маки
+                    %td
+                      1 560
+                    %td
+                      Новый
+                    %td.good
+                      +1
+                  %tr
+                    %td
+                      56
+                    %td
+                      %a{:href=>'javascript:;', :title=>''}
+                        123 132
+                    %td
+                      16:45 Вчера
+                    %td
+                      Маки-Маки
+                    %td
+                      1 560
+                    %td
+                      Подтвержден
+                    %td.bad -1
+                  %tr
+                    %td
+                      56
+                    %td
+                      %a{:href=>'javascript:;', :title=>''}
+                        123 132
+                    %td
+                      16:45 14 Марта 2012
+                    %td
+                      Маки-Маки
+                    %td
+                      1 560
+                    %td
+                      Отменен
+                    %td.bad -1
+        .tab-pane
+          .row-fluid
+            .orders-graph#stat-orders-cost{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Итого
+                    %th Средний чек
+                    %th Вчера
+                    %th Сегодня
+                    %th Завтра
+                %tbody
+                  %tr
+                    %td
+                      654 654
+                    %td
+                      456 456
+                    %td
+                      123
+                    %td
+                      133
+                    %td
+                      123 123
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th Дата
+                    %th Количество заказов
+                    %th Сумма
+                %tbody
+                  %tr
+                    %td
+                      22 Марта 2012
+                    %td
+                      123
+                    %td
+                      10 500
+
+        .tab-pane
+          .row-fluid
+            %table.table.table-striped.table-bordered
+              %thead
+                %tr
+                  %th Блюдо
+                  %th Категория
+                  %th Цена
+                  %th Количество заказов
+                  %th Сумма заказов
+              %tbody
+                %tr
+                  %td
+                    Маки-онигару
+                  %td
+                    Роллы
+                  %td
+                    546
+                  %td
+                    133
+                  %td
+                    123 123
+                %tr
+                  %td
+                    Маки-онигару
+                  %td
+                    Роллы
+                  %td
+                    546
+                  %td
+                    133
+                  %td
+                    123 123
+                %tr
+                  %td
+                    Маки-онигару
+                  %td
+                    Роллы
+                  %td
+                    546
+                  %td
+                    133
+                  %td
+                    123 123
+            .clear
+        .tab-pane
+          .row-fluid
+            .orders-graph#stat-orders-rating{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Всего оценок
+                    %th Общий рейтинг
+                    %th Рейтинг за этот период
+                    %th.good Плюсы
+                    %th.bad Минусы
+                %tbody
+                  %tr
+                    %td
+                      87
+                    %td
+                      4,34
+                    %td
+                      4,57
+                    %td.good
+                      64
+                    %td.bad
+                      15
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th №
+                    %th Заказ
+                    %th Время и дата
+                    %th Ресторан
+                    %th Сумма
+                    %th Статус
+                    %th Оценка
+                %tbody
+                  %tr
+                    %td
+                      56
+                    %td
+                      %a{:href=>'javascript:;', :title=>''}
+                        123 132
+                    %td
+                      16:45 Сегодня
+                    %td
+                      Маки-Маки
+                    %td
+                      1 560
+                    %td
+                      Новый
+                    %td.good
+                      +1
+                  %tr
+                    %td
+                      56
+                    %td
+                      %a{:href=>'javascript:;', :title=>''}
+                        123 132
+                    %td
+                      16:45 Вчера
+                    %td
+                      Маки-Маки
+                    %td
+                      1 560
+                    %td
+                      Подтвержден
+                    %td.bad -1
+                  %tr
+                    %td
+                      56
+                    %td
+                      %a{:href=>'javascript:;', :title=>''}
+                        123 132
+                    %td
+                      16:45 14 Марта 2012
+                    %td
+                      Маки-Маки
+                    %td
+                      1 560
+                    %td
+                      Отменен
+                    %td.bad -1
+        .tab-pane
+          .row-fluid
+            .span5
+              .orders-graph#loyalty{:style => "width: 388px; height: 350px"}
+            %table.table.table-striped.table-bordered.span7
+              %thead
+                %tr
+                  %th #
+                  %th Заказов на одного человека
+                  %th Заказы
+                  %th %
+              %tbody
+                %tr
+                  %td
+                    1
+                  %td
+                    1
+                  %td
+                    150
+                  %td
+                    75%
+                %tr
+                  %td
+                    2
+                  %td
+                    2-3
+                  %td
+                    30
+                  %td
+                    15%
+                %tr
+                  %td
+                    3
+                  %td
+                    4-7
+                  %td
+                    10
+                  %td
+                    7%
+                %tr
+                  %td
+                    4
+                  %td
+                    8-15
+                  %td
+                    7
+                  %td
+                    2%
+                %tr
+                  %td
+                    5
+                  %td
+                    16-31
+                  %td
+                    3
+                  %td
+                    1%
+
+        .tab-pane
+          .row-fluid
+            .span5
+              .orders-graph#status{:style => "width: 388px; height: 350px"}
+            %table.table.table-striped.table-bordered.span7
+              %thead
+                %tr
+                  %th Статус
+                  %th Количество
+                  %th %
+              %tbody
+                %tr
+                  %td
+                    Доставлен
+                  %td
+                    150
+                  %td
+                    97,5%
+                %tr
+                  %td
+                    Отменен
+                  %td
+                    30
+                  %td
+                    1,5%
+                %tr
+                  %td
+                    Не доставлен
+                  %td
+                    10
+                  %td
+                    1%
+                %tr
+                  %td
+                    Неизвестно
+                  %td
+                    7
+                  %td
+                    0,5%
+
+        .tab-pane
+          .row-fluid
+            .orders-graph#order-to-time{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            %table.table.table-striped.table-bordered.span12
+              %thead
+                %tr
+                  %th Время
+                  %th Количество заказов
+                  %th %
+              %tbody
+                %tr
+                  %td
+                    00:00
+                  %td
+                    2
+                  %td
+                    1,1%
+                %tr
+                  %td
+                    01:00
+                  %td
+                    19
+                  %td
+                    2,5%
+                %tr
+                  %td
+                    02:00
+                  %td
+                    47
+                  %td
+                    1,1%
+
+        .tab-pane
+          .row-fluid
+            .orders-graph#average-bill{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Сумма заказов
+                    %th Средний чек
+                    %th Вчера
+                    %th Сегодня
+                    %th Завтра
+                %tbody
+                  %tr
+                    %td
+                      132 133
+                    %td
+                      780
+                    %td
+                      689
+                    %td
+                      590
+                    %td
+                      780
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th Дата
+                    %th Количество заказов
+                    %th Сумма
+                    %th Средний чек
+                %tbody
+                  %tr
+                    %td
+                      22 Марта 2012
+                    %td
+                      456
+                    %td
+                      10 560
+                    %td
+                      10 560
+                  %tr
+                    %td
+                      21 Марта 2012
+                    %td
+                      456
+                    %td
+                      78979
+                    %td
+                      789
+
+        .tab-pane
+          .row-fluid
+            .span5
+              .orders-graph#pie-region-delivery{:style => "width: 388px; height: 350px"}
+            %table.table.table-striped.table-bordered.span7
+              %thead
+                %tr
+                  %th #
+                  %th Регион
+                  %th Заказы
+                  %th Сумма заказов
+                  %th %
+              %tbody
+                %tr
+                  %td
+                    1
+                  %td
+                    Центральный
+                  %td
+                    150
+                  %td
+                    123 123
+                  %td
+                    75%
+                %tr
+                  %td
+                    2
+                  %td
+                    Советский
+                  %td
+                    30
+                  %td
+                    123 123
+                  %td
+                    75%
+                %tr
+                  %td
+                    3
+                  %td
+                    Ленинский
+                  %td
+                    10
+                  %td
+                    123 123
+                  %td
+                    75%
+                %tr
+                  %td
+                    4
+                  %td
+                    Тракторозаводский
+                  %td
+                    7
+                  %td
+                    123 123
+                  %td
+                    75%
+                %tr
+                  %td
+                    5
+                  %td
+                    ЧМЗ
+                  %td
+                    3
+                  %td
+                    123 123
+                  %td
+                    75%

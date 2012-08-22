@@ -1,0 +1,16 @@
+- if @partner_bred
+  - @partner_bred.each do |pb|
+    -if pb==@partner_bred.last
+      %li.active
+        = link_to pb[0],pb[1]
+    -else
+      = link_to pb[0],pb[1]
+-else
+  %li
+    %a{:href => '/desc', :title=>''}
+
+%li.pull-right.ypr-link
+  -if @period
+    %a{:href=>desc_finances_path(:period=>(@period.to_date-1.month).strftime("%Y-%m-01")), :title=>'', :style=>'margin-right: 10px'} ← #{(I18n.t ((@period.to_date-1.month).strftime("%B")) ) +' '+ (@period.to_date-1.month).to_date.strftime("%Y")}
+    -if (@period.to_date+1.month).strftime("%Y-%m-01")!=(Time.now+1.month).strftime("%Y-%m-01")
+      %a{:href=>desc_finances_path(:period=>(@period.to_date+1.month).strftime("%Y-%m-01")), :title=>''} #{(I18n.t ((@period.to_date+1.month).strftime("%B")) ) +' '+ (@period.to_date+1.month).to_date.strftime("%Y")} →

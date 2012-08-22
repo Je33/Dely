@@ -1,0 +1,198 @@
+!!! 5
+%html
+  %head
+    %title= @title
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = javascript_include_tag "index"
+    = csrf_meta_tags
+    %meta{:charset => "utf-8"}
+    %meta{:content => "width=1000",  :name => "viewport"}
+    %meta{:name => "description", :content => "Svek.la {свекла} — это единая служба доставки любимой еды и цветов в Челябинске. Заказывай у нас и получай подарки!"}
+    
+    %meta{:content => "", :name => "author"}
+    %meta{'http-equiv'=>"X-UA-Compatible", :content=>"IE=edge,chrome=1"}
+    /[if IE]
+      %script{:src => "//html5shim.googlecode.com/svn/trunk/html5.js"}
+    /[if IE 6]
+      %meta{'HTTP-EQUIV'=> 'REFRESH', :CONTENT => "1; URL=/ie6.html"}
+    /[if IE 7]
+      %meta{'HTTP-EQUIV'=> 'REFRESH', :CONTENT => "1; URL=/ie7.html"}
+    /%link{:href => "images/favicon.ico", :rel => "shortcut icon"}
+
+    %link{:rel=>"stylesheet", :href=>"/css/jslider.css", :type=>"text/css", :charset=>"utf-8"}
+    %link{:rel=>"stylesheet", :href=>"/css/jslider.blue.css", :type=>"text/css", :charset=>"utf-8"}
+
+    %link{:href => "/img/favicon.png", :rel => "icon", :type=>"image/png"}
+    %link{:href => "/img/favicon_xl.png", :rel => "apple-touch-icon", :type=>"image/png"}
+    %link{:href => "/img/svek.la_thumb.png", :rel => "image_src", :type=>"image/png"}
+    %meta{:content => "/img/svek.la_thumb.png", :property => "og:image"}
+
+    <script type="text/javascript" src="http://userapi.com/js/api/openapi.js?52"></script><script type="text/javascript">VK.init({apiId: 3054223, onlyWidgets: true});</script>
+
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>
+
+    -#%link{:href => "images/apple-touch-icon.png", :rel => "apple-touch-icon"}
+    -#%link{:href => "images/apple-touch-icon-72x72.png", :rel => "apple-touch-icon", :sizes => "72x72"}
+    -#%link{:href => "images/apple-touch-icon-114x114.png", :rel => "apple-touch-icon", :sizes => "114x114"}
+    -#%script{:src => "/js/jquery.slider.min.js"}
+    %script{:src => "/js/script.js"}
+
+  %body{:onunload => ""}
+    -##beta
+      Привет! Cайт работает в тестовом режиме, поэтому заказы пока не принимаются. Спасибо!
+    - if !@allow_order
+      #beta Привет! На этой неделе мы принимаем заказы только с 10:00 до 18:00. Спасибо за понимание!
+    %noscript.old_browser.java_is_off
+      .wrap
+        %img.java_img{:alt => "", :src => "/img/java_alert.png"}
+          %h2 Пожалуйста, включите JavaScript.
+          %p.old_info Работоспособность некоторых функций нашего сайта зависит от того, включена ли поддержка JavaScript в Вашем браузере.
+          %p.java_help
+            %b полезная ссылка
+            %a{:href => "http://www.google.ru/support/bin/answer.py?answer=23852"} Как включить поддержку JavaScript в вашем браузере.
+            %span http://www.google.ru/support/bin/answer.py?answer=23852
+    <script type="text/javascript">$(document).ready(function() {setTimeout(function() {$("#beta").slideDown(500);}, 2000);}); //where 500 is the time effect in miliseconds..​</script>
+    .navbar
+      .navbar-inner.bg
+        .container.all-width
+          %ul.breadcrumb.pull-left
+            %li.relative
+              %a.brand.logo-img{:href => "/", :title=>""}
+              - if @bred!=[] and @bred!=nil
+                - @bred.each do |b|
+                  %li= link_to b[0],b[1], :class=>"brand"
+          %ul.nav.top-link.pull-left
+            %li
+              -#%a#what.top-link{:href=>"javascript:void(0);", :title=>""}
+              -#  &larr;
+              -#  %span
+              -#    Как это работает?
+            %li
+              %a#what.top-link{:href=>"javascript:void(0);", :title=>""}
+                Как это работает?
+              -# %a#tele.top-link{:href=>"javascript:void(0);", :title=>""}
+                %span+7 (351)
+                220-1010
+          .nav-collapse
+            %ul.nav.pull-right
+              - if @city != nil
+                #current-city{:data => {:id => @city.id}}
+              - #if @cities != nil
+              - #%li.nav-text
+              - #    %p Доставка еды в
+              - #%li.dropdown
+              - #    %a#current-city.dropdown-toggle{:href => "javascript:;", :data => {:toggle => "dropdown", :id => @city.id}}= @city[:name_dec]
+              - #    %ul#city.dropdown-menu
+              - #      - @cities.each do |c|
+              - #        %li
+              - #          %a{:href => "javascript:;", :data => {:id => c.id}}= c.name
+              -#%li.divider-vertical
+              - if user_signed_in?
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "javascript:;"}
+                    %span= current_user.first_name
+                  %ul.dropdown-menu
+                    %li= link_to "Мои заказы #{current_user.orders.activated.count.to_i > 0 ? "(" + current_user.orders.activated.count.to_s + ")" : ""}", "/profile/orders"
+                    %li= link_to 'Мой профиль', "/profile/info"
+                    %li
+                      %a{:href => "/profile/gifts", :title=>''} Призы
+                    - if current_user.access.to_i == 1 or current_user.access.to_i == 2
+                      %li.divider
+                      %li
+                        %a{:href => "/partner", :title=>''} Для ресторанов
+                    - if current_user.access.to_i == 3 or current_user.access.to_i == 4
+                      %li.divider
+                      %li
+                        %a{:href => "/desc", :title=>''} Управление
+                    %li.divider
+                    %li= link_to "Выход", destroy_user_session_path, :method => :delete
+              - else
+                %ul.nav
+                  %li
+                    %a#login-button{:href => "javascript:;"} Войти
+                  /%li= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook)
+                  /%li= link_to "Sign in with Vkontakte", user_omniauth_authorize_path(:vkontakte)
+                  %li
+                    %a#registration-button{:href => "javascript:;"} Регистрация
+      .nav_btm
+    = yield
+
+
+    .footer
+      .container
+        %p.f1
+          %a#what{:href => "javascript:;", :title=>''} Как это работает
+          %span ~
+          %a{:href => "/partnership", :title=>''} Для ресторанов
+          %span ~
+          %a{:href => "/gifts", :title=>''} Призы
+          %span ~
+          %a{:href => "/vacancy", :title=>''} Вакансии
+          %span ~
+          %a{:href => "/contact", :title=>''} Контакты
+          
+
+        %p.f2
+          <a href="http://vk.com/svek_la">Вконтакте</a>
+
+          <a href="https://www.facebook.com/pages/Svekla/383117755081808">Facebook</a>
+        %p.f3
+          Svek.la {свекла} — это единая служба доставки любимой еды и цветов в Челябинске. Заказывай у нас и получай подарки!<br/> <a href="/license">Пользовательское соглашение</a>
+
+      =# render 'forms'
+  - if @allow_order
+    #basket-bar{:class => @uorders != nil && @uorders.count > 0 ? "navbar navbar-fixed-bottom" : "navbar navbar-fixed-bottom hide"}
+      .navbar-inner.container.navbar-inner-bottom
+        .container.height-fix
+          %img.buscket.pull-left#basketImgClick{:src => '/img/buscket.png', :alt => '', :width => '100', :height => '100'}
+          %ul.nav.pull-left.padding-left-fix
+            %li
+              - if @uorders != nil && @uorders.count > 0
+                - @uorders.each do |o|
+                  %ul#basket-info{:data => {:id => o.id}}
+                    %li.bascket-text{:rel => "popover", :data => {:content => ''} }
+                      %p.big{:id => 'basket-unit-' + o.id.to_s, :data => {:id => o.id}, 'data-toggle' =>'dropup'}
+                        Ваш заказ в "#{o.place.name}" на
+                        %span= o.price_base.to_i.to_s + " + " + o.price_delivery.to_i.to_s + " руб."
+                        за доставку
+                      - dv = o.place.min_order.to_i - o.price_base.to_i
+                      - if dv > 0
+                        %p.lit
+                          Не хватает
+                          %span{:id => 'ins-basket-' + o.id.to_s} #{dv.to_i}
+                          руб. до минимальной суммы заказа
+                      - else
+                        %p.lit.hide
+                          Не хватает
+                          %span{:id => 'ins-basket-' + o.id.to_s} 0
+                          руб. до минимальной суммы заказа
+              %a.le{:href=>"javascript:;", :title=>''} ↑
+              %a.ri{:href=>"javascript:;", :title=>''} ↓
+          %ul.nav.pull-right.padding-fix
+            -#%li.nav-text
+              %a.top-link#went{:href => '#0', :title => ''}
+                %span
+                  Перейти в корзину
+            %li
+              .pull-right#to-order.dropup{:rel => "popover", :data => {:content => '<span class="tooltip-red"><h4>Минимальная сумма заказа 600 руб</h4>.Добавьте еще что-нибудь в корзину</span>'}}
+                %a.pull-right.btn.btn-large.btn-success#baskets-button{:href => '#1', :title => ''}
+                  %i.icon-search.icon-ok.icon-white
+                  Оформить заказ
+                %ul#baskets.dropdown-menu
+  /google
+  <script type="text/javascript">var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-3665200-33']);_gaq.push(['_setDomainName', 'svek.la']);_gaq.push(['_trackPageview']);(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);})();</script>
+  /metrika
+  <script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter15539446 = new Ya.Metrika({id:15539446, enableAll: true, webvisor:true}); } catch(e) {} }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/15539446" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  /reformal
+  <script type="text/javascript">var reformalOptions = {project_id: 63233,project_host: "delivery.reformal.ru",tab_orientation: "right",tab_indent: "50%",tab_bg_color: "#bd2074",tab_border_color: "#FFFFFF",tab_image_url: "http://tab.reformal.ru/T9GC0LfRi9Cy0Ysg0Lgg0L%252FRgNC10LTQu9C%252B0LbQtdC90LjRjw==/FFFFFF/2a94cfe6511106e7a48d0af3904e3090/left/1/tab.png",tab_border_width: 1};(function() {var script = document.createElement('script');script.type = 'text/javascript'; script.async = true;script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';document.getElementsByTagName('head')[0].appendChild(script);
+  })();</script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://delivery.reformal.ru">Oтзывы и предложения</a></noscript>
+  /scripts
+  %script{:type=>"text/javascript", :src=>"/js/costslider/jshashtable-2.1_src.js"}
+  %script{:type=>"text/javascript", :src=>"/js/costslider/jquery.numberformatter-1.2.3.js"}
+  %script{:type=>"text/javascript", :src=>"/js/costslider/tmpl.js"}
+  %script{:type=>"text/javascript", :src=>"/js/costslider/jquery.dependClass-0.1.js"}
+  %script{:type=>"text/javascript", :src=>"/js/costslider/draggable-0.1.js"}
+  %script{:type=>"text/javascript", :src=>"/js/costslider/jquery.slider.js"}
+  %script{:type=>"text/javascript", :src=>"/js/phone.js"}

@@ -1,0 +1,10 @@
+.hide.modal.fade.in#partner
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Подтверждение удаления
+  .modal-body
+    %p.rest-phone-text
+      Вы дествительно хотите удалить заказ?
+  .modal-footer
+    %a.btn#cancel{"data-dismiss" => "modal", :href => "#"} Отмена
+    %a.btn.btn-danger#delete-order-position{:href => "#", :title=>""} Удалить заказ

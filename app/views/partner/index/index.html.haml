@@ -1,0 +1,155 @@
+.span6.margin-bottom
+  %h3.pull-left
+    %a{:href=>'#', :title=>''} Статистика заказов
+
+  .list.pull-left{:style=>'margin: 4px 0 0 20px'}
+    .content-menu
+      %ul.nav.nav-pills
+        %li.active
+          %a{:href=>"javascript:;", :title=>''} сумма
+        %li
+          %a{:href=>"javascript:;", :title=>''} кол-во
+        %li
+          %a{:href=>"javascript:;", :title=>''} активность
+
+  .clear
+
+  .btn-group.btn-width#orders-period{:data => {:toggle => "buttons-radio"}}
+    %button.btn{:data => {:period => "yesterday"}} вчера
+    %button.btn.active{:data => {:period => "day"}} сегодня
+    %button.btn{:data => {:period => "week"}} неделя
+    %button.btn{:data => {:period => "month"}} месяц
+    %button.btn{:data => {:period => "quarter"}} квартал
+    %button.btn{:data => {:period => "year"}} год
+
+  .clear
+
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Итого
+        %th Вчера
+        %th Сегодня
+        %th Завтра
+    %tbody
+      %tr
+        %td
+          #{@orders.count}
+        %td
+          #{@ord_yd.count}
+        %td
+          #{@ord_td.count}
+        %td
+          #{(@ord_yd.count+@ord_td.count)/2.round}
+
+  .clear
+
+  .orders-graph#orders-graph{:style => "width: 448px; height: 200px"}
+
+.span6.margin-bottom
+  %h3.pull-left
+    %a{:href=>'#', :title=>''} Счета на оплату
+  = select_tag "date_id_select", options_for_select(@dates),:style=>'desc-select.pull-left'
+
+  .clear
+  %table.table.not-hovered
+    %thead
+      %tr
+        %th Статус
+        %th Кол-во
+        %th Общая сумма
+    %tbody
+      %tr
+        %td.need-call
+          .ico
+          Нужно позвонить
+        %td
+          #{Finance.select('finance_status_id').where(:finance_status_id=>40).count.to_s}
+        %td
+          210 000 руб.
+      %tr
+        %td.not-ordered
+          .ico
+          Не согласовано
+        %td
+          #{Finance.select('finance_status_id').where(:finance_status_id=>10).count.to_s}
+        %td
+          210 000 руб.
+      %tr
+        %td.send
+          .ico
+          Отправлено
+        %td
+          #{Finance.select('finance_status_id').where(:finance_status_id=>30).count.to_s}
+        %td
+          210 000 руб.
+      %tr
+        %td.ordered
+          .ico
+          Согласовано
+        %td
+          #{Finance.select('finance_status_id').where(:finance_status_id=>20).count.to_s}
+        %td
+          210 000 руб.
+      %tr
+        %td.pay-in
+          .ico
+          Оплачено
+        %td
+          #{Finance.select('finance_status_id').where(:finance_status_id=>50).count.to_s}
+        %td
+          210 000 руб.
+
+.clear
+
+.row-fluid
+
+  .span6.margin-bottom
+
+    %h3.pull-left
+      %a{:href=>'#', :title=>''} Заказы
+
+    .clear
+
+    .btn-group.btn-width#order-period{:data => {:toggle => "buttons-radio"}}
+      %button.btn{:data => {:period => "yesterday"}} вчера
+      %button.btn.active{:data => {:period => "day"}} сегодня
+      %button.btn{:data => {:period => "week"}} неделя
+      %button.btn{:data => {:period => "month"}} месяц
+      %button.btn{:data => {:period => "quarter"}} квартал
+      %button.btn{:data => {:period => "year"}} год
+
+    .clear
+
+    %table.table.table-striped#orders-sums
+      %thead
+        %tr
+          %th Статус
+          %th Количество
+          %th Сумма
+      %tbody
+
+  .span6.margin-bottom
+
+    %h3.pull-left
+      %a{:href=>'#', :title=>''} Популярные рестораны
+
+    .clear
+
+    .btn-group.btn-width#pop-period{:data => {:toggle => "buttons-radio"}}
+      %button.btn{:data => {:period => "yesterday"}} вчера
+      %button.btn.active{:data => {:period => "day"}} сегодня
+      %button.btn{:data => {:period => "week"}} неделя
+      %button.btn{:data => {:period => "month"}} месяц
+      %button.btn{:data => {:period => "quarter"}} квартал
+      %button.btn{:data => {:period => "year"}} год
+
+    .clear
+
+    %table.table.table-striped#pop-sums
+      %thead
+        %tr
+          %th Ресторан
+          %th Заказы
+          %th Сумма
+      %tbody

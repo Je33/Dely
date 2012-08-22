@@ -1,0 +1,35 @@
+.span3
+  .well
+    %ul.nav.nav-pills.nav-stacked
+      %li.nav-header Настройки
+      %li
+        %a{:href => "/partners/index/users"} Пользователи
+      %li.active
+        %a{:href => "/partners/index/message"} Уведомления
+      %li
+        %a{:href => "/partners/index/historys"} Вся история
+.span9
+  %h3
+    %span
+      Уведомления
+  %p
+    Выберите как вы желаете получать уведомления о новых заказах
+  %form.form-horizontal#messages-options
+    %fieldset
+      .control-group
+        %label.radio
+          %input#optionsRadios1{:checked => "checked", :name => "optionsRadios", :type => "radio", :value => "option1"}
+            В личный кабинет
+        %label.checkbox{:style=>'margin-left: 18px;'}
+          %input{:name => "optionsCheckboxList1", :type => "checkbox", :value => "option1"}
+            По почте на e-mail ja33@bk.ru
+        %label.checkbox{:style=>'margin-left: 18px;'}
+          %input{:name => "optionsCheckboxList1", :type => "checkbox", :value => "option1"}
+            Смс на номер +7 (920) 620 0522
+      .control-group
+        %label.radio
+          %input#optionsRadios2{:name => "optionsRadios", :type => "radio", :value => "option2", :disabled=>'disabled'}
+            По телефону на номер  +7 (920) 620 0522
+      .form-actions
+        %button.btn.btn-primary{:type => "submit"} Save changes
+        %button.btn Cancel

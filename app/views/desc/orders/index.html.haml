@@ -1,0 +1,86 @@
+%ul.breadcrumb
+  %li.active
+    Заказы
+.row-fluid
+  .span3#left-menu
+    .well.info-left
+      %ul.nav.nav-pills.nav-stacked
+        %li.nav-header Заявки:
+        %li.active
+          %a{:href=>"javascript:;",:status_id=>'0,100'} Все
+        %li
+          %a{:href=>"javascript:;",:status_id=>'10'} Новые
+          -#(#{@orders.find_all{|o| o.status_id==10}.count})
+      %hr
+      %ul.nav.nav-pills.nav-stacked
+        %li.nav-header Отменены:
+        %li
+          %a{:href=>"javascript:;",:status_id=>20 }Отменены клиентами
+          -#(#{@orders.find_all{|o| o.status_id==20}.count})
+        %li
+          %a{:href=>"javascript:;",:status_id=>90 } Отменены в ЛК
+          -#(#{@orders.find_all{|o| o.status_id==90}.count})
+      %hr
+      %ul.nav.nav-pills.nav-stacked
+        %li.nav-header Оператор:
+        %li
+          %a{:href=>"javascript:;",:status_id=>55 } Подтверждены
+          -#(#{@orders.find_all{|o| o.status_id==55}.count})
+        %li
+          %a{:href=>"javascript:;",:status_id=>50} Не подтверждены
+          -#(#{@orders.find_all{|o| o.status_id==50}.count})
+      %hr
+      %ul.nav.nav-pills.nav-stacked
+        %li.nav-header Ресторан:
+        %li
+          %a{:href=>"javascript:;",:status_id=>'60,61,62'} Отправлены в ЛК
+          -#(#{@orders.find_all{|o| (o.status_id==60 or o.status_id==61 or o.status_id==62)}.count})
+        %li
+          %a{:href=>"javascript:;",:status_id=>80} Приняты в ЛК
+          -#(#{@orders.find_all{|o| o.status_id==80}.count})
+        %li
+          %a{:href=>"javascript:;",:status_id=>61} Приняты по телефону
+          -#(#{@orders.find_all{|o| o.status_id==61}.count})
+      %hr
+        %ul.nav.nav-pills.nav-stacked
+          %li.nav-header Доставлены:
+          %li
+            %a{:href=>"javascript:;",:status_id=>100} Доставлены в ЛК
+            -#(#{@orders.find_all{|o| o.status_id==100}.count})
+          %li
+            %a{:href=>"javascript:;",:status_id=>100} Доставлены
+            -#(#{@orders.find_all{|o| o.status_id==100}.count})
+      %hr
+      %ul.nav.nav-pills.nav-stacked
+        %li.nav-header Операторы:
+        %li
+          %a{:href=>"javascript: ;", :title=>""}
+            %label.checkbox#delivery
+              %input{:type=>"checkbox",:user_id => '0'} Все
+        - User.where('access in (1,2)').each do |u|
+          %li
+            %a{:href=>"javascript: ;", :title=>""}
+              %input{:type=>"checkbox",:user_id => u.id} #{' '+u.first_name}
+
+  .span9
+    %form.well.form-search.form-inline
+      = select_tag "orders_region_id_select", options_for_select(Region.all.map{|r| [r.name,r.id]}.unshift(['Все регионы',0]),params[:region_id])
+      = select_tag "orders_place_id_select", options_for_select(@places,params[:place_id])
+      %button.pull-right{:type=>"submit", :class=>"btn", :style=>'height: 35px !important; margin-left: 10px !important'} Найти
+      %input.input-medium.search-query.pull-right{:type=>"text"}
+
+    %table.table.table-bordered.table-striped.sortable#ajax-list
+      %thead
+        %tr
+          %th Статус
+          %th Оператор
+          %th Время и дата
+          %th Ресторан
+          %th Сумма
+          %th Регион
+          %th №
+
+      %tbody
+        = render 'order'
+
+/%meta{'http-equiv'=>"refresh", :content=>"30"}

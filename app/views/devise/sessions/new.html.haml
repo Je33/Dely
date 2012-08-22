@@ -1,0 +1,49 @@
+.container.cont
+  .row-fluid
+    .offset3.span3 &nbsp;
+    .span6
+      -#= form_for(resource, :as => resource_name, :url => session_path(resource_name),:html =>{ :class => 'form-horizontal success-login' } ) do |f|
+        %fieldset
+          %h3 Авторизация
+          .clear-line
+          .control-group
+            %label.control-label
+              Ваш телефон
+            .controls
+              = f.text_field :phone, :placeholder => '+7', :class=>'telephone-code not-valid'
+          .control-group
+            %label.control-label
+              Ваш пароль
+            .controls
+              = f.password_field :password, :placeholder => '****', :class=>'not-valid'
+          .clear
+          .form-actions
+            = f.submit :class => 'btn btn-success enter btn-large ', :value => 'Войти'
+      .form-horizontal.success-login
+        %fieldset
+          .x
+            <img src="/img/svekla_logo_xl.png" width="400" height="200" />
+          #login-success.alert.alert-success.hide
+          #login-errors.alert.alert-error.hide
+          %form
+            .control-group
+              %label.control-label Ваш номер телефона
+              .controls
+                .input-prepend.form-inline
+                  %span.add-on +7
+                  %input#login-user-phone.telephone-code.co.not-valid{:type => "text", :placeholder => 'Введите номер', :name => "user[phone]"}
+            .control-group
+              %label.control-label Пароль
+              .controls
+                = password_field_tag 'user[password]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Введите ваш пароль', :id => 'login-user-password'
+          =# link_to 'Войти через ВКонтакте', user_omniauth_authorize_path(:vkontakte), :class => 'vk btn btn-primary'
+          .clear
+          =# link_to 'Войти через Facebook', user_omniauth_authorize_path(:facebook), :class => 'facebook btn btn-primary'
+          .clear
+          
+          .clear
+          .form-actions
+            = button_tag 'Войти на сайт', :disable_with => "Вход...", :class => 'enter btn btn-large btn-success invalid', :id => 'log-button'
+          %a#forget-button.lin.pull-left{:href => "javascript:;"} Забыли пароль?
+          %a#registration-button.lin.pull-right{:href => "javascript:;"} Зарегистрироваться
+    .offset3.span3 &nbsp;

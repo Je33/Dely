@@ -1,0 +1,183 @@
+-if @partner.errors.any?
+  .alert.alert-error#error_explanation
+    %h2= "#{pluralize(@partner.errors.count, "error")} prohibited this desc_place from being saved:"
+    %ul
+      - @partner.errors.full_messages.each do |msg|
+        %li= msg
+
+-if flash[:notice]
+  .alert.alert-error#error_explanation= flash[:notice]
+
+= form_for @partner, :url => @partner.id!=nil ? desc_partner_path(@partner.id) : desc_partners_path, :html => {:class => "form-horizontal"} do |f|
+  .form-horizontal
+    %fieldset
+      .r-box-user
+        .control-group
+          %label.control-label
+            Пользователь:
+          .controls
+            %label.radio
+              %input#optionsRadios1{:type => "radio", :name => "radio1", :value => "0", :checked => @partner.user_id.to_i > 0 ? false : true}
+              Нет
+      .r-box-user
+        .control-group
+          %label.control-label
+          .controls
+            %label.radio
+              %input#optionsRadios1{:type => "radio", :name => "radio1", :value => "1", :checked => @partner.user_id.to_i > 0 ? true : false}
+              Активные:
+          .controls
+            - if params[:action] == 'new'
+              = f.select(:user_id, User.where(:access => 0).order("first_name ASC").all.map{|u| [u.first_name.to_s + " " + u.last_name.to_s + " (" + u.phone + ")", u.id]}, {}, {:disabled => @partner.user_id.to_i > 0 ? false : true})
+            - else
+              = f.select(:user_id, User.where("access = ? OR id = ?", 0, @partner.user_id).order("first_name ASC").all.map{|u| [u.first_name.to_s + " " + u.last_name.to_s + " (" + u.phone + ")", u.id]}, {}, {:disabled => @partner.user_id.to_i > 0 ? false : true})
+      .r-box-user
+        .control-group
+          .controls
+            %label.radio
+              %input#optionsRadios1{:type=>"radio", :name=>"radio1", :value=>"2"}
+              Новый пользователь:
+          .controls
+            %span.help-inline Имя
+            .clear
+            %input.span5{:type=>"text", :name=>"user[first_name]", :value=>"", :disabled=>'disabled'}
+          .controls
+            %span.help-inline Email
+            .clear
+            %input.span5{:type=>"text", :name=>"user[email]", :value=>"", :disabled=>'disabled'}
+          .controls
+            %span.help-inline Номер телефона:
+            .clear
+            .input-prepend.form-inline
+              %span.add-on +7
+              %input#forget-form-phone.telephone-code{:type => "text", :name => "user[phone]", :class=>'width-phone', :disabled=>'disabled'}
+          .controls
+            %span.help-inline Пароль:
+            .clear
+            %input.span5{:type=>"password", :name=>"user[password]", :value=>"", :disabled=>'disabled'}
+      .control-group
+        %label.control-label
+          Название:
+        .controls
+          = f.text_field :name, :class=>'span5'
+      .control-group
+        %label.control-label
+          ID:
+        .controls
+          %p= @partner.id!=nil ? @partner.id : "new"
+      .control-group
+        %label.control-label
+          Активность:
+        .controls
+          = f.check_box :active, :checked => @partner.id==nil ? true : @partner.active ? true : false
+      .control-group
+        %label.control-label
+          Процент:
+        .controls
+          = f.text_field :pct, :class=>'span5'
+          %span.add-on %
+      .control-group
+        %label.control-label
+          Директор:
+        .controls
+          = f.text_field :director, :class=>'span5'
+      .control-group
+        %label.control-label
+          Телефон:
+        .controls
+          .input-prepend.form-inline
+            %span.add-on +7
+            %input#forget-form-phone.telephone-code{:type => "text", :name => "partner[phone]", :class=>'width-phone', :value => @partner.phone ? @partner.phone.gsub("+7 ", "") : ""}
+      .control-group
+        %label.control-label
+          E-mail:
+        .controls
+          = f.text_field :email, :class=>'span5'
+      .control-group
+        %label.control-label
+          Юридический адрес:
+        .controls
+          = f.text_area :address, :size => "200x8", :class=>'span5'
+      %h3.h3-bottom
+        Передача заказов
+      .r-box
+        .control-group
+          %label.control-label
+            Контактное лицо:
+          .controls
+            = f.text_field :orders_contact, :class=>'span5'
+        .control-group.radio-check-input
+          %label.control-label
+            Тип передачи:
+
+          .controls
+            %label.checkbox
+              %input{:type => "hidden", :name => "partner_by_phone_check", :value => "0"}
+              %input{:type => "checkbox", :name => "partner_by_phone_check", :value => "1", :checked => (@partner.by_phone!="" and @partner.by_phone!=nil) ? true : false}
+              По телефону
+            .clear
+            .input-prepend.form-inline
+              %span.add-on +7
+              %input#forget-form-phone.telephone-code{:type => "text", :disabled => (@partner.by_phone!="" and @partner.by_phone!=nil) ? false : true, :name => "partner_by_phone", :class=>'width-phone', :value => @partner.by_phone ? @partner.by_phone.gsub("+7 ", "") : ""}
+
+          .controls
+            %label.checkbox
+              %input{:type => "hidden", :name => "partner_by_email_check", :value => "0"}
+              %input{:type => "checkbox", :name=>"partner_by_email_check", :value=>"1", :checked => (@partner.by_email!="" and @partner.by_email!=nil) ? true : false}
+                Email
+            .clear
+            %input.input-left{:type=>"text", :name=>"partner_by_email", :disabled => (@partner.by_email!="" and @partner.by_email!=nil) ? false : true, :value => @partner.by_email}
+
+          .controls
+            %label.checkbox
+              %input{:type => "hidden", :name => "partner_by_sms_check", :value => "0"}
+              %input{:type=>"checkbox", :name=>"partner_by_sms_check", :value=>"1", :checked => (@partner.by_sms!="" and @partner.by_sms!=nil) ? true : false}
+                sms на номер
+            .clear
+            .input-prepend.form-inline
+              %span.add-on +7
+              %input#forget-form-phone.telephone-code{:type => "text", :name => "partner_by_sms", :class=>'width-phone', :disabled => (@partner.by_sms!="" and @partner.by_sms!=nil) ? false : true, :value => @partner.by_sms ? @partner.by_sms.gsub("+7 ", "") : ""}
+      %h3.h3-bottom
+        Отчеты
+      .r-box
+        .control-group
+          %label.control-label
+            Контактное лицо:
+          .controls
+            = f.text_field :report_contact, :class=>'span5'
+        .control-group.radio-check-input
+
+          %label.control-label
+            Тип передачи:
+
+          .controls
+            %label.checkbox
+              %input{:type => "hidden", :name => "report_by_phone_check", :value => "0"}
+              %input{:type => "checkbox", :name => "report_by_phone_check", :value => "1", :checked => (@partner.report_by_phone!="" and @partner.report_by_phone!=nil) ? true : false}
+              По телефону
+            .clear
+            .input-prepend.form-inline
+              %span.add-on +7
+              %input#forget-form-phone.telephone-code{:type => "text", :disabled => (@partner.report_by_phone!="" and @partner.report_by_phone!=nil) ? false : true, :name => "report_by_phone", :class=>'width-phone', :value => @partner.report_by_phone ? @partner.report_by_phone.gsub("+7 ", "") : ""}
+
+          .controls
+            %label.checkbox
+              %input{:type => "hidden", :name => "report_by_email_check", :value => "0"}
+              %input{:type=>"checkbox", :name=>"report_by_email_check", :value=>"1", :checked => (@partner.report_by_email!="" and @partner.report_by_email!=nil) ? true : false}
+                Email
+            .clear
+            %input.input-left{:type=>"text", :name=>"report_by_email", :disabled => (@partner.report_by_email!="" and @partner.report_by_email!=nil) ? false : true, :value => @partner.report_by_email}
+
+          .controls
+            %label.checkbox
+              %input{:type => "hidden", :name => "report_by_sms_check", :value => "0"}
+              %input{:type=>"checkbox", :name=>"report_by_sms_check", :value=>"1", :checked => (@partner.report_by_sms!="" and @partner.report_by_sms!=nil) ? true : false}
+                sms на номер
+            .clear
+            .input-prepend.form-inline
+              %span.add-on +7
+              %input#forget-form-phone.telephone-code{:type => "text", :name => "report_by_sms", :class=>'width-phone', :disabled => (@partner.report_by_sms!="" and @partner.report_by_sms!=nil) ? false : true, :value => @partner.report_by_sms ? @partner.report_by_sms.gsub("+7 ", "") : ""}
+
+      .form-actions.input-height
+        = link_to 'Отмена', desc_partners_path, :class => "btn btn btn-large"
+        = f.submit 'Сохранить', :class => "btn btn-success btn-large"

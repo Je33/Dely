@@ -1,0 +1,58 @@
+.container.cont
+  .row-fluid
+    .span3
+      .well
+        %h4
+          Мой счёт:
+          %a.ajax#gift-coin{:href=>'javascript: ;', :title=>''} #{current_user.balance.to_i} баллов
+        %hr
+        %ul.nav.nav-pills.nav-stacked
+          %li.active
+            %a{:href => "/profile/orders"} Мои заказы #{current_user.orders.activated.count.to_i > 0 ? "(" + current_user.orders.activated.count.to_s + ")" : ""}
+          %li
+            %a{:href => "/profile/info"} Настройки моего профиля
+          %li
+            %a{:href => "/profile/gifts"} Призы
+          -#%li
+            %a{:href => "/profile/messages"} Оповещения
+    .span9
+      %table.table.table-striped.table-bordered.table-condensed
+        %thead
+          %tr
+            %th Адрес
+            %th Дата и время
+            %th Номер
+            %th Ресторан
+            %th Сумма
+            %th Статус
+            %th Оценка
+            %th  
+        %tbody
+          - @orders.each do |o|
+            %tr
+              %td
+                %span= o.phone ? "тел.:" + o.phone.to_s + ", " : ""
+                %span= o.street ? "ул. " + o.street.to_s + ", " : ""
+                %span= o.house ? "д. " + o.house.to_s + ", " : ""
+                %span= o.building ? "стр. " + o.building.to_s + ", " : ""
+                %span= o.porch ? "п. " + o.porch.to_s + ", " : ""
+                %span= o.floor ? "эт. " + o.floor.to_s + ", " : ""
+                %span= o.room ? "кв. " + o.room.to_s : ""
+              %td= o.created_at.localtime().strftime('%D %H:%M:%S')
+              %td
+                %a#ord-det{:href => "javascript:;"}= o.id
+              %td= o.place.name
+              %td #{o.price.round} руб.
+              %td= o.status_id == 10 ? "новый" : o.status.name
+              %td
+                - if o.status_id >= 100 && !o.rating.in?([-1,1])
+                  %a.btn.btn-success.estimate-button{:id => "estimate-order-" + o.id.to_s, :data => {:order => o.id, :place => o.place.id}} Оценить
+                - if o.rating == -1
+                  %span :(
+                - if o.rating == 1
+                  %span :)
+              %td
+                - if o.status_id.to_i == 10
+                  %a.cancel-order-button.btn.btn-danger{:id => "cancel-order-" + o.id.to_s, :href => "javascript:;", :data => {:id => o.id}} Отменить
+              %td
+                %a.btn.replay-order-button{:id => "replay-order-" + o.id.to_s, :href => "javascript:;", :data => {:id => o.id}} Повторить

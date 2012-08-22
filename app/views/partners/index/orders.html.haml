@@ -1,0 +1,150 @@
+.span7.order-detail_le
+  .well
+    #current_url{:cur => "/partner/orders/@order.id/"}
+    %h3.pull-left#color
+      Заказ #31 123
+      %span.new-order новый
+    %p.pull-left#operator-name
+    %ul.pager.pull-right
+      %li.previous
+        %a{:href => "#"} ← предыдущий
+      %li.next
+        %a{:href => "#"} следующий →
+    .clear
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Наименование
+          %th Категория
+          %th Цена
+          %th Кол-во
+          %th Сумма
+      %tbody
+        %tr
+          %td
+            %a{:href => "javascript:void(0);", :title => ""} Торт Фисташковый
+          %td Суп
+          %td.cena 96 руб.
+          %td.plus-minus 1
+          %td.tottal 96 руб.
+        %tr
+          %td
+            %a{:href => "javascript:void(0);", :title => ""} Торт Фисташковый
+          %td Десерт
+          %td.cena 96 руб.
+          %td.plus-minus 1
+          %td.tottal 96 руб.
+        %tr
+          %td
+            %a{:href => "javascript:void(0);", :title => ""} Торт Фисташковый
+          %td Горячее
+          %td.cena 96 руб.
+          %td.plus-minus 1
+          %td.tottal 96 руб.
+    %dl.dl-horizontal
+      %dt Ресторан:
+      %dd СушиМания
+      %dt Сумма заказа:
+      %dd.tottal-cena 1 460 руб.
+      %dt Доставка:
+      %dd Бесплатно
+    .clear-line
+    %dl.dl-horizontal.big-dl
+      %dt Итого:
+      %dd.tottal-cena 1 450 руб.
+      %dt Приз:
+      %dd 1 000 баллов
+.span3.order-detail-ri
+  .well
+    %p.name
+      Андрей Федорков
+    %p.phone
+      +7 (926) 578 0909
+    %p.address
+      Карла Маркса 16, квартира 47.
+      Подьезд 6, 18 этаж.
+      Челябинск.
+    %dl
+      %dt Комментарий:
+      %dd Во дворе злая собака, Это комментарий к заказу, Пицца-соусс тра ла ла , ветчина, салями, лук, ветчина, салями, лук , ветчина, салями, лук
+    %dl.dl-horizontal
+      %dt Ресторан:
+      %dd СушиМания
+      %dt Сумма заказа:
+      %dd.tottal-cena 1 460 руб.
+      %dt Доставка:
+      %dd Бесплатно
+    .clear-line
+    %dl.dl-horizontal.big-dl
+      %dt Итого:
+      %dd.tottal-cena 1 450 руб.
+      %dt Приз:
+      %dd 1 000 баллов
+.span2.order-detail-ri
+  .well
+    .btn-box
+      .alert.alert-success.hide Заказ передан ресторану
+      %a.btn.btn.btn-primary#confirm-order{:href => "javascript: ;", :title=>''} Подтвердить заказ
+      %a.btn#change-order{:href => "javascript: ;", :title=>''}
+        Изменить заказ
+      %a.btn.btn-warning.hide#cansel{:href=> "#" }Отменить потверждение
+      %a.btn.btn-danger#delete-order{:href => "javascript: ;", :title=>''}
+        Удалить заказ
+      .clear-line
+      %p
+        Заказ поступил в 15:56, сегодня.
+        %br
+          Ресторан "Суши в Груши".
+
+#add-line.hide
+  %table
+    %tbody
+      %tr.add-line
+        %td
+          .btn-group{:style=>'width: 100%'}
+            %button.btn.dropdown-toggle{"data-toggle" => "dropdown"}
+              Выберите блюдо
+              %span.caret
+            %ul.dropdown-menu
+              %li
+                %a{:href => "#"} Блюдо 1
+              %li
+                %a{:href => "#"} Блюдо 2
+              %li
+                %a{:href => "#"} Блюдо 3
+              %li.divider
+              %li
+                %a{:href => "#"} Блюдо 1.1
+              %li
+                %a{:href => "#"} Блюдо 2.1
+              %li
+                %a{:href => "#"} Блюдо 3.1
+              %li.divider
+              %li
+                %a{:href => "#"} Блюдо 1.2
+              %li
+                %a{:href => "#"} Блюдо 2.2
+              %li
+                %a{:href => "#"} Блюдо 3.2
+        %td — — —
+        %td — — —
+        %td.plus-minus
+          .btn-group.btn-style
+            %button.btn.min -
+            %input.btn.coll-el{:maxlength => "2", :title => "", :type => "text", :value => "1"}
+              %button.btn.plus +
+        %td — — —
+        %td
+          %button#add-pos.btn Добавить
+#test-line{:style => "display:none;"}
+  %table
+    %tbody
+      %tr
+        %td
+          %a{:href => "javascript:void(0);", :title => ""} Торт Фисташковый тестовый
+        %td Десерт
+        %td 96 руб.
+        %td 1
+        %td 96 руб.
+        %td
+          %a.btn.btn-danger#delete-pos{:href => "javascript: ;", :title=>''} Удалить

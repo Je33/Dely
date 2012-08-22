@@ -1,0 +1,146 @@
+!!! 5
+%html
+  %head
+    %title= @title
+    = stylesheet_link_tag    "application", :media => "all"
+    /= stylesheet_link_tag    "/css/datepicker"
+
+    = javascript_include_tag "jquery.js"
+    = javascript_include_tag "jquery_ujs.js"
+    = javascript_include_tag "bootstrap-tooltip.js"
+    = javascript_include_tag "bootstrap-popover.js"
+    = javascript_include_tag "bootstrap-dropdown.js"
+    = javascript_include_tag "bootstrap-alert.js"
+    = javascript_include_tag "bootstrap-collapse.js"
+    = javascript_include_tag "/js/standartina.js"
+    = javascript_include_tag "kendo/kendo.all.min"
+    = csrf_meta_tags
+    
+    /= javascript_include_tag "application"
+    = javascript_include_tag "partner"
+    %meta{:charset => "utf-8"}
+    %meta{:content => "width=1000",  :name => "viewport"}
+    %meta{:content => @descr, :name => "description"}
+    %meta{:content => "", :name => "author"}
+
+    /[if IE]
+      %script{:src => "//html5shim.googlecode.com/svn/trunk/html5.js"}
+    /%link{:href => "images/favicon.ico", :rel => "shortcut icon"}
+    %link{:href => "images/apple-touch-icon.png", :rel => "apple-touch-icon"}
+    %link{:href => "images/apple-touch-icon-72x72.png", :rel => "apple-touch-icon", :sizes => "72x72"}
+    %link{:href => "images/apple-touch-icon-114x114.png", :rel => "apple-touch-icon", :sizes => "114x114"}
+    %link{:href => "/img/favicon.png", :rel => "icon", :type=>"image/png"}
+    %link{:href => "/img/favicon_xl.png", :rel => "apple-touch-icon", :type=>"image/png"}
+    = yield(:head)
+  %body{:onunload => ""}
+    %noscript.old_browser.java_is_off
+      .wrap
+        %img.java_img{:alt => "", :src => "/img/java_alert.png"}
+          %h2 Пожалуйста, включите JavaScript.
+          %p.old_info Работоспособность некоторых функций нашего сайта зависит от того, включена ли поддержка JavaScript в Вашем браузере.
+          %p.java_help
+            %b полезная ссылка
+            %a{:href => "http://www.google.ru/support/bin/answer.py?answer=23852"} Как включить поддержку JavaScript в вашем браузере.
+            %span http://www.google.ru/support/bin/answer.py?answer=23852
+    .navbar
+      .navbar-inner.bg
+        .container.all-width
+          %a.btn.btn-navbar{:data => {:toggle => "collapse", :target => ".nav-collapse" }}
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %ul.breadcrumb.pull-left
+            %li.relative
+              %a.brand.logo-img{:href => "/", :title=>""}
+          .nav-collapse
+            %ul.nav.pull-left
+              - if  @bred
+                %li.nav-text{:class => params[:controller] == "partner/orders" ? "active" : ""}
+                  = link_to @bred[0][0].html_safe, @bred[0][1]
+              - else
+                %li.nav-text
+                  = link_to 'Заказы <sup class="order_count">0</sup>'.html_safe, partner_orders_path
+              - case current_user.access
+                - when 2,4
+                  %li{:class => params[:controller] == "partner/statistics" ? "active" : "" }
+                    %a{:href=>'/partner/statistics', :title=>''} Статистика
+                    
+                  %li{:class => params[:controller] == "partner/finances" ? "active" : "" }
+                    %a{:href=>'/partner/finances',:title=>''} Финансы
+                    
+                  %li{:class => ((params[:controller] == "partner/places" or params[:controller] == "partner/sections" or params[:controller] == "partner/specials" or params[:controller] == "partner/items") && params[:action] != "options" && params[:action] != "addUser") ? "active" : "" }
+                    %a{:href=>'/partner/places',:title=>''} Меню и рестораны
+                    
+                  %li{:class => (params[:controller] == "partner/places" && (params[:action] == "options" or params[:action] == "addUser")) ? "active" : "" }
+                    %a{:href=>'/partner/options',:title=>''} Настройки
+                  %li
+                    %a#tele2{:href=>"javascript:void(0);", :title=>""} Помощь
+            %ul.nav.pull-right
+              - if @city != nil
+                #current-city{:data => {:id => @city.id}}
+              - #if @cities != nil
+              - #%li.nav-text
+              - #    %p Доставка еды в
+              - #%li.dropdown
+              - #    %a#current-city.dropdown-toggle{:href => "javascript:;", :data => {:toggle => "dropdown", :id => @city.id}}= @city[:name_dec]
+              - #    %ul#city.dropdown-menu
+              - #      - @cities.each do |c|
+              - #        %li
+              - #          %a{:href => "javascript:;", :data => {:id => c.id}}= c.name
+              %li.divider-vertical
+              - if user_signed_in?
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "javascript:;"}
+                    %span= current_user.first_name
+                  %ul.dropdown-menu
+                    %li= link_to "Мои заказы #{current_user.orders.activated.count.to_i > 0 ? "(" + current_user.orders.activated.count.to_s + ")" : ""}", "/profile/orders"
+                    %li= link_to 'Мой профиль', "/profile/info"
+                    %li
+                      %a{:href => "/profile/gifts", :title=>''} Призы
+                    %li.divider
+                    %li
+                      %a{:href => "/", :title=>''} Сайт
+                    %li.divider
+                    %li= link_to "Выход", destroy_user_session_path, :method => :delete
+              - else
+                .btn-group.pull-right.top-btn-group
+                  %a.btn.btn.top-btn#login-button{:href => "javascript:;"} Войти
+                  %a.btn.btn-warning.top-btn#registration-button{:href => "javascript:;"} Регистрация
+    .nav_btm
+    
+    .container.cont.desc
+      %ul.breadcrumb
+        - if @partner_bred
+          - l_br = @partner_bred.slice!(-1)
+          - @partner_bred.each do |b|
+            %li
+              %a{:href => b[1]}= b[0]
+              %span.divider /
+          %li.active
+            = l_br[0]
+        -else
+        %li
+          %a{:href => '/partner', :title=>''}
+          -if params[:controller]=='partner/finances'
+            %li.pull-right.ypr-link
+              -if @period
+                .current_period{:value => @period}
+                  - if  (@period.to_date - 1.month - @partner.created_at.to_date)> 0
+                    %a{:href=>partner_finances_path(:period=>(@period.to_date-1.month).strftime("%Y-%m-01")), :title=>'', :style=>'margin-right: 10px'} ← #{(I18n.t ((@period.to_date-1.month).strftime("%B")) ) +' '+ (@period.to_date-1.month).to_date.strftime("%Y")}
+                    |
+                    =# (I18n.t (@period.to_date.strftime("%B")) ) +' '+ @period.to_date.strftime("%Y")
+                  =(I18n.t ((@period.to_date).strftime("%B")))  +' '+ (@period.to_date).to_date.strftime("%Y")
+                  -if (@period.to_date+1.month).strftime("%Y-%m-01")!=(Time.now+1.month).strftime("%Y-%m-01")
+                    |
+                    %a{:href=>partner_finances_path(:period=>(@period.to_date+1.month).strftime("%Y-%m-01")), :title=>''} #{(I18n.t ((@period.to_date+1.month).strftime("%B")) ) +' '+ (@period.to_date+1.month).to_date.strftime("%Y")} →
+
+
+      - if flash[:notice]
+        .alert.alert-success
+          %a.close{:data => {:dismiss => "alert"}} ×
+          = flash[:notice]
+      .row-fluid
+        = yield
+  %script{:src => "/js/script.js"}
+  %script{:src => "/js/partner-operator.js"}
+  %script{:src => "/js/phone.js"}

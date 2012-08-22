@@ -1,0 +1,47 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  save_changes: "Изменения успешно сохранены"
+  sms_message_send: "SMS сообщение с новым паролем уже в пути. Иногда необходимо подождать несколько минут."
+  passwords_not_equal: "Пароли не совпадают"
+  password_is_invalid: "Пароль введён неверно"
+  address_added: "Адрес добавлен"
+  address_changed: "Адрес изменён"
+  address_error: "Ошибка сохранения адреса"
+  user_not_exist: "Пользователь не существует"
+  places_in: "Службы доставки в"
+  Unkhown: "Неизвестно"
+  not agreed: "Новый"
+  not-ordered: "Новый"
+  agreed: "Согласован"
+  ordered:  "Согласован"
+  posted: "Новый "
+  send:  "Новый"
+  "need-call": "Требует корректировки"
+  repay: "Оплачен"
+  pay-in:  "Оплачен"
+  January: "Январь"
+  February: "Февраль"
+  March: 'Март'
+  April: "Апрель"
+  May: 'Май'
+  June: 'Июнь'
+  July: 'Июль'
+  August: 'Август'
+  September: 'Сентябрь'
+  October: 'Октябрь'
+  November: 'Ноябрь'
+  December: 'Декабрь'
+  New: "Новый"
+  "All statuses": "Все статусы"
+  "All places": "Все рестораны"
+  "All dates": "Всё время"
+  date: 'дата'
+  time: 'время'
+  place: 'ресторан'
+  'delivery adress': 'адрес доставки'
+  ratio: 'оценка'
+  status: 'статус'
+  price: 'цена'
+  new: 'Новый'

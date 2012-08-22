@@ -1,0 +1,23 @@
+-if @city.errors.any?
+  #error_explanation
+    %h2= "#{pluralize(@city.errors.count, "error")} prohibited this desc_place from being saved:"
+    %ul
+      - @city.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for @city, :url => @city.id!=nil ? desc_city_path(@city.id) : desc_cities_path, :html => {:class => "form-horizontal"} do |f|
+  %fieldset
+    .control-group
+      %label.control-label ID
+      .controls
+        %span.input-xlarge.uneditable-input.span2= @city.id!=nil ? @city.id : "new"
+    .control-group
+      %label.control-label Активность
+      .controls= f.check_box :active, :checked => @city.id==nil ? true : @city.active ? true : false
+    .control-group
+      %label.control-label Название
+      .controls= f.text_field :name
+
+  .form-actions
+    = f.submit 'Сохранить', :class => "btn btn-success"
+    = link_to 'Отмена', desc_cities_path, :class => "btn btn-danger"

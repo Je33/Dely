@@ -1,0 +1,72 @@
+.class.container
+  .row-fluid
+    .span4
+      %ul.nav.nav-pills.nav-stacked
+        %li.active
+          %a{:href => "/profile/orders", :title => ''} Мои заказы (1)
+        %li
+          %a{:href => '/profile', :title => ''} Настройки моего профиля
+
+    .span8
+      %h3 Мои заказы (1)
+      .clear-line
+      %table.table.table-striped.table-bordered#profile-order
+        %thead
+          %tr
+            %th Дата и время
+            %th Номер
+            %th Ресторан
+            %th Сумма
+            %th Статус
+            %th Оценка
+            %th Действие
+        %tbody
+          %tr
+            %td 10.11.2012, 22:14
+            %td
+              %a.ajax#watch-order{:href => 'javascript:void(0);', :title => ''}
+                123 321
+            %td Суши в уши
+            %td 2 011 руб.
+            %td
+              %span.label.label-Warning Новый
+            %td &mdash;
+            %td
+              %a.btn.btn-danger.btn-mini#delete-order-line{:href => 'javascript:void(0);', :title => ''} Удалить
+          %tr
+            %td 10.11.2012, 11:14
+            %td
+              %a.ajax#watch-order{:href => 'javascript:void(0);', :title => ''}
+                321 123
+            %td Суши в уши и холодильник
+            %td 2 011 руб.
+            %td
+              %span.label.label-info Принят
+            %td
+              %a.btn.btn-success.btn-mini#estimate{:href => 'javascript:void(0);', :title => ''} Оценить
+            %td
+              %a.btn.btn-danger.btn-mini#delete-order-line{:href => 'javascript:void(0);', :title => ''} Удалить
+          %tr
+            %td 10.11.2012, 11:14
+            %td
+              %a.ajax#watch-order{:href => 'javascript:void(0);', :title => ''}
+                321 123
+            %td Суши в уши и холодильник
+            %td 2 011 руб.
+            %td
+              %span.label.label-success Доставлен
+            %td.good Хорошо :)
+            %td
+              %a.btn.btn-danger.btn-mini#delete-order-line{:href => 'javascript:void(0);', :title => ''} Удалить
+          %tr
+            %td 10.11.2012, 11:14
+            %td
+              %a.ajax{:href => 'javascript:void(0);', :title => ''}
+                321 123
+            %td Суши в уши и холодильник
+            %td 2 011 руб.
+            %td
+              %span.label.label-important Отменен
+            %td.bad Так себе :(
+            %td
+              %a.btn.btn-danger.btn-mini#delete-order-line{:href => 'javascript:void(0);', :title => ''} Удалить

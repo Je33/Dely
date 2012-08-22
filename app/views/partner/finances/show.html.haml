@@ -1,0 +1,59 @@
+.row-fluid
+  .span8
+    .bold-box
+      %p Отчет: № #{@finance.id.to_s}
+      %p Период: #{@finance.period.beginning_of_month.strftime("%d.%m.%Y") + ' - ' + @finance.period.end_of_month.strftime("%d.%m.%Y")}
+      %p.long-text
+        %span.first
+          Дата Создания отчета:
+        %span
+          = @finance.period.strftime("%d.%m.%Y")
+      %p.long-text
+        %span.first
+          Номер договора / id партнера:
+        %span
+          = @finance.partner.id.to_s
+      %p.long-text
+        %span.first
+          Наименование ресторана
+        %span
+          = @finance.place.name
+      %p.long-text
+        %span.first
+          Адрес
+        %span
+          = @finance.partner.address
+
+      .clear
+
+    .btn-group{:style=>'width: auto !important; margin-bottom: 20px'}
+    .clear
+    %table.table.table-striped.table-bordered.table-condensed.mini-font.sortable
+      %thead
+        %tr
+          %th
+            #{"#"}
+          %th
+            Дата
+          %th
+            Время
+          %th
+            Ресторан
+          %th
+            Адрес доставки
+          %th
+            Сумма (руб.)
+          %th
+            Статус
+          %th
+            Оценка
+      %thead
+        = render 'orders_report'
+    .clear
+
+    .bold-box.cost
+      %p
+        Сумма заказов: #{@finance.price.to_i.ceil} руб.
+      %p.big
+        Итого к оплате: #{((@finance.price.to_f/100)*@finance.partner.pct.to_i).to_i.ceil} руб.
+

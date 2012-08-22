@@ -1,0 +1,63 @@
+= form_tag '', {:class => 'form-horizontal'}  do |f|
+  %fieldset
+    .r-box
+      .control-group
+        %label.control-label
+          Пользователь:
+        .controls
+          %label.radio
+            %input#optionsRadios1{:type=>"radio", :name=>"radio1", :value=>"1", :checked=>"checked"}
+            Активные:
+        .controls
+          %span.help-inline Номер телефона:
+          .clear
+          .input-prepend.form-inline
+            %span.add-on +7
+            %input#exist_user_phone.telephone-code{:type => "text", :name => "exist_user_phone", :class=>'width-phone'}
+
+    .r-box
+      .control-group
+        .controls
+          %label.radio
+            %input#optionsRadios1{:type=>"radio", :name=>"radio1", :value=>"2"}
+            Новый пользователь:
+        .controls
+          %span.help-inline
+            Имя:
+            %span{:style => "color:red"} *
+          .clear
+          %input.span5{:type=>"text", :name=>"user[first_name]", :value=>"", :disabled=>'disabled'}
+        .controls
+          %span.help-inline Email
+          .clear
+          %input.span5{:type=>"text", :name=>"user[email]", :value=>"", :disabled=>'disabled'}
+        .controls
+          %span.help-inline
+            Номер телефона:
+            %span{:style => "color:red"} *
+          .clear
+          .input-prepend.form-inline
+            %span.add-on +7
+            %input#forget-form-phone.telephone-code{:type => "text", :name => "user[phone]", :class=>'width-phone', :disabled=>'disabled'}
+        .controls
+          %span.help-inline
+            Пароль:
+            %span{:style => "color:red"} *
+          .clear
+          %input.span5{:type=>"password", :name=>"user[password]", :value=>"", :disabled=>'disabled'}
+
+    %hr
+
+    .control-group
+      %label.control-label Заведение:
+      .controls.docs-input-sizes
+        = select "add_user_select", "place",@places, {}, {:multiple => true,:class=>"multi", :size=>"8"}
+        %span.help-inline{:style=>'width: 410px; text-align: center;'} Для выбора нескольких позиций зажмите клавишу ctrl и нажмите мышкой на нужные позиции.
+    .control-group
+      %label.control-label Роль:
+      .controls.docs-input-sizes
+        = select "add_user_select", "role",{"Администратор"=>"2","Оператор"=>"1"}  ,{},{:class=>'span5'}
+    .form-actions
+      %a.btn.btn-large{:href=>'/partner/options', :title=>''} Назад
+      %input.btn.btn-success.btn-large{:type=>'submit', :value=>"Добавить"}
+

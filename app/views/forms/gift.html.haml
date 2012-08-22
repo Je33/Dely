@@ -1,0 +1,21 @@
+#enter.modal.hide
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Мой счёт
+  .modal-body.row-fluid
+    .span3
+      %img{:src=>'/img/present-big.png', :alt=>'', :width=>'140'}
+    .span8
+      .gift-pop
+        %p.big-text
+          Мой счёт:
+          %span
+            #{current_user.balance.to_i} баллов
+        %p За каждые 10 руб. начисляется 1 бонусных баллов.
+        %p Баллы начисляются сразу после доставки заказа.
+        %p.mini-text
+          Все призы необходимо получить в нашем офисе по адресу, указанному в <a href="../contact">контактах</a> ежедневно с 10:00 до 17:00.
+          После заказа приза наш оператор свяжется с вами для уточнения всех деталей.
+    .clear
+  .modal-footer
+    = button_tag 'Ага, всё понятно', :disable_with => "Ага...", :class => 'enter btn btn-large btn-success closeallmodal', :id => 'log-button'

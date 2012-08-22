@@ -1,0 +1,70 @@
+.well-cont{:xmlns => "http://www.w3.org/1999/html"}
+  .well
+    %h3 Уведомления
+    %p Выберите, как вы желаете получать уведомления о новых заказах.
+    =  form_tag partner_options_setAlerts_path,:class=>"form-horizontal" do
+      .form-horizontal
+        %fieldset
+          .options.opt-part-opt
+            -if @partner.by_email
+              .controls
+                .check
+                  = check_box_tag 'by_email', @partner.by_email, true
+                .text.input-prepend.form-inline
+                  %p По почте на е-мэйл
+                  %span.add-on @
+                  = text_field_tag 'by_email_text', @partner.by_email,:disabled => true
+                  %a.change#by_email_edit{:href => "javascript:void(0);", :title => ""} Изменить
+                  %a.change#by_email_edit_save{:href => "javascript:void(0);", :title => "", :style => "display: none;"} Cохранить
+            -else
+              .controls
+                .check
+                  = check_box_tag 'by_email', @partner.by_email, false
+                .text.input-prepend.form-inline
+                  %p По почте на е-мэйл
+                  %span.add-on @
+                  = text_field_tag 'by_email_text', @partner.by_email,:disabled => true
+                  %a.change#by_email_edit{ :href => "javascript:void(0);", :title => ""} Изменить
+                  %a.change#by_email_edit_save{ :href => "javascript:void(0);", :title => "",  :style => "display: none;"} Сохранить
+            -if @partner.by_sms
+              .controls
+                .check
+                  = check_box_tag 'by_sms', @partner.by_sms, true
+                .text.input-prepend.form-inline
+                  %p Смс на номер
+                  %span.add-on +7
+                  = text_field_tag 'by_sms_text',@partner.by_sms.to_s[3..16],:disabled => true, :class => 'tell'
+                  %a.change#by_sms_edit{ :href => "javascript:void(0);", :title => ""} Изменить
+                  %a.change#by_sms_edit_save{ :href => "javascript:void(0);", :title => "", :style => "display: none;"} Сохранить
+            -else
+              .controls
+                .check
+                  = check_box_tag 'by_sms', @partner.by_sms, false
+                .text.input-prepend.form-inline
+                  %p Смс на номер
+                  %span.add-on +7
+                  = text_field_tag 'by_sms_text', @partner.by_sms.to_s[3..16],:disabled => true, :class => 'tell'
+                  %a.change#by_sms_edit{:href => "javascript:void(0);", :title => ""} Изменить
+                  %a.change#by_sms_edit_save{:href => "javascript:void(0);", :title => "", :style => "display: none;"} Сохранить
+            -if @partner.by_phone
+              .controls
+                .check
+                  = check_box_tag 'by_phone', @partner.by_phone, true
+                .text.input-prepend.form-inline
+                  %p По телефону на номер
+                  %span.add-on +7
+                  = text_field_tag 'by_phone_text',@partner.by_phone.to_s[3..16],:disabled => true, :class => 'tell'
+                  %a.change#by_phone_edit{ :href => "javascript:void(0);", :title => ""} Изменить
+                  %a.change#by_phone_edit_save{:href => "javascript:void(0);", :title => "", :style => "display: none;"} Сохранить
+            -else
+              .controls
+                .check
+                  = check_box_tag 'by_phone', @partner.by_phone, false
+                .text.input-prepend.form-inline
+                  %p По телефону на номер
+                  %span.add-on +7
+                  = text_field_tag 'by_phone_text',@partner.by_phone.to_s[3..16],:disabled => true, :class => 'tell'
+                  %a.change#by_phone_edit{:href => "javascript:void(0);", :title => ""} Изменить
+                  %a.change#by_phone_edit_save{:href => "javascript:void(0);", :title => "", :style => "display: none;"} Сохранить
+          .form-actions
+            = submit_tag 'Обновить профиль',:class=>'btn btn-primary', :id => 'alert-send'

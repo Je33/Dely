@@ -1,0 +1,64 @@
+.well
+  %table.table.table-bordered.table-condensed.order-list-null
+    %thead
+      %tr
+        %th Статус
+        %th Оператор
+        %th Время и дата
+        %th Ресторан
+        %th Сумма
+        %th Номер
+        %th №
+    %tbody
+      - @orders.each do |o|
+      - @user= Log.exists?(:order_id=>o.id,:status_id=>o.status_id) ? User.find(Log.where(:order_id=>o.id,:status_id=>o.status_id).last.user_id) : nil
+        %tr.new-order{:onclick => "location.href='#{operator_order_path(o.id)}'"}
+          %td
+            = Status.exists?(:id=>o.status_id) ? Status.find(o.status_id).name : 'Неизвестный'
+          %td
+            = @user ? @user.first_name+' '+@user.last_name[0] : '-'
+          %td
+            = (o.created_at).localtime().hour
+            \:#{o.created_at.min}
+          %td.nm
+            = Place.exists?(:id=>o.place_id) ? Place.find(o.place_id).name : 'Неизвестен'
+          %td
+            = o.price
+          %td
+            = o.name
+          %td
+            = o.id
+          %tr
+.span2
+  .well.filter-well
+    .checkbox-panel.medium-stat
+      %p.name-line
+        Операторы
+      %a{:href => "javascript:void(0);", :title => ""} ----
+      %a{:href => "javascript:void(0);", :title => ""} Наталья Н
+      %a{:href => "javascript:void(0);", :title => ""} Алена О
+      %a{:href => "javascript:void(0);", :title => ""} Оксана П
+    .checkbox-panel.medium-stat-raz
+      %p.name-line
+        Статусы
+    .checkbox-panel.medium-stat
+      %p.name-line
+        Пользователь
+      %a{:href => "javascript:void(0);", :title => ""} Новый
+      %a{:href => "javascript:void(0);", :title => ""} Отменен Н
+    .checkbox-panel.medium-stat
+      %p.name-line
+        Оператор
+      %a{:href => "javascript:void(0);", :title => ""} Подтвержден
+      %a{:href => "javascript:void(0);", :title => ""} Не подтвержден
+      %a{:href => "javascript:void(0);", :title => ""} Отправлен в ресторан
+      %a{:href => "javascript:void(0);", :title => ""} По телефону
+      %a{:href => "javascript:void(0);", :title => ""} По е-мэйл
+    .checkbox-panel.medium-stat
+      %p.name-line
+        Ресторан
+      %a{:href => "javascript:void(0);", :title => ""} Принят
+      %a{:href => "javascript:void(0);", :title => ""} Не принят
+      %a{:href => "javascript:void(0);", :title => ""} Отменен
+      %a{:href => "javascript:void(0);", :title => ""} Доставлен
+      %a{:href => "javascript:void(0);", :title => ""} Неизвестно

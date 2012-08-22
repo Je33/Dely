@@ -1,0 +1,72 @@
+.alert-heading.alert
+  Для изменения информации о ресторане свяжитесь с администратором по почте
+  %a{:href=>'mailto:hello@svek.la', :title=>'', :target=>'_blank'}
+    hello@svek.la
+= form_for @place, :url => @place.id!=nil ? partner_place_path(@place.id) : partner_places_path do |f|
+  .form-horizontal
+    -if @place.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(@place.errors.count, "error")} prohibited this desc_place from being saved:"
+        %ul
+          - @place.errors.full_messages.each do |msg|
+            %li= msg
+    %fieldset
+      -#.control-group
+        %label.control-label
+          ID
+        .controls
+          = @place.id!=nil ? @place.id : "new"
+      .control-group
+        %label.control-label Активность:
+        .controls.docs-input-sizes
+          %p
+            - if @place.active==1
+              %font{:color => "green"}Да
+            - else
+              %font{:color => "red"}Нет
+      .control-group
+        %label.control-label Лого:
+        .controls.docs-input-sizes
+          .pull-left
+            =# f.file_field :picture, :class=>"span5 margin-right"
+          .pull-left.margin-right{:style=>'padding-left: 10px'}
+            = image_tag @place.picture.url(:small), :class=>'pull-left margin-right'
+      .control-group
+        %label.control-label Название:
+        .controls.docs-input-sizes
+          %p
+            %label #{(@place.id!=nil ? @place.name : '')}
+      .control-group
+        %label.control-label Описание:
+        .controls.docs-input-sizes= f.text_area :description, :size => "200x8", :class=>"span5"
+      .control-group
+        %label.control-label Кухни:
+        .controls.docs-input-sizes
+          %p
+            - for i in 0..@place.kitchens.count-1
+              - if i==@place.kitchens.count-1
+                =@place.kitchens[i].name
+              -else
+                =@place.kitchens[i].name + ', '
+
+      .control-group
+        %label.control-label Минимальный заказ:
+        .controls.docs-input-sizes
+          %p
+            = @place.id!=nil ? @place.min_order : ''
+      .control-group
+        %label.control-label Цена доставки:
+        .controls.docs-input-sizes
+          /= f.text_field :delivery_price, :class=>"span5", :disabled => true
+          %p
+            = @place.id!=nil ? @place.delivery_price : ''
+      .control-group
+        %label.control-label Время доставки:
+        .controls.docs-input-sizes
+          /= f.text_field :delivery_time, :class=>"span5", :disabled => true
+          %p
+            = @place.id!=nil ? @place.delivery_time : ''
+    <div class="alert alert-info"><strong>Внимание!</strong> После сохранения все изменения отобразятся на сайте мгновенно. Тщательно проверьте указанные данные. Спасибо!</div>
+    .form-actions.input-height
+      = link_to 'Отмена', partner_places_path, :class => "btn btn-large"
+      = f.submit 'Сохранить', :class => "btn btn-success btn-large"

@@ -1,0 +1,14 @@
+<%= form_for partner_place_section_item_path(params[:place_id],params[:section_id],@item.id),:multipart=>true,:method=>:put do %>
+    включить: <%= check_box :item, :active ,:value=>@item.active %>
+    Название: <%= text_field :item, :name ,:value=>@item.name %>   <br>
+    Описание: <%= text_area :item, :description,:value=>@item.description %>   <br>
+    Цена: <%= text_field :item, :price,:value=>@item.price %>   <br>
+
+    Изображение:
+
+    <%=image_tag @item.photo.url(:normal)%>
+    <%= file_field :item,:photo %>  <br>
+    <%= submit_tag 'сохранить' %>
+<% end %>
+<br>
+<%= link_to 'Назад', partner_place_section_path(params[:place_id],params[:section_id]) %>

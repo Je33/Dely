@@ -1,0 +1,23 @@
+-if @metro.errors.any?
+  #error_explanation
+    %h2= "#{pluralize(@metro.errors.count, "error")} prohibited this desc_place from being saved:"
+    %ul
+      - @metro.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for @metro, :url => @metro.id!=nil ? desc_city_metro_path(params[:city_id], @metro.id) : desc_city_metros_path(params[:city_id]), :html => {:class => "form-horizontal"} do |f|
+  %fieldset
+    .control-group
+      %label.control-label ID
+      .controls
+        %span.input-xlarge.uneditable-input.span2= @metro.id!=nil ? @metro.id : "new"
+    .control-group
+      %label.control-label Активность
+      .controls= f.check_box :active, :checked => @metro.id==nil ? true : @metro.active ? true : false
+    .control-group
+      %label.control-label Название
+      .controls= f.text_field :name
+
+  .form-actions
+    = f.submit 'Сохранить', :class => "btn btn-success"
+    = link_to 'Отмена', desc_city_metros_path(params[:city_id]), :class => "btn btn-danger"

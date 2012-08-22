@@ -1,0 +1,40 @@
+#what-pop.modal.hide
+  .modal-header
+    %a.close ×
+    %h3 Как это работает?
+  .modal-body
+    .inside
+      .steps
+        .ele
+          .img_block1
+            .icon1.one1
+              1
+          %h4 Выбираете ресторан
+        .ele
+          .img_block2
+            .icon1.three3
+              2
+            
+          %h4 Оформляете заказ
+        .ele
+          .img_block3
+            .icon1.four4
+              3
+            
+          %h4 Приятного аппетита!
+      .steps2
+        .inside2
+          %ul
+            %li
+              %span Все службы доставки на одном сайте
+            %li
+              %span Личный кабинет с историей всех заказов
+            %li
+              %span Бонусные баллы за каждый заказ
+            %li
+              %span Специальные акции от ресторанов
+            %li
+              %span Услуги сайта совершенно бесплатны
+    .clear
+  .modal-footer
+    = button_tag 'Ага, всё понятно', :disable_with => "Ага...", :class => 'enter btn btn-large btn-success closeallmodal'

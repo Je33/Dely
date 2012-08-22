@@ -1,0 +1,49 @@
+!!!html
+%html
+  %head
+  %body
+    %h1 Новый <a href='http://svek.la/partner/orders/#{@order.id}'>заказ № #{@order.id}</a> с сайта Svek.la
+    %p Перейдите в ваш личный кабинет для подтверждения заказа
+    %p #{@order.updated_at.localtime().strftime("%D %H:%M:%S")}
+    %hr
+    %h2 Данные заказчика:
+    %h3 Имя: #{@order.name}
+    %h3 Телефон: #{@order.phone}
+    %p Адрес:
+    %span= @order.city ? "г. " + @order.city.name.to_s + ", " : ""
+    %span= @order.region ? "район: " + @order.region.name.to_s + ", " : ""
+    %span= @order.metro ? "м. " + @order.metro.name.to_s + ", " : ""
+    %span= @order.street != "" ? "ул. " + @order.street.to_s + ", " : ""
+    %span= @order.house != "" ? "д. " + @order.house.to_s + ", " : ""
+    %span= @order.building != "" ? "стр. " + @order.building.to_s + ", " : ""
+    %span= @order.porch != "" ? "п. " + @order.porch.to_s + ", " : ""
+    %span= @order.floor != "" ? "эт. " + @order.floor.to_s + ", " : ""
+    %span= @order.room != "" ? "кв. " + @order.room.to_s : ""
+    %p Комментарий: #{@order.description}
+    %hr
+    %h2 Заказ:
+    %table{:style=>'text-align: left; padding: 20px', :border=>"1px solid #333333", :cellspacing=>"0", :cellpadding=>"0"}
+      %thead
+        %tr
+          %th{:style=>'padding: 10px 5px; text-align: left'} Блюдо
+          %th{:style=>'padding: 10px 5px; text-align: left'} Цена
+          %th{:style=>'padding: 10px 5px; text-align: left'} Кол-во
+          %th{:style=>'padding: 10px 5px; text-align: left'} Сумма
+      %tbody
+        - @order.baskets.each do |b|
+          %tr
+            - item = b.item
+            %td{:style=>'padding: 10px 5px; text-align: left'}= item.name
+            %td{:style=>'padding: 10px 5px; text-align: left'}= item.price.to_i
+            %td{:style=>'padding: 10px 5px; text-align: left'}= b.cnt
+            %td{:style=>'padding: 10px 5px; text-align: left'}= (item.price * b.cnt).to_i
+      %tfoot
+        %tr
+          %td{:style=>'padding: 10px 5px; text-align: left'} Итого
+          %td{:style=>'padding: 10px 5px; text-align: left', :colspan => 3} #{@order.price_base.to_i} руб.
+        %tr
+          %td{:style=>'padding: 10px 5px; text-align: left'} Доставка
+          %td{:style=>'padding: 10px 5px; text-align: left', :colspan => 3} #{@order.price_delivery.to_i} руб.
+        %tr
+          %td{:style=>'padding: 10px 5px; text-align: left'} Всего
+          %td{:style=>'padding: 10px 5px; text-align: left', :colspan => 3} #{@order.price.to_i} руб.

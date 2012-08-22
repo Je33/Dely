@@ -1,0 +1,42 @@
+-if @gift.errors.any?
+  #error_explanation
+    %h2= "#{pluralize(@gift.errors.count, "error")} prohibited this gift from being saved:"
+    %ul
+      - @gift.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for @gift, :url => @gift.id!=nil ? desc_gift_section_gift_path(params[:gift_section_id], @gift.id) : desc_gift_section_gifts_path(params[:gift_section_id]), :html => {:class => "form-horizontal"} do |f|
+  %fieldset
+    .control-group
+      %label.control-label ID
+      .controls
+        %p= @gift.id!=nil ? @gift.id : "new"
+    .control-group
+      %label.control-label Фото
+      .controls
+        .pull-left
+          = f.file_field :photo, :class=>"span5 margin-right"
+        .pull-left.margin-right{:style=>'padding-left: 10px'}
+          = image_tag @gift.photo.url(:small)
+
+    .control-group
+      %label.control-label Активность
+      .controls
+        = f.check_box :active, :checked => @gift.id==nil ? true : @gift.active ? true : false
+    .control-group
+      %label.control-label Название
+      .controls
+        = f.text_field :name, :class=>'span5'
+    .control-group
+      %label.control-label Описание
+      .controls
+        = f.text_area :description, :size => "200x8", :class=>'span5'
+    .control-group
+      %label.control-label Стоимость
+      .controls
+        = f.text_field :cost, :class=>'span5'
+
+  .form-actions
+
+    = link_to 'Отмена', desc_gift_section_gifts_path(params[:gift_section_id]), :class => "btn btn-large"
+    = f.submit 'Сохранить', :class => "btn btn-success btn-large"

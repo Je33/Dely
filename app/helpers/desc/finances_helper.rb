@@ -1,0 +1,2 @@
+module Desc::FinancesHelper
+end

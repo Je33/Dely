@@ -1,0 +1,9 @@
+<%= form_tag partner_place_section_items_path(params[:place_id],params[:section_id]),:multipart=>true do %>
+Название: <%= text_field :item, :name %>   <br>
+Описание: <%= text_area :item, :description %>   <br>
+Цена: <%= text_field :item, :price %>   <br>
+Изображение:    <%= file_field :item,:photo %>  <br>
+      <%= submit_tag 'сохранить' %>
+<% end %>
+<br>
+<%= link_to 'Назад', partner_place_section_items_path(params[:place_id],params[:section_id]) %>

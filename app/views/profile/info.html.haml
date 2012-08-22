@@ -1,0 +1,128 @@
+.class.container.cont
+  .row-fluid
+    .span3
+      .well
+        %h4
+          Мой счёт:
+          %a.ajax#gift-coin{:href=>'javascript: ;', :title=>''} #{current_user.balance.to_i} баллов
+        %hr
+        %ul.nav.nav-pills.nav-stacked
+          %li
+            %a{:href => "/profile/orders"} Мои заказы #{current_user.orders.activated.count.to_i > 0 ? "(" + current_user.orders.activated.count.to_s + ")" : ""}
+          %li.active
+            %a{:href => "/profile/info"} Настройки моего профиля
+          %li
+            %a{:href => "/profile/gifts"} Призы
+          -#%li
+            %a{:href => "/profile/messages"} Оповещения
+    .span9
+
+      - if flash[:notice]
+        .alert.alert-success
+          %a.close{:data => {:dismiss => "alert"}} ×
+          = flash[:notice]
+
+      - if flash[:error]
+        .alert.alert-error
+          %a.close{:data => {:dismiss => "alert"}} ×
+          = flash[:error]
+
+      = form_tag "/profile/info", :class => 'form-horizontal profile-form', :id => 'user-form' do
+        %fieldset
+          %h3 Мой профиль
+          .clear-line
+          -#.control-group
+            %label.control-label{:for => "input01"} Баланс:
+            .controls
+              %p.help-block 0
+
+          .control-group
+            %label.control-label{:for => "input01"} Всего заказов:
+            .controls
+              - if @orders.count.to_i > 0
+                %p= @orders.count.to_i
+              - else
+                %p
+                  У вас нет пока нет заказов. Вы можете
+                  %a{:href =>"/"} выбрать любимый ресторан
+                  прямо сейчас
+
+          .control-group
+            %label.control-label{:for => "input01"} Ваше имя
+            .controls
+              %input#input01.input-xlarge.disabled{:name => "user[first_name]", :type => "text", :disabled => '', :value => current_user.first_name}
+
+          .control-group
+            %label.control-label Номер телефона
+            .controls
+              %input#input01.input-xlarge.disabled{:name => "user[phone]", :type => "text", :disabled => '', :value => current_user.phone}
+
+          .control-group
+            %label.control-label E-mail
+            .controls
+              %input#input01.input-xlarge.disabled{:name => "user[email]", :type => "text", :disabled => '', :value => current_user.email}
+
+          .form-actions#btn-control-first
+            %input.btn.input-xlarge#change-profile{:type => 'button', :value => 'Редактировать профиль'}
+            %input.btn.input-xlarge#change-password{:type => 'button', :value => 'Изменить пароль'}
+
+          .form-actions#btn-control
+            %button.btn.btn-large#cansel Отменить
+            %button.btn.btn-success.btn-large#usr-inf-subm{:type => "submit"} Сохранить изменения
+
+      = form_tag "/profile/info", :class => 'form-horizontal', :id => 'pass-form' do
+        %fieldset
+          %h3
+            %a{:href=>'/profile/info', :title=>''}
+              Мой профиль
+            %span
+              &rarr;
+            %span
+              Новый пароль
+
+          .clear-line
+          .control-group
+            %label.control-label{:for => "input01"} Текущий пароль
+            .controls
+              %input#input01.input-xlarge{:name => "pass[old]", :type => "text", :value => ''}
+
+          .control-group
+            %label.control-label Новый пароль
+            .controls
+              %input#input01.input-xlarge{:name => "pass[new]", :type => "text", :value => ''}
+
+          .control-group
+            %label.control-label Повтор нового пароля
+            .controls
+              %input#input01.input-xlarge{:name => "pass[renew]", :type => "text", :value => ''}
+
+          .form-actions
+            %button.btn#cansel-pass.btn-large  Отменить
+            %button.btn.btn-success.btn-large#usr-inf-subm{:type => "submit"} Сохранить изменения
+      %h3.pull-left Мои адреса
+      %button#add-address-button.btn.btn-success.btn-mini.pull-left{:style => "margin: 4px;"} Добавить
+      .clear-line
+      %p#address-help{:class => current_user.addresses.exists? ? "hide" : ""} Вы не добавили ни одного адреса, нажмите «Добавить»
+      %table#address-table.table{:class => current_user.addresses.exists? ? "" : "hide"}
+        %thead
+          %tr
+            %th Адрес
+            %th Действие
+        %tbody
+          - if current_user.addresses.exists?
+            - current_user.addresses.each do |adr|
+              %tr{:id => "adr-" + adr.id.to_s}
+                %td
+                  %span= adr.name != "" ? adr.name.to_s + ": " : ""
+                  %span= adr.city ? "г. " + adr.city.name.to_s + ", " : ""
+                  %span= adr.region ? "р. " + adr.region.name.to_s + ", " : ""
+                  %span= adr.metro ? "м. " + adr.metro.name.to_s + ", " : ""
+                  %span= adr.street != "" ? "ул. " + adr.street.to_s + ", " : ""
+                  %span= adr.house != "" ? "д. " + adr.house.to_s + ", " : ""
+                  %span= adr.building != "" ? "стр. " + adr.building.to_s + ", " : ""
+                  %span= adr.porch != "" ? "п. " + adr.porch.to_s + ", " : ""
+                  %span= adr.floor != "" ? "эт. " + adr.floor.to_s + ", " : ""
+                  %span= adr.room != "" ? "кв. " + adr.room.to_s : ""
+                %td
+                  %button.edit-address-button.btn.btn-info.btn-mini{:data => {:id => adr.id}} Изменить
+                  %button.del-address-button.btn.btn-danger.btn-mini{:data => {:id => adr.id}} Удалить

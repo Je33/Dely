@@ -1,0 +1,10 @@
+#delete-p.modal.hide
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Подтверждение удаления
+  .modal-body
+    %p.rest-phone-text
+      Вы дествительно хотите удалить позицию?
+  .modal-footer
+    %a#delete-line.btn.btn-large.btn-danger{:href => "#", :title=>''} Удалить позицию
+    %%a.btn.btn-large.closeallmodal{:href=> 'javascript:;', :title => ''} Отмена

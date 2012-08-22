@@ -1,0 +1,19 @@
+#estimate-popup.modal.hide.fade.in
+  .modal-header
+    %a.close{"data-dismiss" => "modal", :href => "javascript:;"} ×
+    %h3 Оценка
+  .modal-body
+    %ul.thumbnails
+      %li
+        %img{:alt => "", :src => "/img/star-big.jpg"}
+      %li.li-width
+        .pull-left
+          %h3 Оцените, пожалуйста, ваш последний заказ
+          %p Нам очень важно ваше мнение, как вы оцениваете ресторан #{@place.name}?
+        .clear
+        .btn-group.pull-left.long-btn#good-or-bad
+          %button.btn.btn-success#good Хорошо :)
+          %button.btn.btn-danger#bad Так себе :(
+  .modal-footer#good-bad-footer
+    %a.btn.closeallmodal{:href => "javascript:;"} Закрыть
+    %a.btn.btn-primary.disabled#else-save{:href => "javascript:;", :data => {:id => params[:order]}} Сохранить

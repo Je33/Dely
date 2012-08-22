@@ -1,0 +1,10 @@
+<td> <%= I18n.t f.status %> </td>
+<td><%=f.period ?  ((I18n.t f.period.strftime("%B"))+f.period.strftime(" %Y")) : 0%></td>
+<td><%= f.partner ? f.partner.name : ''  %></td>
+<td><%= f.place ? f.place.name : '' %></td>
+<td><%= f.price.to_i.ceil %> руб.</td>
+<td><%= f.id  %></td>
+
+<!--
+<td><%= link_to 'Редактировать', edit_desc_finance_path(f.id), :class => "btn btn-primary" %></td>
+<td> <%= link_to 'Удалить', desc_finance_path(f.id), :confirm => 'Действительно удалить?', :method => :delete, :class => "btn btn-danger" %></td> -->

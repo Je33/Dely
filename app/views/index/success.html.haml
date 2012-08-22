@@ -1,0 +1,84 @@
+.container.cont
+  .well.alert-success.success-page
+    .row-fluid
+      .span3
+        %ul.thumbnails
+          %li
+            //%img{:src=>'/img/success.jpg', :alt=>'', :width=> '137', :height=>'111'}
+            %img{:src=>'/img/icon_ok.png', :alt=>'', :width=> '256', :height=>'256'}
+      .span9
+        %h1 #{@order.name}, спасибо за заказ!
+        %p
+          В ближайшие минуты с вами свяжется менеджер для подтверждения заказа по номеру #{@order.phone}
+        .clear
+        %a.ajax#cansel-order{:href=>'javascript: ;', :title=>'', :data => {:id => @order.id}} Отменить заказ
+  .well.no-border-no-back
+    .row-fluid
+      .span6.bal-success
+        %img{:src=>'/img/present-big.png', :alt=>'', :width=>'68', :height=>'68'}
+        .bal
+          %p.firs-text У вас всего
+          - if user_signed_in?
+            %p.secont-text #{current_user.balance.to_i + (@order.price/10).ceil.to_i} бонусных баллов!
+          %p.therd-text + #{(@order.price/10).ceil.to_i} баллов за этот заказ.
+          .clear
+          - if user_signed_in?
+            %a{:href=>'/profile/gifts', :title=>''} На что можно потратить баллы?
+        .clear
+        - if !user_signed_in?
+          %form.form-horizontal.success-login
+            %fieldset
+              %legend Уже зарегистрированы?
+              .clear
+              #login-errors.alert.alert-error.hide
+              .control-group
+                %label.control-label Ваш номер
+                .controls
+                  .input-prepend.form-inline
+                    %span.add-on +7
+                    %input#login-user-phone.telephone-code.co.not-valid.cookie{:type => "text", :placeholder => 'Введите номер мобильного', :name => "user[phone]"}
+              .control-group
+                %label.control-label Ваш пароль
+                .controls
+                  = password_field_tag 'user[password]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Введите ваш пароль', :id => 'login-user-password'
+                  =# link_to 'Войти через ВКонтакте', user_omniauth_authorize_path(:vkontakte), :class => 'vk btn btn-primary'
+                  .clear
+                  =# link_to 'Войти через Facebook', user_omniauth_authorize_path(:facebook), :class => 'facebook btn btn-primary'
+            .form-actions
+              = button_tag 'Войти', :disable_with => "Вход...", :class => 'enter btn btn-large btn-success submit', :id => 'log-button'
+      .span6
+        - if !user_signed_in?
+          %form.form-horizontal.success-r
+            %fieldset
+              %legend Зарегистрируйтесь прямо сейчас!
+              .clear
+              #reg-errors.alert.alert-error.hide
+              .control-group
+                %label.control-label Ваше имя
+                .controls
+                  = text_field_tag 'user[first_name]', nil, :class => 'input-xlarge not-valid cookie', :placeholder => 'Как вас зовут?', :id => 'reg-user-name'
+              .control-group
+                %label.control-label Ваш номер
+                .controls
+                  .input-prepend.form-inline
+                    %span.add-on +7
+                    %input#reg-user-phone.telephone-code.co.not-valid.cookie{:type => "text", :placeholder => 'Введите номер мобильного', :name => "user[phone]"}
+              .control-group
+                %label.control-label Ваш е-mail
+                .controls
+                  = email_field_tag 'user[email]', nil, :class => 'input-xlarge', :placeholder => 'Введите ваш email', :id => 'reg-user-email'
+              .control-group
+                %label.control-label Ваш пароль
+                .controls
+                  = password_field_tag 'user[password]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Придумайте пароль от 6 символов', :id => 'reg-user-pass'
+              .control-group
+                %label.control-label Повтор пароля
+                .controls
+                  = password_field_tag 'user[password_confirmation]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Попробуйте повторить', :id => 'reg-user-repass'
+              .control-group
+                %p.reg-text
+                  Нажимая «Зарегистрироваться», вы принимаете условия
+                  %a.lin{:href => "/license", :target => "_blank"} пользовательского соглашения
+                / <a href="#" class="enter btn btn-success">Зарегистрироваться :)</a>
+            .form-actions
+              = button_tag 'Зарегистрироваться', :disable_with => "Регистрация...", :class => 'enter-reg btn btn-large btn-success', :id => 'reg-button'

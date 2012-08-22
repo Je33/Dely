@@ -1,0 +1,49 @@
+= render 'form'
+= link_to 'Назад',  partner_finances_path
+
+:javascript
+  $(document).ready(function(){
+        $('#finance_period_1i').wrap('<td></td>');
+        $('#finance_period_2i').wrap('<td></td>');
+        $('#finance_period_3i').wrap('<td></td>');
+
+        //цена и количество заказов
+        $.fn.pricecnt = function(){
+            var place_id= $("select#finance_place_id").val();
+            var year=$("select#finance_period_1i").val();
+            var month= $("select#finance_period_2i").val();
+            $.ajax({url: '/partner/finances/ajaxPrice',
+                data:
+                {
+                    place_id: place_id,
+                    month:month,
+                    year: year
+                },
+                success:
+                    function(data){
+                        $('#finance_cnt').attr('value',(data.cnt));
+                        $('#finance_cnt_div').text(data.cnt);
+                        $('#finance_price').attr('value',(data.price));
+                        $('#finance_price_div').text(data.price);
+                    }
+            });
+        };
+       $(this).pricecnt();
+
+        $('#finance_place_id').change(function(){
+           $(this).pricecnt();
+           //return false;
+        });
+
+        $('#finance_period_1i').change(function(){
+            $(this).pricecnt();
+            //return false;
+        });
+        $('#finance_period_2i').change(function(){
+            $(this).pricecnt();
+            //return false;
+        });
+
+
+
+    });

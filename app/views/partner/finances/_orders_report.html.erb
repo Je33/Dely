@@ -1,0 +1,37 @@
+<tbody>
+<% @orders.order('created_at desc').each do |o| %>
+  <tr>
+    <td>
+      <%= o.id.to_s %>
+    </td>
+    <td>
+      <%= o.created_at.to_date.strftime("%d.%m.%Y") %>
+    </td>
+    <td>
+      <%= o.created_at.to_time.strftime("%H:%M:%S") %>
+    </td>
+    <td>
+      <%= o.place.name %>
+    </td>
+    <td>
+
+     <%= o.street!='' ? 'ул. '+o.street.to_s : '' %>
+     <%= o.house.to_s!='' ? ' д.'+o.house.to_s : '' %>
+     <%= o.room.to_s!='' ? 'кв.'+o.room.to_s : ''%>
+
+    </td>
+    <td class="order_price_td" order_id="<%= o.id %>">
+      <%= o.price.ceil.to_s+' руб.' %>
+    </td>
+    <td>
+      <%= o.status.name %>
+    </td>
+    <td>
+      <%= o.rating.to_i > 0 ? "+" + o.rating.to_s : o.rating.to_s %>
+    </td>
+  </tr>
+<% end %>
+</tbody>
+
+
+

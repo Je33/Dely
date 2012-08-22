@@ -1,0 +1,5 @@
+- @places.each do |pt|
+  %tr
+    %td= pt.name
+    %td= pt.orders_count
+    %td #{pt.orders_sum.round} руб.

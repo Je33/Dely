@@ -1,0 +1,16 @@
+- if @adr
+  %tr{:id => "adr-" + @adr.id.to_s}
+    %td
+      %span= @adr.name != "" ? @adr.name.to_s + ": " : ""
+      %span= @adr.city ? "г. " + @adr.city.name.to_s + ", " : ""
+      %span= @adr.region ? "р. " + @adr.region.name.to_s + ", " : ""
+      %span= @adr.metro ? "м. " + @adr.metro.name.to_s + ", " : ""
+      %span= @adr.street != "" ? "ул. " + @adr.street.to_s + ", " : ""
+      %span= @adr.house != "" ? "д. " + @adr.house.to_s + ", " : ""
+      %span= @adr.building != "" ? "стр. " + @adr.building.to_s + ", " : ""
+      %span= @adr.porch != "" ? "п. " + @adr.porch.to_s + ", " : ""
+      %span= @adr.floor != "" ? "эт. " + @adr.floor.to_s + ", " : ""
+      %span= @adr.room != "" ? "кв. " + @adr.room.to_s : ""
+    %td
+      %button.edit-address-button.btn.btn-info.btn-mini{:data => {:id => @adr.id}} Изменить
+      %button.del-address-button.btn.btn-danger.btn-mini{:data => {:id => @adr.id}} Удалить

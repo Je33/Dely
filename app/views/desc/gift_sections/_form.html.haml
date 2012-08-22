@@ -1,0 +1,27 @@
+-if @gift_section.errors.any?
+  #error_explanation
+    %h2= "#{pluralize(@gift_section.errors.count, "error")} prohibited this desc_place from being saved:"
+    %ul
+      - @gift_section.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for @gift_section, :url => @gift_section.id!=nil ? desc_gift_section_path(@gift_section.id) : desc_gift_sections_path, :html => {:class => "form-horizontal"} do |f|
+  %fieldset
+    .control-group
+      %label.control-label ID
+      .controls
+        %p= @gift_section.id!=nil ? @gift_section.id : "new"
+    .control-group
+      %label.control-label Активность
+      .controls
+        %p= f.check_box :active, :checked => @gift_section.id==nil ? true : @gift_section.active ? true : false
+    .control-group
+      %label.control-label Название
+      .controls= f.text_field :name, :class=>'span5'
+    .control-group
+      %label.control-label Описание
+      .controls= f.text_area :description, :size => "200x4", :class=>'span5'
+
+  .form-actions
+    = link_to 'Отмена', desc_gift_sections_path, :class => "btn btn-large"
+    = f.submit 'Сохранить', :class => "btn btn-success btn-large"

@@ -1,0 +1,11 @@
+%ul.nav.nav-tabs
+  %li{:class => params[:controller] == "desc/specials" ? "active" : ""}
+    %a{:href => "/desc/specials"} Акции
+  %li{:class => params[:controller] == "desc/populars" ? "active" : ""}
+    %a{:href => "/desc/populars"} Популярные теги
+  %li{:class => params[:controller] == "desc/cities" || params[:controller] == "desc/regions" || params[:controller] == "desc/metros" ? "active" : ""}
+    %a{:href => "/desc/cities"} Города
+  %li{:class => params[:controller] == "desc/kitchens" ? "active" : ""}
+    %a{:href => "/desc/kitchens"} Кухни
+  %li{:class => params[:controller] == "desc/ajax" ? "active" : ""}
+    %a{:href => "/desc/ajax/allhistory"} Логи

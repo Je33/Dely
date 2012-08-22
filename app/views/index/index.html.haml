@@ -1,0 +1,203 @@
+.container.cont
+  .row-fluid
+    .span3#left-menu.left-menu-fixed
+      .well.well-top
+        %p
+          %span
+            Svek.la {Свекла}
+          &mdash; это единая служба доставки любимой еды и цветов в Челябинске. Заказывай у нас и получай подарки!
+
+          <div id="vk_like"></div><script type="text/javascript">
+          VK.Widgets.Like("vk_like", {type: "button", height: 24});</script>
+          <br/>
+          <div class="fb-like" data-href="http://svek.la" data-send="false" data-layout="button_count" data-width="185" data-show-faces="false"></div>
+
+        -#%a#what.top-link{:href=>'javascript:;', :title=>''}
+        -#  %span
+        -#    Как это работает?
+
+      .well.fix-ed
+        -#%ul.nav.nav-list
+          %li.nav-header
+            %span.head-name Минимальная сумма заказа:
+            %span{:style=>"display: inline-block; width: 186px; padding: 20px 0;"}
+              %input#SliderSingle{:type => "slider", :name => "price", :value => "20", :style=>"width: 178px; padding-top: 15px; padding-bottom: 20px;"}
+          %li.divider
+        %ul.nav.nav-list.creteria
+          %li.nav-header Фильтры:
+          %li.cret
+            %a{:href=>'javascript: ;', :title=>""}
+              %label.checkbox#delivery
+                %input{:type => "checkbox", :checked => cookies[:index_delivery]=="1" ? true : false} С бесплатной доставкой
+          -#%li.cret
+            %a{:href=>'javascript: ;', :title=>""}
+              %label.checkbox#special
+                %input{:type => "checkbox", :checked => cookies[:index_special]=="1" ? true : false} С акциями
+          -#%li.cret
+            %a{:href=>'javascript: ;', :title=>""}
+              %label.checkbox#rating
+                %input{:type => "checkbox", :checked => cookies[:index_rating]=="1" ? true : false} С высоким рейтингом
+          -#%li.cret
+            %a{:href=>'javascript: ;', :title=>""}
+              %label.checkbox#newest
+                %input{:type => "checkbox", :checked => cookies[:index_newest]=="1" ? true : false} Новые
+
+          - if @kitchens && @kitchens.count > 0
+            %li.divider
+            %li.nav-header Категории:
+            - @kitchens.each do |k|
+              %li.kitchen
+                %a{:href=>'javascript: ;', :title=>""}
+                  %label.checkbox#delivery
+                    %input{:type => "checkbox", :checked => cookies[:index_kitchens]!=nil ? cookies[:index_kitchens].split(/,/).include?(k.id.to_s) ? true : false : false, :data => {:id => k.id}}= k.name
+
+          - if @populars && @populars.count > 0
+            %li.divider
+            %li.nav-header Популярное:
+            - @populars.each do |p|
+              %a.popular-button{:href => "/place/" + p.item.section.place.id.to_s + "#s" + p.item.section.id.to_s + "/p" + p.item.id.to_s, :title => "", :style => "font-size: #{p.size}px", :data => {:id => p.item.id}}= p.name
+
+    .span9
+      - if flash[:notice]
+        .alert.alert-success
+          %a.close{:data => {:dismiss => "alert"}} ×
+          = flash[:notice]
+
+
+      .slider-box.m-bot
+        .tabbable
+          %ul.nav.nav-tabs
+            - if @specials && @specials.count > 0
+              %li.active
+                %a{:href=>"javascript:;", :title=>''} Акции
+            - if @top && @top.count > 0
+              %li{:class => !@specials || @specials.count == 0  ? "active" : ""}
+                %a{:href=>"javascript:;", :title=>''} Популярные блюда
+          .tab-content
+            - if @specials && @specials.count > 0
+              .tab-pane.active
+                .one
+                  .slider
+                    %a.left{:href=>'javascript: ;', :title=>''} ‹
+                    .view
+                      .anim
+                        - @specials.each do |sp|
+                          - if sp.item
+                            .box.special
+                              %a.special-button{:href => "javascript:;", :title => sp.name, :data => {:id => sp.id}}
+                                %img{:src => sp.picture? ? sp.picture(:normal) : sp.item.photo(:normal), :width => 141}
+                              .text-block
+                                %a.name{:href=>'javascript:;', :title=>''}= sp.name
+                                .clear
+                                %p.cena
+                                  %span.old #{sp.old_price.round.to_s}
+                                  %span.alert.alert-success= sp.item.price.round.to_s + ' руб.'
+                                - if sp.place
+                                  %p.teg
+                                    %a{:href=>'/place/' + sp.place.id.to_s, :title=>''}= sp.place.name
+                    %a.right{:href=>'javascript: ;', :title=>''} ›
+            - if @top && @top.count > 0
+              .tab-pane{:class => !@specials || @specials.count == 0  ? "active" : ""}
+                .two
+                  -#%ul#pop.nav.nav-pills{:style => cookies[:pp_closed]=="1" ? "visibility: hidden;" : "visibility: visible;"}
+                    %li{:class => cookies["index_pop"] == "e" || cookies["index_pop"] == nil ? "active" : ""}
+                      %a{:href => 'javascript:;', :data => {:type => "e"}} Блюда
+                    %li{:class => cookies["index_pop"] == "d" ? "active" : ""}
+                      %a{:href => 'javascript:;', :data => {:type => "d"}} Напитки
+                  .clear
+                  .slider#pop-slider
+                    %a.left{:href=>'#s2p3', :title=>''} ‹
+                    .view
+                      .anim
+                        -@top.each do |pp|
+                          .box
+                            %a.special-button{:href => "/place/" + pp.section.place.id.to_s + "#s" + pp.section.id.to_s + "/p" + pp.id.to_s, :title => ""}
+                              %img{:src => pp.photo(:top), :width => 141}
+                            .text-block
+                              %a.name{:href=>"/place/" + pp.section.place.id.to_s + "#s" + pp.section.id.to_s + "/p" + pp.id.to_s, :title=>''}= pp.name
+                              .clear
+                              %p.cena= pp.price.round.to_s + ' руб.'
+                              %p.teg
+                                %a{:href=>'/place/' + pp.section.place.id.to_s, :title=>''}= pp.section.place.name
+                    %a.right{:href=>'javascript: ;', :title=>''} ›
+      .slider-box.list.main-list
+        .top
+          - if @city != nil
+            %h2.pull-left= t(:places_in) + " " + @city[:name_dec].unpack('U*').pack('U*')
+            .btn-group.pull-right.view-style
+              %button.btn#v-list{:class => cookies[:index_view]=="1" ? 'active' : ''}
+                %i.icon-th-list
+              %button.btn#v-block{:class => cookies[:index_view]=="0" ? 'active' : ''}
+                %i.icon-th
+        .clear
+        .content-menu
+          -#%ul.nav.nav-pills.pull-left
+            %li.text
+              %p Показать
+            %li.active
+              %a.active{:href => 'javascript:;'} открытые
+            %li
+              %a{:href => 'javascript:;'} все
+
+          %ul#sorting.nav.nav-pills.pull-left
+            %li.text
+              %p Сортировать по
+            - if cookies[:index_sorting]=='rating'
+              %li.active
+                %a{:href => 'javascript:;', :data => {:sort => 'rating'}} рейтингу
+            - else
+              %li
+                %a{:href => 'javascript:;', :data => {:sort => 'rating'}} рейтингу
+            - if cookies[:index_sorting]=='delivery_time'
+              %li.active
+                %a{:href => 'javascript:;', :data => {:sort => 'delivery_time'}} времени доставки
+            - else
+              %li
+                %a{:href => 'javascript:;', :data => {:sort => 'delivery_time'}} времени доставки
+          .clear
+
+          #view-detail{:class => cookies[:index_view]=="1" ? '' : 'box-view'}
+            - if @places != nil
+              - @places.each_with_index do |place, index|
+                %a.well.well-link{:href => "/place/" + place.id.to_s}
+                  .row-fluid
+                    .span2.pull-left
+                      %ul.thumbnails
+                        %li
+                          %span.thumbnail
+                            %table
+                              %tbody
+                                %tr
+                                  %td{:valign => 'middle', :align => 'center'}
+                                    %img{:src => place.picture(:small), :alt => ''}
+                    .span10.pull-right
+                      %h3.pull-left.h3block
+                        %span.name= place.name
+                      .clear
+                      - kit = place.kitchens.map{|k| [k.name]}
+                      - if kit.count > 0
+                        %p.part-tags= kit.join ", "
+                      .row-fluid.info-block
+                        .span3
+                          .text-bottom
+                            %p.text минимальная сумма заказа
+                          %p.info= 'от '+"#{place.min_order} руб."
+                        .span3
+                          .text-bottom
+                            %p.text стоимость доставки
+                          %p.info= place.delivery_price==0 ? "Бесплатно" : 'от '+place.delivery_price.to_s + " руб."
+                        .span3
+                          .text-bottom
+                            %p.text среднее время доставки
+                          %p.info= "#{place.delivery_time} мин."
+                        .span3
+                          .text-bottom
+                            %p.text рейтинг
+                          %p.info
+                            %span.good= "+#{place.rating_plus.to_i.abs}"
+                            %span.bad= "−#{place.rating_minus.to_i.abs}"
+                      - if place.description!=""
+                        .well.well-text
+                          %p= place.description
+                - if (index+1) % 3 == 0
+                  .clear

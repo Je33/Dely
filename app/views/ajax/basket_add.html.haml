@@ -1,0 +1,17 @@
+%ul#basket-info{:data => {:id => @ord.id}}
+  %li.bascket-text{:rel => "popover", :data => {:content => '<span class="tooltip-green">Добавленно в корзину: ' + @product.name.to_s + ' (' + params[:cnt].to_s + ')</span>'} }
+    %p.big{:id => 'basket-unit-' + @ord.id.to_s, :data => {:id => @ord.id}, 'data-toggle' =>'dropup'}
+      Ваш заказ в "#{@ord.place.name}" на
+      %span= @ord.price_base.round.to_s + " + " + @ord.price_delivery.round.to_s + " руб."
+      за доставку
+    - dv = @ord.place.min_order.to_i - @ord.price_base.to_i
+    - if dv > 0
+      %p.lit
+        Не хватает
+        %span{:id => 'ins-basket-' + @ord.id.to_s} #{dv.to_i}
+        руб. до минимальной суммы заказа
+    - else
+      %p.lit.hide
+        Не хватает
+        %span{:id => 'ins-basket-' + @ord.id.to_s} 0
+        руб. до минимальной суммы заказа

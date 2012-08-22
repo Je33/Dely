@@ -1,0 +1,11 @@
+#gores.modal.hide.fade.in{:style => "display: block; "}
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Подтверждение заказа
+  .modal-body
+    %p.rest-phone-text
+      Для передачи заказа, свяжитесь с рестораном по телефону:
+    %span.big-phone 8 (800) 800-8080
+  .modal-footer
+    %a.btn.btn-large.btn-success#transfered-to-the-restoran{:href => "javascript:;", :title => ""} Заказ передан
+    /%a.btn.btn-large.btn-danger#no-transfer{:href => "javascript:;", :title => ""} Ресторан не отвечает? Отметить как подтвержден

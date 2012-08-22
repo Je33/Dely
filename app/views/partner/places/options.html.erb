@@ -1,0 +1,39 @@
+<div id="current_url" cur="/partner/options/" xmlns="http://www.w3.org/1999/html"> </div>
+<div class="row-fluid">
+<div class="span3">
+  <div class="well">
+    <!--<ul class="nav nav-list">-->
+     <ul class="nav nav-pills nav-stacked">
+      <li class="nav-header">Настройки</li>
+      <li class="active"><a class="link-users" href="javascript:void(0);">Пользователи</a></li>
+      <li><a class="link-alerts"  href="javascript:void(0);">Уведомления</a></li>
+      <%#<li><a class="link-history"  href="javascript:void(0);">Вся история</a></li>%>
+    </ul>
+    <%= render 'accordion' %>
+  </div>
+</div>
+<div class="span9">
+  <% if flash[:error] %>
+      <div class="alert alert-error">
+        <a class="close" dismiss="alert"> × </a>
+        <%= flash[:error] %>
+      </div>
+  <% end %>
+
+   <div id="well-cont">
+      <%= render 'useroption' %>
+   </div>
+
+</div>
+
+
+
+
+
+</div>
+</div>
+
+</div><!--/.fluid-container-->
+
+<script src="/js/restoran.js"></script>
+

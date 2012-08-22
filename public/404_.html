@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delivery - Basai sushi</title>
+    <link href="/assets/application.css?body=1" media="all" rel="stylesheet" type="text/css" />
+    <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+    <script src="/assets/jquery_ujs.js?body=1" type="text/javascript"></script>
+    <script src="/assets/bootstrap-dropdown.js?body=1" type="text/javascript"></script>
+    <script src="/assets/bootstrap-button.js?body=1" type="text/javascript"></script>
+    <meta content="authenticity_token" name="csrf-param" />
+    <meta content="AgWyA9AXyEPY1EvdRg+1nb03nQnoBkAzfIjpNh5zJkg=" name="csrf-token" />
+    <meta charset='utf-8'>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <meta content='' name='description'>
+    <meta content='' name='author'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='width=device-width' name='viewport'>
+
+    <!--[if IE]>
+    <script src='//html5shim.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
+    <!-- %link{:href => "images/favicon.ico", :rel => "shortcut icon"} -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link href='images/apple-touch-icon.png' rel='apple-touch-icon'>
+    <link href='images/apple-touch-icon-72x72.png' rel='apple-touch-icon' sizes='72x72'>
+    <link href='images/apple-touch-icon-114x114.png' rel='apple-touch-icon' sizes='114x114'>
+</head>
+<body onunload=''>
+<div class='navbar'>
+    <div class='navbar-inner'>
+        <div class='container'>
+            <ul class='breadcrumb pull-left'>
+                <li>
+                    <a class='brand logo-img' href='/' title=''></a>
+                </li>
+            </ul>
+            <ul class='nav top-link pull-left'>
+                <li>
+                    <a href='javascript:void(0);' id='what' title=''>
+                        Как это работает?
+                    </a>
+                </li>
+            </ul>
+            <div class='nav-collapse'>
+                <ul class='nav pull-right'>
+                    <div data-id='1' id='current-city'></div>
+                    <li class='divider-vertical'></li>
+                    <li class='dropdown'>
+                        <a class='dropdown-toggle' data-toggle='dropdown' href='javascript:;'>ja</a>
+                        <ul class='dropdown-menu'>
+                            <li><a href="/profile/orders">Мои заказы (11)</a></li>
+                            <li><a href="/profile/info">Мой профиль</a></li>
+                            <li>
+                                <!-- %a{:href => "javascript:;"} Призы -->
+                            </li>
+                            <li class='divider'></li>
+                            <li><a href="/users/sign_out" data-method="delete" rel="nofollow">Выход</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='container cont'>
+    <div class='row-fluid'>
+       <div class="span5">
+           <div style="text-align: center; width: 100%; margin-top: -20px;">
+               <img  src="/img/empty_pizza.jpg" width="800" alt="" />
+           </div>
+       </div>
+       <div class="span7">
+           <h2>
+            Упс... Уже всё съели!
+           </h2>
+           <p>
+                Не понятно как вы попали на эту страницу, но это точно не то, что вы искали.
+                <br />
+                Перейдите на
+                <a href = "/" title = "" >главную страницу</a>
+                — там много вкусной еды, которая ждёт вашего заказа.
+                <br />
+                Приятного аппетита!
+           </p>
+       </div>
+    </div>
+</div>
+<div class='footer'>
+    <div class='container'>
+        <hr>
+        <p>
+            <a href='javascript:void(0);' title=''>О нас</a>
+            <span>·</span>
+            <a href='javascript:void(0);' title=''>Контакты</a>
+        </p>
+        <p style='margin-bottom: 0 !important'>
+            © 2012 Delivery. Designed and developed in Russia, Moscow.
+        </p>
+    </div>
+
+</div>
+</body>
+</html>

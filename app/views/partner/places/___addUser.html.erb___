@@ -1,0 +1,17 @@
+<%= form_tag '' do %>
+<table>
+  <tr>
+    <th>Пользователь:</th>
+    <td> <%= select( "add_user_select", "id",@u) %></td>
+  </tr>
+  <tr>
+    <th>Заведение:</th>
+    <td><%= select "add_user_select", "place",@places, {}, {:multiple => true,:size=>15,:class=>"multi"} %></td>
+  </tr>
+  <tr>
+    <th>Роль:</th>
+    <td><%= select "add_user_select", "role",{"Администратор"=>"2","Оператор"=>"1"} %></td>
+  </tr>
+</table>
+    <%= submit_tag 'Добавить' %>
+<% end %>

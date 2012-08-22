@@ -1,0 +1,48 @@
+#registr.modal.hide
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3.modal-text
+      Регистрация
+      /<br /> Зарегистрируйтесь прямо сейчас и получите 2 000 балов в подарок!</h3>
+      /<a href="#prese" class="rem-pass" id="present">На что можно потратить быллы?</a>
+  .modal-body
+    %form.form-horizontal#registr-form
+      %fieldset
+        #reg-errors.alert.alert-error.hide
+
+        .control-group
+          %label.control-label Ваше Имя
+          .controls
+            = text_field_tag 'user[first_name]', nil, :class => 'input-xlarge name-in not-valid cookie', :placeholder => 'Как вас зовут?', :id => 'reg-user-name'
+
+        .control-group
+          %label.control-label Телефон
+          .controls
+            .input-prepend.form-inline
+              %span.add-on +7
+              %input#reg-user-phone.telephone-code.co.not-valid.cookie{:type => "text", :placeholder => 'Введите номер мобильного', :name => "user[phone]"}
+        .control-group
+          %label.control-label Email
+          .controls
+            = email_field_tag 'user[email]', nil, :class => 'input-xlarge', :placeholder => 'Введите ваш email', :id => 'reg-user-email'
+        .control-group
+          %label.control-label Пароль
+          .controls
+            = password_field_tag 'user[password]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Придумайте пароль от 6 символов', :id => 'reg-user-pass'
+
+        .control-group
+          %label.control-label Повторите пароль
+          .controls
+            = password_field_tag 'user[password_confirmation]', nil, :class => 'input-xlarge not-valid', :placeholder => 'Попробуйте повторить', :id => 'reg-user-repass'
+        %br
+        %p.reg-text
+          Нажимая «Зарегистрироваться», вы принимаете условия
+          %a.lin{:href => "/license", :target => "_blank"} пользовательского соглашения
+          %br
+          Уже зарегистрированы? &mdash;
+          = succeed "." do
+            %a#login-button.rem-pass{:href => "javascript:;"} Войдите в свой личный кабинет
+
+  .modal-footer
+    = button_tag 'Зарегистрироваться', :disable_with => "Регистрация...", :class => 'enter btn btn-large btn-success', :id => 'reg-button'
+    %a.btn.btn-large.closeallmodal{:href=> 'javascript:;', :title => ''} Закрыть

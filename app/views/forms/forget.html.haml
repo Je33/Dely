@@ -1,0 +1,22 @@
+#remember.modal.hide
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Востановление пароля
+  .modal-body
+    %form.form-horizontal#forget-form
+      %fieldset
+        #reset-errors.alert.alert-error.hide Error
+        #reset-notice.alert.alert-info.hide Notice
+        .control-group
+          %label.control-label Ваш номер телефона
+          .controls
+            .input-prepend.form-inline
+              %span.add-on +7
+              %input#forget-form-phone.telephone-code.co.not-valid{:onkeydown => "javascript:if(13==event.keyCode){return false;}", :type => "text", :placeholder => 'Ваш номер', :name => "order[phone]"}
+    .clear
+    %a#login-button.lin.pull-left{:href => "javascript:;"} Авторизация
+    %a#registration-button.lin.pull-right{:href => "javascript:;"} Зарегистрироваться
+    .clear
+  .modal-footer
+    %button.btn.btn-large.btn-success#forg-button{:href => "javascript:;", :disable_with => "Секунду..."} Сбросить пароль
+    %a.btn.btn-large.closeallmodal{:href=> 'javascript:;', :title => ''} Закрыть

@@ -1,0 +1,137 @@
+.btn-toolbar.margin-bottom#model-bar{:data => {:code => "Partner"}}
+  .btn-group
+    = link_to '<i class="icon-plus icon-white"></i> Новый партнер'.html_safe, new_desc_partner_path, :class => "btn btn-success"
+  .btn-group
+    %button.btn.disabled Выделенные:
+    %button.btn#activate-selected
+      %i.icon-ok
+      Активировать
+    %button.btn#deactivate-selected
+      %i.icon-remove
+      Деактивировать
+    %button.btn.btn-danger#remove-selected
+      %i.icon-minus.icon-white
+      Удалить
+.clear
+%br
+
+%table.table.table-bordered.table-striped.name-width
+  %thead
+    %tr
+      %th
+        .btn-group
+          .btn.btn-small#button-select-all
+            %i.icon-check
+          .btn.btn-small.dropdown-toggle{:data => {:toggle => "dropdown"}}
+            /%input{:type => "checkbox"}
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              %a#select-all{:href => "javascript:;"} Выделить все
+            %li
+              %a#select-none{:href => "javascript:;"} Снять выделения
+            %li
+              %a#select-rnd{:href => "javascript:;"} Выделить случайно
+            %li
+              %a#select-inv{:href => "javascript:;"} Инвертировать выделение
+      %th
+        .btn.btn-small.disabled Меню
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? "?f=id&d=asc" : "?f=id&d=desc"}
+          ID
+          - if params[:f] == "id" || !params[:f]
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? "?f=name&d=asc" : "?f=name&d=desc"}
+          Название
+          - if params[:f] == "name"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? "?f=active&d=asc" : "?f=active&d=desc"}
+          Активность
+          - if params[:f] == "active"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? "?f=pct&d=asc" : "?f=pct&d=desc"}
+          Процент
+          - if params[:f] == "pct"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? "?f=director&d=asc" : "?f=director&d=desc"}
+          Директор
+          - if params[:f] == "director"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      -#%th
+        %a.btn.btn-small{:href => params[:d] == "desc" ? "?f=user_id&d=asc" : "?f=user_id&d=desc"}
+          Пользователь
+          - if params[:f] == "user_id"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      -#%th
+        %a.btn{:href => params[:d] == "desc" ? "?f=created_at&d=asc" : "?f=created_at&d=desc"}
+          Создан
+          - if params[:f] == "created_at"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      -#%th
+        %a.btn{:href => params[:d] == "desc" ? "?f=updated_at&d=asc" : "?f=updated_at&d=desc"}
+          Изменен
+          - if params[:f] == "updated_at"
+            - if params[:d] == "desc"
+              %i.icon-chevron-up
+            - else
+              %i.icon-chevron-down
+      %th
+        .btn.btn-small.disabled Заказы
+      %th
+        .btn.btn-small.disabled Сумма
+  %tbody
+  - @partners.each do |partner|
+    %tr
+      %td.small
+        %input.select-box{:type => "checkbox", :data => {:id => partner.id}}
+      %td.small
+        .btn-group
+          %a.btn{:href => desc_partner_places_path(partner.id)} Заведения
+          %button.btn.btn-small.dropdown-toggle{:data => {:toggle => "dropdown"}}
+            %i.icon-list
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to '<i class="icon-home"></i> Заведения'.html_safe, desc_partner_places_path(partner.id)
+            /%li= link_to '<i class="icon-user"></i> Пользователи'.html_safe, "javascript:;"
+            /%li= link_to '<i class="icon-book"></i> Счета'.html_safe, "javascript:;"
+            /%li= link_to '<i class="icon-signal"></i> Статистика'.html_safe, "javascript:;"
+            %li.divider
+            %li= link_to '<i class="icon-pencil"></i> Редактировать'.html_safe, edit_desc_partner_path(partner.id)
+            %li= link_to '<i class="icon-remove"></i> Удалить'.html_safe, desc_partner_path(partner.id), :confirm => 'Вы уверены?', :method => :delete
+      %td= partner.id
+      %td
+        %p= partner.name
+      %td= partner.active==1 ? '<span style="color:green;">Да</span>'.html_safe : '<span style="color:red;">Нет</span>'.html_safe
+      %td= partner.pct ? partner.pct.to_s + "%" : ""
+      %td
+        %p= partner.director
+      -#%td= partner.user ? link_to(partner.user.first_name.to_s + " " + partner.user.last_name.to_s + " (" + partner.user.id.to_s + ")", edit_desc_user_path(partner.user.id)) : ""
+      -#%td= partner.created_at.localtime().strftime('%D %H:%M:%S')
+      -#%td= partner.updated_at.localtime().strftime('%D %H:%M:%S')
+      %td= partner.orders.count.to_i
+      %td= partner.orders.sum(:price).round

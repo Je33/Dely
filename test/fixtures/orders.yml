@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  description: MyText
+  person: 1
+  manager: 1
+  rating: 1
+  user: 
+  place: 
+  status: 
+
+two:
+  name: MyString
+  description: MyText
+  person: 1
+  manager: 1
+  rating: 1
+  user: 
+  place: 
+  status: 

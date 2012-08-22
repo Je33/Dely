@@ -1,0 +1,46 @@
+-if @usergift.errors.any?
+  #error_explanation
+    %h2= "#{pluralize(@usergift.errors.count, "error")} prohibited this desc_place from being saved:"
+    %ul
+      - @usergift.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for @usergift, :url => @usergift.id!=nil ? desc_usergift_path(@usergift.id) : desc_usergifts_path, :html => {:class => "form-horizontal"} do |f|
+  %fieldset
+    .control-group
+      %label.control-label ID
+      .controls
+        %p= @usergift.id!=nil ? @usergift.id : "new"
+    -#.control-group
+      %label.control-label Активность
+      .controls= f.check_box :active, :checked => @special.id==nil ? true : @special.active ? true : false
+    .control-group
+      %label.control-label Фото
+      .controls
+        .pull-left.margin-right{:style=>'padding-left: 10px'}
+          = @usergift.gift ? image_tag(@usergift.gift.photo.url(:small)) : ""
+    .control-group
+      %label.control-label Подарок
+      .controls
+        - if @usergift.gift
+          %p= @usergift.gift ? @usergift.gift.name : ""
+        - else
+          = f.select(:gift_id, Gift.all.map{|u| [u.name, u.id]})
+    .control-group
+      %label.control-label Описание
+      .controls= f.text_area :description, :size => "200x8", :class=>"span5"
+    .control-group
+      %label.control-label Статус
+      .controls= f.select(:gift_status_id, GiftStatus.all.map{|p| [p.name,p.id]})
+    .control-group
+      %label.control-label Пользователь
+      .controls
+        - if @usergift.user
+          %p= @usergift.user ? link_to(@usergift.user.first_name ? @usergift.user.first_name.to_s + " (" + @usergift.user.phone.to_s + ")" : @usergift.user.phone, edit_desc_user_path(@usergift.user.id)) : ""
+        - else
+          = f.select(:user_id, User.order("first_name ASC").all.map{|u| [u.first_name.to_s + " " + u.last_name.to_s + " (" + u.phone + ")", u.id]})
+
+  .form-actions
+
+    = link_to 'Отмена', desc_usergifts_path, :class => "btn btn-large"
+    = f.submit 'Сохранить', :class => "btn btn-success btn-large"

@@ -1,0 +1,28 @@
+.span9
+  #well-cont
+    %h3
+      %a{:href=>'/partner/options', :title=>''}
+        Пользователи
+      %span
+        &#187;
+      -if @user
+        %a{:id=>"edit_btn",:user_id=>@user.id, :title=>''}
+          = @user.first_name + ' ' + @user.last_name
+        %span
+          &#187;
+      %span
+        История
+    %table.table.table-bordered.hovered
+      %thead
+        %tr
+          %th Статус
+          %th Оператор
+          %th Время и дата
+          %th Ресторан
+          %th Сумма
+          %th Номер
+          /%th №
+      %tbody
+        - @logs.each do |l|
+          %tr{:class => l.status.findClass,:onclick => "location.href='#{partner_order_path(l.order_id)}'"}
+            = render 'log',:l=>l

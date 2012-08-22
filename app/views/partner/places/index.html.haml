@@ -1,0 +1,92 @@
+-#.btn-toolbar#model-bar{:data => {:code => "Item"}}
+  .btn-group
+    = link_to '<i class="icon-plus icon-white"></i> Новое место' .html_safe, new_partner_place_path, :class => "btn btn-success"
+  .btn-group
+    %button.btn.disabled Выделенные:
+    %button.btn#activate-selected
+      %i.icon-ok
+      Активировать
+    %button.btn#deactivate-selected
+      %i.icon-remove
+      Деактивировать
+    %button.btn.btn-danger#remove-selected
+      %i.icon-minus.icon-white
+      Удалить
+-#.clear
+-#%br
+
+%table.table.table-bordered
+  %thead
+    %tr
+      -#%th
+        .btn-group
+          .btn#button-select-all
+            %i.icon-check
+          .btn.btn-small.dropdown-toggle{:data => {:toggle => "dropdown"}}
+            /%input{:type => "checkbox"}
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              %a#select-all{:href => "javascript:;"} Выделить все
+            %li
+              %a#select-none{:href => "javascript:;"} Снять выделения
+            %li
+              %a#select-rnd{:href => "javascript:;"} Выделить случайно
+            %li
+              %a#select-inv{:href => "javascript:;"} Инвертировать выделение
+      %th Управление
+      %th Название
+      %th Город
+      %th Описание
+      -#%th
+      -#%th ID
+      -#%th Лого
+      -#%th Активность
+      -#%th Описание
+      -#%th Стоимость доставки
+      -#%th Время доставки
+      -#%th Минимальный заказ
+      -#%th Рейтинг
+      -#%th Создан
+      -#%th Изменен
+      -#%th Меню
+      -#%th Акции
+      -#%th
+
+
+  %tbody
+  - @places.each do |place|
+    %tr
+      %td{:style=>'width:230px'}
+        .btn-group
+          %a.btn{:href=>partner_place_sections_path(place)} <i class="icon-list-alt"></i> Меню
+          %a.btn{:href=>partner_place_specials_path(place)} <i class="icon-star"></i> Акции
+          %a.btn{:href=>edit_partner_place_path(place)} <i class="icon-pencil"></i> Инфо
+        -#.btn-group
+          %button.btn.dropdown-toggle{:data => {:toggle => "dropdown"}}
+            Действия
+            /%i.icon-list
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to '<i class="icon-list-alt"></i> Меню'.html_safe, partner_place_sections_path(place)
+            %li= link_to '<i class="icon-star"></i> Акции'.html_safe, partner_place_specials_path(place)
+            %li= link_to '<i class="icon-pencil"></i> Редактировать'.html_safe, edit_partner_place_path(place)
+            -#%li= link_to '<i class="icon-remove"></i> Удалить'.html_safe, partner_place_path(place), :confirm => 'Действительно удалить?', :method => :delete
+      %td{:style=>'width:150px'}= place.name
+      %td{:style=>'width:150px'}= place.city.name
+      %td= place.description
+
+      -#%td
+        %input{:type => "checkbox"}
+      -#%td= place.id
+      -#%td
+        %img{:src => place.picture(:mini)}
+      -#%td= place.active
+      -#%td= place.description
+      -#%td= place.delivery_price
+      -#%td= place.delivery_time
+      -#%td= place.min_order
+      -#%td= place.rating
+      -#%td= place.created_at
+      -#%td= place.updated_at
+

@@ -1,0 +1,96 @@
+.class.container.cont
+  .row-fluid
+    .span4
+      %ul.nav.nav-pills.nav-stacked
+        %li
+          %a{:href => "/profile/orders", :title => ''} Мои заказы (1)
+        %li.active
+          %a{:href => '/profile', :title => ''} Настройки моего профиля
+
+    .span8
+
+      %form.form-horizontal#user-form
+        %fieldset
+          %h3 Мой профиль
+          .clear-line
+          .control-group
+            %label.control-label{:for => "input01"} Баланс:
+            .controls
+              %p.help-block 0
+
+          .control-group
+            %label.control-label{:for => "input01"} Мои заказы:
+            .controls
+              %p.help-block 0
+
+          .control-group
+            %label.control-label{:for => "input01"} Ваше имя
+            .controls
+              %input#input01.input-xlarge.disabled{:type => "text", :disabled => '', :value => 'Ja'}
+
+          .control-group
+            %label.control-label Номер телефона
+            .controls
+              %input#input01.input-xlarge.disabled{:type => "text", :disabled => '', :value => '89206200522'}
+
+          .control-group
+            %label.control-label Е-мэйл
+            .controls
+              %input#input01.input-xlarge.disabled{:type => "text", :disabled => '', :value => 'maskin.sergey@gmail.com'}
+
+          .control-group
+            %label.control-label
+            .controls
+              %input.btn.input-xlarge#change-profile{:type => 'button', :value => 'Редактировать профиль'}
+
+          .control-group
+            %label.control-label{:for => "optionsCheckbox"}
+            .controls
+              %input.btn.input-xlarge#change-password{:type => 'button', :value => 'Изменить пароль'}
+
+          .form-actions#btn-control
+            %button.btn.btn-primary{:type => "submit"} Сохранить изменения
+            %button.btn#cansel Отменить
+
+      %form.form-horizontal#pass-form
+        %fieldset
+          %h3
+            %span
+              Мой профиль &#187;
+            %span
+              Новый пароль
+          .clear-line
+          .control-group
+            %label.control-label{:for => "input01"} Текущий пароль
+            .controls
+              %input#input01.input-xlarge{:type => "text", :value => ''}
+
+          .control-group
+            %label.control-label Новый пароль
+            .controls
+              %input#input01.input-xlarge{:type => "text", :value => ''}
+
+          .control-group
+            %label.control-label Повтор нового пароля
+            .controls
+              %input#input01.input-xlarge{:type => "text", :value => ''}
+
+          .form-actions
+            %button.btn.btn-primary{:type => "submit"} Сохранить изменения
+            %button.btn#cansel-pass  Отменить
+      %h3 Мои адреса
+      .clear-line
+      %table.table
+        %thead
+          %tr
+            %th Адрес
+            %th Действие
+        %tbody
+          %tr
+            %td г.Владимир ул.Соколова соколенка г.Владимир ул.Соколова соколенка д7 кв7
+            %td
+              %button.btn#change-adress.btn-mini Изменить
+          %tr>
+            %td г.Владимир ул.Соколова соколенка г.Владимир ул.Соколова соколенка д7 кв7
+            %td
+              %button.btn#change-adress.btn-mini Изменить

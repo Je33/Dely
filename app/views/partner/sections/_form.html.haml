@@ -1,0 +1,36 @@
+= form_for @section, :url => @section.id!=nil ? partner_place_section_path({:place_id => params[:place_id], :id => @section.id}) : partner_place_sections_path(params[:place_id]) do |f|
+  -if @section.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@section.errors.count, "error")} prohibited this desc_place from being saved:"
+      %ul
+        - @section.errors.full_messages.each do |msg|
+          %li= msg
+  .form-horizontal
+    %fieldset
+      -#.control-group
+        %label.control-label ID
+        .controls
+          = @section.id!=nil ? @section.id : "new"
+      .control-group
+        %label.control-label Активность
+        .controls
+          = f.check_box :active, :checked => @section.id==nil ? true : @section.active ? true : false
+      .control-group
+        %label.control-label Название
+        .controls
+          = f.text_field :name, :class=>'span5'
+      .control-group
+        %label.control-label Описание
+        .controls
+          = f.text_area :description, :size => "8", :class=>'span5'
+      .control-group
+        %label.control-label Вид
+        .controls
+          = f.select :view, [["Списком", "l"], ["Галереей", "g"]], :class=>'span5'
+      .control-group
+        %label.control-label Индекс сортировки
+        .controls
+          = f.text_field :sort, :class=>'span5'
+      .form-actions
+        = link_to 'Отмена', partner_place_sections_path(params[:place_id]), :class => "btn btn-large"
+        = f.submit 'Сохранить', :class => "btn btn-success btn-large"

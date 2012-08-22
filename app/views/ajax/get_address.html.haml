@@ -1,0 +1,67 @@
+= form_tag "", :class => 'form-horizontal docs-input-sizes', :id => 'form-address' do
+
+  %input{:type => "hidden", :name => "address_id", :value => @adr.id, :id => "form-address-id"}
+
+  %input{:type => "hidden", :name => "address[city_id]", :value => cookies[:city], :id => "form-address-city"}
+
+  %input{:type => "hidden", :name => "address[user_id]", :value => current_user.id, :id => "form-address-user"}
+
+  .control-group
+    %label.control-label{:for => "form-address-name"} Название
+    .controls
+      %input#form-address-name.span4{:type => "text", :name => "address[name]", :value => @adr.name}
+
+  - if @city.metros.exists?
+    .control-group
+      %label.control-label{:for => "form-address-metro"}= "Ближайшее метро"
+      .controls
+        %select.span4#form-address-city{:name => "address[metro_id]"}
+          %option Выбрать метро
+          - @city.metros.each do |m|
+            %option{:value => m.id, :selected => (@adr.metro_id == m.id) ? true : false}= m.name
+
+  - if @city.regions.exists?
+    .control-group
+      %label.control-label{:for => "form-address-region"}= "Район"
+      .controls
+        %select.span4#form-address-region{:name => "address[region_id]"}
+          %option Выбрать район
+          - @city.regions.each do |r|
+            %option{:value => r.id, :selected => (@adr.city_id == r.id) ? true : false}= r.name
+
+  .control-group
+    %label.control-label{:for => "form-address-street"} Улица
+    .controls
+      %input#form-address-street.span4{:type => "text", :name => "address[street]", :value => @adr.street}
+
+  .control-group.medium-form
+    %label.control-label{:for => "form-address-house"} Дом
+    .controls
+      %input#form-address-house.span1{:type => "text", :name => "address[house]", :value => @adr.house}
+
+  .control-group.medium-form.right-line
+    %label.control-label{:for => "form-address-building"} Корпус, строение
+    .controls
+      %input#form-address-building.span1{:type => "text", :name => "address[building]", :value => @adr.building}
+
+  .control-group.medium-form
+    %label.control-label{:for => "form-address-room"} № Квартиры, офиса
+    .controls
+      %input#form-address-room.span1{:type => "text", :name => "address[room]", :value => @adr.room}
+
+  .control-group.medium-form.right-line
+    %label.control-label{:for => "form-address-porch"} № Подъезда
+    .controls
+      %input#form-address-porch.span1{:type => "text", :name => "address[porch]", :value => @adr.porch}
+
+  .control-group.medium-form
+    %label.control-label{:for => "form-address-floor"} Этаж
+    .controls
+      %input#form-address-floor.span1{:type => "text", :name => "address[floor]", :value => @adr.floor}
+
+  .control-group.medium-form.right-line
+    %label.control-label{:for => "form-address-intercom"} Код домофона
+    .controls
+      %input#form-address-intercom.span1{:type => "text", :name => "address[intercom]", :value => @adr.intercom}
+
+  .clear

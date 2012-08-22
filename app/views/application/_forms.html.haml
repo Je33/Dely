@@ -1,0 +1,32 @@
+#confirm.popup.modal.hide.fade.in
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Удаление
+  .modal-body
+    %p Вы действительно хотите удалить?
+  .clear
+  .modal-footer
+    %a.btn#closeallmodal{:href=> 'javascript:;', :title => ''} Закрыть
+    = button_tag 'Удалить', :disable_with => "Вход...", :class => 'enter btn btn-danger'
+
+#phSone.popup.modal.hide.fade.in
+  = form_tag('/users/sign_in') do
+    .modal-header
+      %a.close{"data-dismiss" => "modal"} ×
+      %h3 Ввод телефона
+    .modal-body
+      = phone_field_tag 'user[phone]', nil, :class => 'span4', :placeholder => 'Ваш номер телефона'
+    .clear
+    .modal-footer
+      %a.btn#closeallmodal{:href=> 'javascript:;', :title => ''} Закрыть
+      = submit_tag 'Завершить', :disable_with => "Вход...", :class => 'enter btn btn-success'
+
+
+
+#access.popup.hide.modal.fade.in
+  .modal-header
+    %a.close{"data-dismiss" => "modal"} ×
+    %h3 Кто вы?
+  .modal-body
+    %a.enter.btn.btn-success{:href => "#"} Пользователь
+    %a.enter.btn.btn-success{:href => "#"} Администратор

@@ -1,0 +1,480 @@
+- content_for :head do
+  = javascript_include_tag "http://code.highcharts.com/highcharts.js"
+  = javascript_include_tag "http://code.highcharts.com/modules/exporting.js"
+  = javascript_include_tag "statistics"
+.container.cont.desc
+  -#.row-fluid
+    %ul.breadcrumb.pull-left.span9
+      %li.active
+        Общая статистика
+    %button.btn.btn-large.pull-right Сохранить отчет
+  %hr
+  .row-fluid
+    %table.pull-left.top-table
+      %tbody
+        %tr
+          %td
+            Рестораны
+          %td
+            %select#place-select
+              %option{:value => 0} Все рестораны
+              - @places.each do |p|
+                %option{:value => p.id}= p.name
+    %table.pull-right.top-table
+      %tbody
+        %tr
+          %td
+            Период
+          %td
+            %input#date-from.margin-left{:width=>'50px'}
+          %td
+          %td
+            %input#date-to.margin-left{:width=>'50px'}
+          %td
+            .btn-group.btn-width#date-btns{:data => {:toggle => "buttons-radio"}}
+              %button.btn{:data => {:start => Time.now.beginning_of_day.to_i - 1.day, :end => Time.now.end_of_day.to_i - 1.day}} вчера
+              %button.btn{:data => {:start => Time.now.beginning_of_day.to_i, :end => Time.now.end_of_day.to_i}} сегодня
+              %button.btn{:data => {:start => Time.now.beginning_of_week.to_i, :end => Time.now.end_of_week.to_i}} неделя
+              %button.btn{:data => {:start => Time.now.beginning_of_month.to_i, :end => Time.now.end_of_month.to_i}} месяц
+              %button.btn{:data => {:start => Time.now.beginning_of_quarter.to_i, :end => Time.now.end_of_quarter.to_i}} квартал
+              %button.btn.active{:data => {:start => Time.now.beginning_of_year.to_i, :end => Time.now.end_of_year.to_i}} год
+  %hr
+
+  .row-fluid
+    .tabbable.span12
+      %ul.nav.nav-tabs
+        %li{:class => params[:tab] == "orders_count" ? "active" : ""}
+          %a{:href=>"/desc/statistics/orders_count"} Количество
+        %li{:class => params[:tab] == "orders_summ" ? "active" : ""}
+          %a{:href=>"/desc/statistics/orders_summ"} Сумма
+        %li{:class => params[:tab] == "populars" ? "active" : ""}
+          %a{:href=>"/desc/statistics/populars"} Популярные
+        %li{:class => params[:tab] == "rating" ? "active" : ""}
+          %a{:href=>"/desc/statistics/rating"} Рейтинг
+        %li{:class => params[:tab] == "loyality" ? "active" : ""}
+          %a{:href=>"/desc/statistics/loyality"} Лояльность
+        %li{:class => params[:tab] == "statuses" ? "active" : ""}
+          %a{:href=>"/desc/statistics/statuses"} Статусы
+        %li{:class => params[:tab] == "day_stat" ? "active" : ""}
+          %a{:href=>"/desc/statistics/day_stat"} Время суток
+        %li{:class => params[:tab] == "checks" ? "active" : ""}
+          %a{:href=>"/desc/statistics/checks"} Средний чек
+        %li{:class => params[:tab] == "regions" ? "active" : ""}
+          %a{:href=>"/desc/statistics/regions"} Регионы доставки
+      .tab-content
+        .tab-pane#orders-count{:class => params[:tab] == "orders_count" ? "active" : ""}
+          .row-fluid
+            .orders-graph#stat-orders-graph{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Итого
+                    %th Вчера
+                    %th Сегодня
+                    %th Завтра
+                %tbody
+                  %tr
+                    %td= @orders.count
+                    %td= tmr = @orders.where("created_at >= ? AND created_at <= ?", Time.now.beginning_of_day - 1.day, Time.now.end_of_day - 1.day).count
+                    %td= ytd = @orders.where("created_at >= ? AND created_at <= ?", Time.now.beginning_of_day, Time.now.end_of_day).count
+                    %td= ((tmr + ytd) / 2).round
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th №
+                    %th Время и дата
+                    %th Ресторан
+                    %th Сумма
+                    %th Статус
+                    %th Оценка
+                %tbody
+                  - @orders.find_each do |order|
+                    %tr
+                      %td
+                        %a{:href=>'javascript:;', :title=>''}= order.id
+                      %td
+                        - if (order.created_at).localtime().strftime("%D")==Time.now.localtime().strftime("%D")
+                          =(order.created_at).localtime().strftime("Сегодня %H:%M:%S")
+                        -else
+                          =(order.created_at).localtime().strftime("%D %H:%M:%S")
+                      %td= order.place.name
+                      %td= order.price.to_i
+                      %td= order.status.name
+                      %td{:class => order.rating.to_i > 0 ? "good" : "bad"}
+                        - if order.rating.to_i > 0
+                          = "+" + order.rating.to_s
+                        - else
+                          = order.rating.to_s
+        .tab-pane#orders-summ{:class => params[:tab] == "orders_summ" ? "active" : ""}
+          .row-fluid
+            .orders-graph#stat-orders-cost{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Итого
+                    %th Средний чек
+                    %th Вчера
+                    %th Сегодня
+                    %th Завтра
+                %tbody
+                  -#%tr
+                    %td
+                      654 654
+                    %td
+                      456 456
+                    %td
+                      123
+                    %td
+                      133
+                    %td
+                      123 123
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th Дата
+                    %th Количество заказов
+                    %th Сумма
+                %tbody
+                  -#%tr
+                    %td
+                      22 Марта 2012
+                    %td
+                      123
+                    %td
+                      10 500
+
+        .tab-pane{:class => params[:tab] == "populars" ? "active" : ""}
+          .row-fluid
+            %table.table.table-striped.table-bordered#stat-pop-items-show
+              %thead
+                %tr
+                  %th Блюдо
+                  %th Категория
+                  %th Цена
+                  %th Количество заказов
+                  %th Сумма заказов
+              %tbody
+                -#%tr
+                  %td
+                    Маки-онигару
+                  %td
+                    Роллы
+                  %td
+                    546
+                  %td
+                    133
+                  %td
+                    123 123
+            .clear
+        .tab-pane{:class => params[:tab] == "rating" ? "active" : ""}
+          .row-fluid
+            .orders-graph#stat-orders-rating{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Всего оценок
+                    %th Общий рейтинг
+                    %th Рейтинг за этот период
+                    %th.good Плюсы
+                    %th.bad Минусы
+                %tbody
+                  %tr
+                    %td= @orders.where("rating < ? OR rating > ?", 0, 0).count
+                    %td
+                      4,34
+                    %td
+                      4,57
+                    %td.good= @orders.where("rating > ?", 0).count
+                    %td.bad= @orders.where("rating < ?", 0).count
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th №
+                    %th Время и дата
+                    %th Ресторан
+                    %th Сумма
+                    %th Статус
+                    %th Оценка
+                %tbody
+                  - @orders.where("rating < ? OR rating > ?", 0, 0).find_each do |order|
+                    %tr
+                      %td
+                        %a{:href=>'javascript:;', :title=>''}= order.id
+                      %td
+                        - if (order.created_at).localtime().strftime("%D")==Time.now.localtime().strftime("%D")
+                          =(order.created_at).localtime().strftime("Сегодня %H:%M:%S")
+                        -else
+                          =(order.created_at).localtime().strftime("%D %H:%M:%S")
+                      %td= order.place.name
+                      %td= order.price.to_i
+                      %td= order.status.name
+                      %td{:class => order.rating.to_i > 0 ? "good" : "bad"}
+                        - if order.rating.to_i > 0
+                          = "+" + order.rating.to_s
+                        - else
+                          = order.rating.to_s
+        .tab-pane{:class => params[:tab] == "loyality" ? "active" : ""}
+          .row-fluid
+            .span5
+              .orders-graph#loyalty{:style => "width: 388px; height: 350px"}
+            %table.table.table-striped.table-bordered.span7
+              %thead
+                %tr
+                  %th #
+                  %th Заказов на одного человека
+                  %th Заказы
+                  %th %
+              %tbody
+                %tr
+                  %td
+                    1
+                  %td
+                    1
+                  %td
+                    150
+                  %td
+                    75%
+                %tr
+                  %td
+                    2
+                  %td
+                    2-3
+                  %td
+                    30
+                  %td
+                    15%
+                %tr
+                  %td
+                    3
+                  %td
+                    4-7
+                  %td
+                    10
+                  %td
+                    7%
+                %tr
+                  %td
+                    4
+                  %td
+                    8-15
+                  %td
+                    7
+                  %td
+                    2%
+                %tr
+                  %td
+                    5
+                  %td
+                    16-31
+                  %td
+                    3
+                  %td
+                    1%
+
+        .tab-pane{:class => params[:tab] == "statuses" ? "active" : ""}
+          .row-fluid
+            .span5
+              .orders-graph#stat-ord-rate{:style => "width: 388px; height: 350px"}
+            %table.table.table-striped.table-bordered.span7
+              %thead
+                %tr
+                  %th Статус
+                  %th Количество
+                  %th %
+              %tbody
+                %tr
+                  %td
+                    Доставлен
+                  %td
+                    150
+                  %td
+                    97,5%
+                %tr
+                  %td
+                    Отменен
+                  %td
+                    30
+                  %td
+                    1,5%
+                %tr
+                  %td
+                    Не доставлен
+                  %td
+                    10
+                  %td
+                    1%
+                %tr
+                  %td
+                    Неизвестно
+                  %td
+                    7
+                  %td
+                    0,5%
+
+        .tab-pane{:class => params[:tab] == "day_stat" ? "active" : ""}
+          .row-fluid
+            .orders-graph#stat-orders-hours{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            %table.table.table-striped.table-bordered.span12
+              %thead
+                %tr
+                  %th Время
+                  %th Количество заказов
+                  %th %
+              %tbody
+                %tr
+                  %td
+                    00:00
+                  %td
+                    2
+                  %td
+                    1,1%
+                %tr
+                  %td
+                    01:00
+                  %td
+                    19
+                  %td
+                    2,5%
+                %tr
+                  %td
+                    02:00
+                  %td
+                    47
+                  %td
+                    1,1%
+
+        .tab-pane{:class => params[:tab] == "checks" ? "active" : ""}
+          .row-fluid
+            .orders-graph#average-bill{:style => "width: 960px; height: 300px"}
+          %hr
+          .row-fluid
+            .well
+              %table.table.table-striped.table-center.table-margin-bottom.not-hovered-white
+                %thead
+                  %tr
+                    %th Сумма заказов
+                    %th Средний чек
+                    %th Вчера
+                    %th Сегодня
+                    %th Завтра
+                %tbody
+                  -#%tr
+                    %td
+                      132 133
+                    %td
+                      780
+                    %td
+                      689
+                    %td
+                      590
+                    %td
+                      780
+              .clear
+            .clear
+            .row-fluid
+              %table.table.table-striped.table-bordered.span12
+                %thead
+                  %tr
+                    %th Дата
+                    %th Количество заказов
+                    %th Сумма
+                    %th Средний чек
+                %tbody
+                  -#%tr
+                    %td
+                      22 Марта 2012
+                    %td
+                      456
+                    %td
+                      10 560
+                    %td
+                      10 560
+
+        .tab-pane{:class => params[:tab] == "regions" ? "active" : ""}
+          .row-fluid
+            .span5
+              .orders-graph#stat-regions{:style => "width: 388px; height: 350px"}
+            %table.table.table-striped.table-bordered.span7
+              %thead
+                %tr
+                  %th #
+                  %th Регион
+                  %th Заказы
+                  %th Сумма заказов
+                  %th %
+              %tbody
+                %tr
+                  %td
+                    1
+                  %td
+                    Центральный
+                  %td
+                    150
+                  %td
+                    123 123
+                  %td
+                    75%
+                %tr
+                  %td
+                    2
+                  %td
+                    Советский
+                  %td
+                    30
+                  %td
+                    123 123
+                  %td
+                    75%
+                %tr
+                  %td
+                    3
+                  %td
+                    Ленинский
+                  %td
+                    10
+                  %td
+                    123 123
+                  %td
+                    75%
+                %tr
+                  %td
+                    4
+                  %td
+                    Тракторозаводский
+                  %td
+                    7
+                  %td
+                    123 123
+                  %td
+                    75%
+                %tr
+                  %td
+                    5
+                  %td
+                    ЧМЗ
+                  %td
+                    3
+                  %td
+                    123 123
+                  %td
+                    75%
